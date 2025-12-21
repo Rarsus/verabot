@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📖 Documentation
+    url: https://github.com/Rarsus/verabot/blob/main/README.md
+    about: Check our documentation first
+  - name: 💬 Discussions
+    url: https://github.com/Rarsus/verabot/discussions
+    about: Ask questions and discuss ideas
+  - name: 🐛 Report a Security Issue
+    url: https://github.com/Rarsus/verabot/security/advisories
+    about: Privately report security vulnerabilities

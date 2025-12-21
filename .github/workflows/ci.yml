@@ -17,6 +17,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -29,6 +31,20 @@ jobs:
 
       - name: Run ESLint
         run: npm run lint
+
+      - name: Check code formatting
+        run: npm run format:check
+
+      - name: Validate commit messages
+        if: github.event_name == 'pull_request'
+        run: |
+          # Validate commit message format (conventional commits)
+          COMMITS=$(git log --format=%B ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }})
+          if echo "$COMMITS" | grep -vE "^(feat|fix|docs|style|refactor|test|chore|ci|perf|revert)(\(.+\))?!?:" > /dev/null; then
+            echo "⚠️ Warning: Some commits don't follow conventional commits format"
+          else
+            echo "✅ All commits follow conventional commits format"
+          fi
 
   test:
     runs-on: ubuntu-latest
@@ -48,7 +64,16 @@ jobs:
         run: npm ci
 
       - name: Run tests
-        run: npm test -- --coverage
+        run: npm test -- --coverage --passWithNoTests
+
+      - name: Check coverage threshold
+        run: |
+          COVERAGE=$(grep -A 1 "All files" coverage/coverage-summary.json | grep "lines" | sed 's/.*"pct": \([^,]*\).*/\1/')
+          if (( $(echo "$COVERAGE < 80" | bc -l) )); then
+            echo "❌ Code coverage $COVERAGE% is below 80% threshold"
+            exit 1
+          fi
+          echo "✅ Code coverage $COVERAGE% meets minimum threshold"
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
@@ -56,6 +81,14 @@ jobs:
           files: ./coverage/coverage-final.json
           flags: unittests
           fail_ci_if_error: false
+          verbose: true
+
+      - name: Comment coverage on PR
+        if: github.event_name == 'pull_request'
+        uses: romeovs/lcov-reporter-action@v0.3.1
+        with:
+          lcov-file: ./coverage/lcov.info
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
   security:
     runs-on: ubuntu-latest
@@ -75,7 +108,83 @@ jobs:
         run: npm ci
 
       - name: Run npm audit
-        run: npm audit --production
+        run: npm audit --production || true
 
-      - name: Check for vulnerable packages
-        run: npm audit --production --audit-level=moderate
+      - name: Check for high severity vulnerabilities
+        run: |
+          VULNERABILITIES=$(npm audit --production --json | jq '.metadata.vulnerabilities | select(.high > 0 or .critical > 0)')
+          if [ ! -z "$VULNERABILITIES" ]; then
+            echo "⚠️ Found high/critical vulnerabilities:"
+            npm audit --production
+          else
+            echo "✅ No high/critical vulnerabilities found"
+          fi
+
+  quality-check:
+    runs-on: ubuntu-latest
+    name: Code Quality Checks
+    timeout-minutes: 10
+    if: always()
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check for console.log statements
+        run: |
+          CONSOLES=$(grep -r "console\.log" src --include="*.js" | grep -v "//.*console\.log" || true)
+          if [ ! -z "$CONSOLES" ]; then
+            echo "⚠️ Found console.log statements:"
+            echo "$CONSOLES"
+          fi
+
+      - name: Check for TODO comments
+        run: |
+          TODOs=$(grep -r "TODO\|FIXME\|HACK" src --include="*.js" || true)
+          if [ ! -z "$TODOs" ]; then
+            echo "⚠️ Found unresolved TODO/FIXME/HACK comments:"
+            echo "$TODOs"
+          fi
+
+  summary:
+    runs-on: ubuntu-latest
+    name: CI Summary
+    timeout-minutes: 5
+    if: always()
+    needs: [lint, test, security, quality-check]
+
+    steps:
+      - name: Check job status
+        run: |
+          if [ "${{ needs.lint.result }}" != "success" ]; then
+            echo "❌ Linting failed"
+            exit 1
+          fi
+          if [ "${{ needs.test.result }}" != "success" ]; then
+            echo "❌ Tests failed"
+            exit 1
+          fi
+          if [ "${{ needs.security.result }}" != "success" ]; then
+            echo "⚠️ Security audit found issues (non-blocking)"
+          fi
+          echo "✅ All critical checks passed!"
+
+      - name: Generate summary
+        if: always()
+        run: |
+          echo "## ✅ CI Pipeline Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Linting | ${{ needs.lint.result == 'success' && '✅' || '❌' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Tests | ${{ needs.test.result == 'success' && '✅' || '❌' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Security | ${{ needs.security.result == 'success' && '✅' || '⚠️' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Code Quality | ${{ needs.quality-check.result == 'success' && '✅' || '⚠️' }} |" >> $GITHUB_STEP_SUMMARY

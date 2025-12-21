@@ -28,27 +28,86 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      - name: Format Check
+        run: npm run format:check
+
       - name: Run Tests
         run: npm test -- --coverage
+
+      - name: Check coverage threshold
+        run: |
+          COVERAGE=$(grep -A 1 "All files" coverage/coverage-summary.json | grep "lines" | sed 's/.*"pct": \([^,]*\).*/\1/')
+          echo "Code coverage: $COVERAGE%"
+          if (( $(echo "$COVERAGE < 80" | bc -l) )); then
+            echo "❌ Code coverage $COVERAGE% is below 80% threshold"
+            exit 1
+          fi
+          echo "✅ Code coverage $COVERAGE% meets minimum threshold"
 
       - name: Security Audit
         run: npm audit --production
         continue-on-error: true
 
+      - name: Validate PR title
+        run: |
+          TITLE="${{ github.event.pull_request.title }}"
+          if echo "$TITLE" | grep -vE "^(feat|fix|docs|style|refactor|test|chore|ci|perf|revert)(\(.+\))?!?:" > /dev/null; then
+            echo "⚠️ Warning: PR title '$TITLE' doesn't follow conventional commits"
+            echo "Consider using format: type(scope): description"
+          else
+            echo "✅ PR title follows conventional commits"
+          fi
+
       - name: Check commit messages
         run: |
           # Validate commit message format (conventional commits)
-          git log --format=%B ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }} | grep -E "^(feat|fix|docs|style|refactor|test|chore|ci|perf|revert)(\(.+\))?!?:" || echo "Note: Not all commits follow conventional commits format"
+          COMMITS=$(git log --format=%B ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }})
+          if echo "$COMMITS" | grep -vE "^(feat|fix|docs|style|refactor|test|chore|ci|perf|revert)(\(.+\))?!?:" > /dev/null; then
+            echo "⚠️ Warning: Some commits don't follow conventional commits format"
+          else
+            echo "✅ All commits follow conventional commits format"
+          fi
 
       - name: Generate summary
         if: always()
         run: |
-          echo "## PR Quality Gate Results" >> $GITHUB_STEP_SUMMARY
+          echo "## ✅ PR Quality Gate Results" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Status" >> $GITHUB_STEP_SUMMARY
           echo "✅ Linting: Passed" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Formatting: Passed" >> $GITHUB_STEP_SUMMARY
           echo "✅ Tests: Passed" >> $GITHUB_STEP_SUMMARY
           echo "✅ Security: Passed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Coverage" >> $GITHUB_STEP_SUMMARY
+          echo "Coverage report available in job artifacts" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Next Steps:**" >> $GITHUB_STEP_SUMMARY
+          echo "- Code review by maintainer" >> $GITHUB_STEP_SUMMARY
+          echo "- Address any feedback" >> $GITHUB_STEP_SUMMARY
+          echo "- Merge when approved" >> $GITHUB_STEP_SUMMARY
+
+  check-pr-metadata:
+    runs-on: ubuntu-latest
+    name: Validate PR Metadata
+    if: github.event.action == 'opened'
+
+    steps:
+      - name: Check PR description
+        run: |
+          if [ -z "${{ github.event.pull_request.body }}" ]; then
+            echo "⚠️ PR description is empty"
+          else
+            echo "✅ PR has description"
+          fi
+
+      - name: Check for linked issues
+        run: |
+          if echo "${{ github.event.pull_request.body }}" | grep -E "(Closes|Fixes|Resolves) #" > /dev/null; then
+            echo "✅ PR links to issue(s)"
+          else
+            echo "⚠️ PR doesn't link to any issues (consider using 'Closes #123')"
+          fi
 
   comment-on-pr:
     runs-on: ubuntu-latest
@@ -64,5 +123,27 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '## Quality Gate Checks\n\nThis PR will run through the following checks:\n\n- ✅ Linting (ESLint)\n- ✅ Unit Tests (100% coverage required)\n- ✅ Security Audit (npm audit)\n- ✅ Code Coverage Analysis\n\nThank you for contributing!'
+              body: `## 🚀 Quality Gate Checks
+
+This PR will run through the following automated checks:
+
+### ✅ Code Quality
+- **Linting**: ESLint rules validation
+- **Formatting**: Prettier code style
+- **Tests**: Full test suite (80%+ coverage required)
+- **Security**: npm audit for vulnerabilities
+
+### 📋 Best Practices
+- **Commits**: Should follow [conventional commits](https://www.conventionalcommits.org/)
+- **PR Title**: Should follow \`type(scope): description\` format
+- **Linked Issues**: Link related issues using \`Closes #123\`
+
+### 💡 Tips for Success
+- Keep PRs focused and reviewable (<500 lines if possible)
+- Include tests for new functionality
+- Update documentation if needed
+- Respond to review feedback promptly
+
+Thank you for contributing! 🎉`
             })
+
