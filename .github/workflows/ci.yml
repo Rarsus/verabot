@@ -2,14 +2,18 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, develop]
   pull_request:
-    branches: [main]
+    branches: [main, develop]
+  schedule:
+    # Run daily security audit at 2 AM UTC
+    - cron: '0 2 * * *'
 
 jobs:
   lint:
     runs-on: ubuntu-latest
     name: Lint Code
+    timeout-minutes: 10
 
     steps:
       - uses: actions/checkout@v4
@@ -17,7 +21,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version-file: '.nvmrc'
           cache: 'npm'
 
       - name: Install dependencies
@@ -29,6 +33,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     name: Run Tests
+    timeout-minutes: 15
 
     steps:
       - uses: actions/checkout@v4
@@ -36,7 +41,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version-file: '.nvmrc'
           cache: 'npm'
 
       - name: Install dependencies
@@ -49,4 +54,28 @@ jobs:
         uses: codecov/codecov-action@v3
         with:
           files: ./coverage/coverage-final.json
+          flags: unittests
           fail_ci_if_error: false
+
+  security:
+    runs-on: ubuntu-latest
+    name: Security Audit
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run npm audit
+        run: npm audit --production
+
+      - name: Check for vulnerable packages
+        run: npm audit --production --audit-level=moderate
