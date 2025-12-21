@@ -313,7 +313,7 @@ describe('WsClientFactory', () => {
       const closeHandler = mockWs.on.mock.calls.find(c => c[0] === 'close')?.[1];
 
       closeHandler(1006, Buffer.from('Abnormal closure'));
-      
+
       // Verify reconnection happens with 3 second delay
       jest.advanceTimersByTime(3000);
 

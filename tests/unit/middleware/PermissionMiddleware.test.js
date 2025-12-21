@@ -74,7 +74,7 @@ describe('PermissionMiddleware', () => {
 
       try {
         await middleware.handle(mockContext, mockNext);
-      } catch (err) {
+      } catch (_err) {
         // Expected
       }
 
@@ -91,7 +91,7 @@ describe('PermissionMiddleware', () => {
 
       try {
         await middleware.handle(mockContext, mockNext);
-      } catch (err) {
+      } catch (_err) {
         expect(nextCalled).toBe(false);
       }
     });
@@ -190,7 +190,7 @@ describe('PermissionMiddleware', () => {
 
       try {
         await middleware.handle(mockContext, mockNext);
-      } catch (err) {
+      } catch (_err) {
         // Expected
       }
 

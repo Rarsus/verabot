@@ -13,35 +13,35 @@ function applyOptionsToSubcommand(sub, options = []) {
         .setRequired(!!opt.required);
 
     switch (opt.type) {
-      case 'integer':
-        sub.addIntegerOption(o => {
-          let b = base(o);
-          if (opt.autocomplete) b = b.setAutocomplete(true);
-          if (opt.choices?.length) b = b.addChoices(...opt.choices);
-          return b;
-        });
-        break;
-      case 'boolean':
-        sub.addBooleanOption(o => base(o));
-        break;
-      case 'user':
-        sub.addUserOption(o => base(o));
-        break;
-      case 'role':
-        sub.addRoleOption(o => base(o));
-        break;
-      case 'channel':
-        sub.addChannelOption(o => base(o));
-        break;
-      case 'string':
-      default:
-        sub.addStringOption(o => {
-          let b = base(o);
-          if (opt.autocomplete) b = b.setAutocomplete(true);
-          if (opt.choices?.length) b = b.addChoices(...opt.choices);
-          return b;
-        });
-        break;
+    case 'integer':
+      sub.addIntegerOption(o => {
+        let b = base(o);
+        if (opt.autocomplete) b = b.setAutocomplete(true);
+        if (opt.choices?.length) b = b.addChoices(...opt.choices);
+        return b;
+      });
+      break;
+    case 'boolean':
+      sub.addBooleanOption(o => base(o));
+      break;
+    case 'user':
+      sub.addUserOption(o => base(o));
+      break;
+    case 'role':
+      sub.addRoleOption(o => base(o));
+      break;
+    case 'channel':
+      sub.addChannelOption(o => base(o));
+      break;
+    case 'string':
+    default:
+      sub.addStringOption(o => {
+        let b = base(o);
+        if (opt.autocomplete) b = b.setAutocomplete(true);
+        if (opt.choices?.length) b = b.addChoices(...opt.choices);
+        return b;
+      });
+      break;
     }
   }
 }

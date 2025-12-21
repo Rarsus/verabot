@@ -14,7 +14,7 @@ jest.mock('discord.js', () => ({
       setName: jest.fn().mockReturnThis(),
       setDescription: jest.fn().mockReturnThis(),
       addSubcommandGroup: jest.fn().mockReturnThis(),
-      addSubcommand: jest.fn().mockImplementation(function(fn) {
+      addSubcommand: jest.fn().mockImplementation(function (fn) {
         const sub = {
           setName: jest.fn().mockReturnThis(),
           setDescription: jest.fn().mockReturnThis(),
@@ -89,7 +89,7 @@ describe('SlashCommandRegistrar', () => {
         setName: jest.fn().mockReturnThis(),
         setDescription: jest.fn().mockReturnThis(),
         addSubcommandGroup: jest.fn().mockReturnThis(),
-        addSubcommand: jest.fn().mockImplementation(function(fn) {
+        addSubcommand: jest.fn().mockImplementation(function (fn) {
           const sub = {
             setName: jest.fn().mockReturnThis(),
             setDescription: jest.fn().mockReturnThis(),
@@ -149,7 +149,7 @@ describe('SlashCommandRegistrar', () => {
 
     it('should call Discord API with correct endpoint', async () => {
       const { Routes } = require('discord.js');
-      
+
       await registrar.registerCommands();
 
       // Just verify the REST API was called with a body
@@ -300,7 +300,7 @@ describe('SlashCommandRegistrar', () => {
       const mockBuilder = {
         setName: jest.fn().mockReturnThis(),
         setDescription: jest.fn().mockReturnThis(),
-        addSubcommand: jest.fn().mockImplementation(function(fn) {
+        addSubcommand: jest.fn().mockImplementation(function (fn) {
           const sub = {
             setName: jest.fn().mockReturnThis(),
             setDescription: jest.fn().mockReturnThis(),
@@ -343,7 +343,7 @@ describe('SlashCommandRegistrar', () => {
       const mockBuilder = {
         setName: jest.fn().mockReturnThis(),
         setDescription: jest.fn().mockReturnThis(),
-        addSubcommand: jest.fn().mockImplementation(function(fn) {
+        addSubcommand: jest.fn().mockImplementation(function (fn) {
           const sub = {
             setName: jest.fn().mockReturnThis(),
             setDescription: jest.fn().mockReturnThis(),
@@ -455,7 +455,7 @@ describe('SlashCommandRegistrar', () => {
       const mockBuilder = {
         setName: jest.fn().mockReturnThis(),
         setDescription: jest.fn().mockReturnThis(),
-        addSubcommand: jest.fn().mockImplementation(function(fn) {
+        addSubcommand: jest.fn().mockImplementation(function (fn) {
           const sub = {
             setName: jest.fn().mockReturnThis(),
             setDescription: jest.fn().mockReturnThis(),
@@ -511,7 +511,7 @@ describe('SlashCommandRegistrar', () => {
       const mockBuilder = {
         setName: jest.fn().mockReturnThis(),
         setDescription: jest.fn().mockReturnThis(),
-        addSubcommand: jest.fn().mockImplementation(function(fn) {
+        addSubcommand: jest.fn().mockImplementation(function (fn) {
           const sub = {
             setName: jest.fn().mockReturnThis(),
             setDescription: jest.fn().mockReturnThis(),
@@ -570,7 +570,7 @@ describe('SlashCommandRegistrar', () => {
       const mockBuilder = {
         setName: jest.fn().mockReturnThis(),
         setDescription: jest.fn().mockReturnThis(),
-        addSubcommand: jest.fn().mockImplementation(function(fn) {
+        addSubcommand: jest.fn().mockImplementation(function (fn) {
           const sub = {
             setName: jest.fn().mockReturnThis(),
             setDescription: jest.fn().mockReturnThis(),
@@ -623,7 +623,7 @@ describe('SlashCommandRegistrar', () => {
       const mockBuilder = {
         setName: jest.fn().mockReturnThis(),
         setDescription: jest.fn().mockReturnThis(),
-        addSubcommand: jest.fn().mockImplementation(function(fn) {
+        addSubcommand: jest.fn().mockImplementation(function (fn) {
           const sub = {
             setName: jest.fn().mockReturnThis(),
             setDescription: jest.fn().mockReturnThis(),
@@ -675,7 +675,7 @@ describe('SlashCommandRegistrar', () => {
       const mockBuilder = {
         setName: jest.fn().mockReturnThis(),
         setDescription: jest.fn().mockReturnThis(),
-        addSubcommand: jest.fn().mockImplementation(function(fn) {
+        addSubcommand: jest.fn().mockImplementation(function (fn) {
           const sub = {
             setName: jest.fn().mockReturnThis(),
             setDescription: jest.fn().mockReturnThis(),
@@ -734,7 +734,7 @@ describe('SlashCommandRegistrar', () => {
       const mockBuilder = {
         setName: jest.fn().mockReturnThis(),
         setDescription: jest.fn().mockReturnThis(),
-        addSubcommand: jest.fn().mockImplementation(function(fn) {
+        addSubcommand: jest.fn().mockImplementation(function (fn) {
           const sub = {
             setName: jest.fn().mockReturnThis(),
             setDescription: jest.fn().mockReturnThis(),
@@ -787,7 +787,7 @@ describe('SlashCommandRegistrar', () => {
       const mockBuilder = {
         setName: jest.fn().mockReturnThis(),
         setDescription: jest.fn().mockReturnThis(),
-        addSubcommand: jest.fn().mockImplementation(function(fn) {
+        addSubcommand: jest.fn().mockImplementation(function (fn) {
           const sub = {
             setName: jest.fn().mockReturnThis(),
             setDescription: jest.fn().mockReturnThis(),
@@ -840,7 +840,7 @@ describe('SlashCommandRegistrar', () => {
       const mockBuilder = {
         setName: jest.fn().mockReturnThis(),
         setDescription: jest.fn().mockReturnThis(),
-        addSubcommand: jest.fn().mockImplementation(function(fn) {
+        addSubcommand: jest.fn().mockImplementation(function (fn) {
           const sub = {
             setName: jest.fn().mockReturnThis(),
             setDescription: jest.fn().mockReturnThis(),
@@ -891,7 +891,7 @@ describe('SlashCommandRegistrar', () => {
       const mockBuilder = {
         setName: jest.fn().mockReturnThis(),
         setDescription: jest.fn().mockReturnThis(),
-        addSubcommand: jest.fn().mockImplementation(function(fn) {
+        addSubcommand: jest.fn().mockImplementation(function (fn) {
           const sub = {
             setName: jest.fn().mockReturnThis(),
             setDescription: jest.fn().mockReturnThis(),
@@ -942,7 +942,7 @@ describe('SlashCommandRegistrar', () => {
       const mockBuilder = {
         setName: jest.fn().mockReturnThis(),
         setDescription: jest.fn().mockReturnThis(),
-        addSubcommand: jest.fn().mockImplementation(function(fn) {
+        addSubcommand: jest.fn().mockImplementation(function (fn) {
           const sub = {
             setName: jest.fn().mockReturnThis(),
             setDescription: jest.fn().mockReturnThis(),
@@ -995,7 +995,7 @@ describe('SlashCommandRegistrar', () => {
       const mockBuilder = {
         setName: jest.fn().mockReturnThis(),
         setDescription: jest.fn().mockReturnThis(),
-        addSubcommand: jest.fn().mockImplementation(function(fn) {
+        addSubcommand: jest.fn().mockImplementation(function (fn) {
           const sub = {
             setName: jest.fn().mockReturnThis(),
             setDescription: jest.fn().mockReturnThis(),
@@ -1046,7 +1046,7 @@ describe('SlashCommandRegistrar', () => {
       const mockBuilder = {
         setName: jest.fn().mockReturnThis(),
         setDescription: jest.fn().mockReturnThis(),
-        addSubcommand: jest.fn().mockImplementation(function(fn) {
+        addSubcommand: jest.fn().mockImplementation(function (fn) {
           const sub = {
             setName: jest.fn().mockReturnThis(),
             setDescription: jest.fn().mockReturnThis(),
@@ -1122,7 +1122,7 @@ describe('SlashCommandRegistrar', () => {
       const mockBuilder = {
         setName: jest.fn().mockReturnThis(),
         setDescription: jest.fn().mockReturnThis(),
-        addSubcommand: jest.fn().mockImplementation(function(fn) {
+        addSubcommand: jest.fn().mockImplementation(function (fn) {
           const sub = {
             setName: jest.fn().mockReturnThis(),
             setDescription: jest.fn().mockReturnThis(),
@@ -1208,7 +1208,7 @@ describe('SlashCommandRegistrar', () => {
       const mockBuilder = {
         setName: jest.fn().mockReturnThis(),
         setDescription: jest.fn().mockReturnThis(),
-        addSubcommand: jest.fn().mockImplementation(function(fn) {
+        addSubcommand: jest.fn().mockImplementation(function (fn) {
           const sub = {
             setName: jest.fn().mockReturnThis(),
             setDescription: jest.fn().mockReturnThis(),

@@ -106,9 +106,9 @@ describe('EmbedFactory', () => {
       const command = { name: 'deploy' };
       const result = { success: true, data: {} };
 
-      const embed = EmbedFactory.commandResult(command, result, { 
-        elapsedSec: 2.5, 
-        cooldownSec: 10 
+      const embed = EmbedFactory.commandResult(command, result, {
+        elapsedSec: 2.5,
+        cooldownSec: 10
       });
 
       expect(embed.setFooter).toHaveBeenCalledWith({

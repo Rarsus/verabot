@@ -29,8 +29,8 @@ class HelpHandler {
     const page = categoryOrCommand && !isNaN(categoryOrCommand)
       ? Number(categoryOrCommand)
       : pageRaw
-      ? Number(pageRaw)
-      : 1;
+        ? Number(pageRaw)
+        : 1;
 
     const commands = this.helpService.getCommandsByCategory(category);
     const paginated = this.helpService.paginate(commands, page);

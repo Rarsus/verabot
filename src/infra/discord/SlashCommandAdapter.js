@@ -36,24 +36,24 @@ class SlashCommandAdapter {
     for (const opt of meta.options) {
       let val;
       switch (opt.type) {
-        case 'integer':
-          val = interaction.options.getInteger(opt.name);
-          break;
-        case 'boolean':
-          val = interaction.options.getBoolean(opt.name);
-          break;
-        case 'user':
-          val = interaction.options.getUser(opt.name)?.id || null;
-          break;
-        case 'role':
-          val = interaction.options.getRole(opt.name)?.id || null;
-          break;
-        case 'channel':
-          val = interaction.options.getChannel(opt.name)?.id || null;
-          break;
-        case 'string':
-        default:
-          val = interaction.options.getString(opt.name);
+      case 'integer':
+        val = interaction.options.getInteger(opt.name);
+        break;
+      case 'boolean':
+        val = interaction.options.getBoolean(opt.name);
+        break;
+      case 'user':
+        val = interaction.options.getUser(opt.name)?.id || null;
+        break;
+      case 'role':
+        val = interaction.options.getRole(opt.name)?.id || null;
+        break;
+      case 'channel':
+        val = interaction.options.getChannel(opt.name)?.id || null;
+        break;
+      case 'string':
+      default:
+        val = interaction.options.getString(opt.name);
       }
       if (val !== null && val !== undefined) args.push(String(val));
     }

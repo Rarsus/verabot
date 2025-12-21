@@ -19,10 +19,10 @@ class EmbedFactory {
           : (result.error?.message || 'Failed.')
       );
 
-    if (elapsedSec != null || cooldownSec != null) {
+    if (elapsedSec !== undefined || cooldownSec !== undefined) {
       const footerParts = [];
-      if (elapsedSec != null) footerParts.push(`took ${elapsedSec.toFixed(2)}s`);
-      if (cooldownSec != null) footerParts.push(`cooldown ${cooldownSec}s`);
+      if (elapsedSec !== undefined) footerParts.push(`took ${elapsedSec.toFixed(2)}s`);
+      if (cooldownSec !== undefined) footerParts.push(`cooldown ${cooldownSec}s`);
       if (footerParts.length) embed.setFooter({ text: footerParts.join(' • ') });
     }
 
@@ -106,11 +106,11 @@ class EmbedFactory {
       .setDescription(
         entries.length
           ? entries
-              .map(
-                e =>
-                  `• [${e.timestamp}] ${e.command} by ${e.user} (${e.success ? '✅' : '❌'})`
-              )
-              .join('\n')
+            .map(
+              e =>
+                `• [${e.timestamp}] ${e.command} by ${e.user} (${e.success ? '✅' : '❌'})`
+            )
+            .join('\n')
           : 'No audit entries.'
       );
   }

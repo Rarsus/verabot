@@ -7,7 +7,7 @@ describe('Logger', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    
+
     const pino = require('pino');
     pino.mockReturnValue({
       info: jest.fn(),

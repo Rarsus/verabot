@@ -195,7 +195,7 @@ describe('DiscordClientFactory', () => {
       createDiscordClient(mockConfig, mockLogger);
 
       const readyHandler = mockClient.once.mock.calls[0][1];
-      
+
       readyHandler();
       readyHandler();
 
@@ -244,7 +244,7 @@ describe('DiscordClientFactory', () => {
       createDiscordClient(mockConfig, mockLogger);
 
       const readyHandler = mockClient.once.mock.calls[0][1];
-      
+
       expect(() => readyHandler()).toThrow();
     });
 

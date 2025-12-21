@@ -14,7 +14,7 @@ describe('HeavyWorkHandler', () => {
   });
 
   it('should enqueue heavy work job', async () => {
-    const command = { 
+    const command = {
       args: ['analyze'],
       userId: 'user123',
       source: 'discord'
@@ -36,7 +36,7 @@ describe('HeavyWorkHandler', () => {
   });
 
   it('should return message and job ID', async () => {
-    const command = { 
+    const command = {
       args: ['process'],
       userId: 'user456',
       source: 'api'
@@ -49,7 +49,7 @@ describe('HeavyWorkHandler', () => {
   });
 
   it('should set up job options with retries', async () => {
-    const command = { 
+    const command = {
       args: ['work'],
       userId: 'user789',
       source: 'cli'
@@ -70,7 +70,7 @@ describe('HeavyWorkHandler', () => {
   it('should propagate enqueue errors', async () => {
     mockJobQueue.enqueue.mockRejectedValue(new Error('Queue error'));
 
-    const command = { 
+    const command = {
       args: ['work'],
       userId: 'user123',
       source: 'discord'
@@ -80,7 +80,7 @@ describe('HeavyWorkHandler', () => {
   });
 
   it('should handle multiple args in payload', async () => {
-    const command = { 
+    const command = {
       args: ['analyze', 'param1', 'param2'],
       userId: 'user123',
       source: 'discord'
@@ -98,7 +98,7 @@ describe('HeavyWorkHandler', () => {
   });
 
   it('should include remove on complete option', async () => {
-    const command = { 
+    const command = {
       args: ['work'],
       userId: 'user123',
       source: 'discord'
@@ -114,7 +114,7 @@ describe('HeavyWorkHandler', () => {
   });
 
   it('should return proper result structure', async () => {
-    const command = { 
+    const command = {
       args: ['work'],
       userId: 'user123',
       source: 'discord'

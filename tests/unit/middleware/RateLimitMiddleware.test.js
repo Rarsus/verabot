@@ -88,7 +88,7 @@ describe('RateLimitMiddleware', () => {
 
       try {
         await middleware.handle(mockContext, mockNext);
-      } catch (err) {
+      } catch (_err) {
         // Expected
       }
 
@@ -106,7 +106,7 @@ describe('RateLimitMiddleware', () => {
 
       try {
         await middleware.handle(mockContext, mockNext);
-      } catch (err) {
+      } catch (_err) {
         expect(handlerExecuted).toBe(false);
       }
     });
@@ -231,7 +231,7 @@ describe('RateLimitMiddleware', () => {
 
       try {
         await middleware.handle(mockContext, slowHandler);
-      } catch (err) {
+      } catch (_err) {
         // Expected
       }
 
