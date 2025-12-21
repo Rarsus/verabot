@@ -13,6 +13,7 @@ const pino = require('pino');
  * logger.info('Application started');
  * logger.error({ err }, 'Error occurred');
  */
+
 function createLogger(config) {
   const isDev = config.NODE_ENV === 'development';
   return pino({

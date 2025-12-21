@@ -40,7 +40,7 @@ module.exports = [
       'no-console': 'off',
       semi: ['error', 'always'],
       quotes: ['error', 'single', { avoidEscape: true }],
-      indent: ['error', 2],
+      indent: 'off',
       'no-trailing-spaces': 'error',
       'eol-last': ['error', 'always'],
       'comma-dangle': ['error', 'always-multiline'],

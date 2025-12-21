@@ -27,6 +27,7 @@ class EmbedFactory {
    * @param {number} [options.cooldownSec] - Cooldown time in seconds
    * @returns {EmbedBuilder} Result embed
    */
+
   static commandResult(command, result, { cooldownSec, elapsedSec } = {}) {
     const embed = this.base()
       .setTitle(`✅ ${command.name}`)
