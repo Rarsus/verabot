@@ -1,6 +1,17 @@
 const http = require('http');
 const { healthCheck } = require('../../infra/health/HealthCheck');
 
+/**
+ * Create HTTP server for health checks and Prometheus metrics
+ * Exposes two endpoints: /health for system status and /metrics for Prometheus metrics
+ * @param {Object} container - Dependency injection container with config, logger, metrics
+ * @returns {http.Server} HTTP server instance listening on configured port
+ * @example
+ * const server = createHealthMetricsServer(container);
+ * // GET /health -> { status: 'ok', db: 'up', ws: 'up', discord: 'up' }
+ * // GET /metrics -> Prometheus metrics in text format
+ * // GET /unknown -> 404 Not found
+ */
 function createHealthMetricsServer(container) {
   const port = Number(container.config.HTTP_PORT || 3000);
   const metricsClient = container.metrics.client;
