@@ -1,12 +1,35 @@
 const Command = require('../../core/commands/Command');
 
+/**
+ * Adapter for handling WebSocket command interactions
+ * Converts incoming WebSocket messages to Command objects and executes them through the bus
+ * @class WsAdapter
+ * @example
+ * const adapter = new WsAdapter(wsHolder, commandBus, logger);
+ * adapter.registerListeners();
+ */
 class WsAdapter {
+  /**
+   * Create a new WsAdapter instance
+   * @param {Object} wsHolder - WebSocket holder with instance property
+   * @param {CommandBus} commandBus - Command bus for execution
+   * @param {Object} logger - Logger instance
+   */
   constructor(wsHolder, commandBus, logger) {
+    /** @type {Object} */
     this.wsHolder = wsHolder;
+    /** @type {CommandBus} */
     this.bus = commandBus;
+    /** @type {Object} */
     this.logger = logger;
   }
 
+  /**
+   * Register WebSocket message listeners
+   * Attaches handlers for incoming command messages and sets up response/error handling
+   * Waits for WebSocket connection if not immediately available
+   * @returns {void}
+   */
   registerListeners() {
     const attach = () => {
       const ws = this.wsHolder.instance;
