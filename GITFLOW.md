@@ -20,6 +20,7 @@ This document describes the branching strategy and workflow for the VeraBot proj
 ### Main Branches
 
 #### `main`
+
 - **Purpose**: Production-ready code
 - **Stability**: Most stable, always deployable
 - **Protection**: Requires PR reviews and status checks
@@ -28,6 +29,7 @@ This document describes the branching strategy and workflow for the VeraBot proj
 - **Tagged**: All releases tagged with semantic version (v1.0.0)
 
 #### `develop`
+
 - **Purpose**: Integration branch for next release
 - **Stability**: Stable, passed all tests
 - **Protection**: Requires status checks (tests/lint)
@@ -38,6 +40,7 @@ This document describes the branching strategy and workflow for the VeraBot proj
 ### Supporting Branches
 
 #### `feature/*`
+
 - **Purpose**: New features and enhancements
 - **Naming**: `feature/feature-name` (e.g., `feature/webhook-proxy`)
 - **Created From**: `develop`
@@ -46,11 +49,13 @@ This document describes the branching strategy and workflow for the VeraBot proj
 - **Lifetime**: Short-lived (days to weeks)
 
 **Example:**
+
 ```bash
 git checkout -b feature/add-slash-commands develop
 ```
 
 #### `bugfix/*`
+
 - **Purpose**: Bug fixes for next release
 - **Naming**: `bugfix/bug-description` (e.g., `bugfix/rate-limit-edge-case`)
 - **Created From**: `develop`
@@ -59,11 +64,13 @@ git checkout -b feature/add-slash-commands develop
 - **Lifetime**: Short-lived (days)
 
 **Example:**
+
 ```bash
 git checkout -b bugfix/fix-permission-check develop
 ```
 
 #### `release/*`
+
 - **Purpose**: Release preparation and versioning
 - **Naming**: `release/v1.2.0` (semantic version)
 - **Created From**: `develop`
@@ -73,6 +80,7 @@ git checkout -b bugfix/fix-permission-check develop
 - **Allowed Changes**: Version bumps, changelog, bug fixes only
 
 **Example:**
+
 ```bash
 git checkout -b release/v1.2.0 develop
 # Update version in package.json
@@ -81,6 +89,7 @@ git checkout -b release/v1.2.0 develop
 ```
 
 #### `hotfix/*`
+
 - **Purpose**: Critical production fixes
 - **Naming**: `hotfix/critical-bug-name` (e.g., `hotfix/security-vulnerability`)
 - **Created From**: `main`
@@ -90,6 +99,7 @@ git checkout -b release/v1.2.0 develop
 - **Bypass**: Can bypass normal review process if critical
 
 **Example:**
+
 ```bash
 git checkout -b hotfix/critical-security-fix main
 # Fix the issue
@@ -102,6 +112,7 @@ git checkout -b hotfix/critical-security-fix main
 ## 📛 Branch Naming Conventions
 
 ### Format
+
 ```
 <type>/<scope>-<description>
 
@@ -113,6 +124,7 @@ description: kebab-case, descriptive, max 50 chars
 ### Examples
 
 ✅ **Good**
+
 ```
 feature/webhook-proxy
 feature/slash-commands
@@ -123,6 +135,7 @@ release/v1.2.0
 ```
 
 ❌ **Bad**
+
 ```
 feature/my-changes
 bugfix/fix1
@@ -183,7 +196,7 @@ git push -u origin bugfix/bug-name
    - Update package.json version
    - Update CHANGELOG.md
    - Add release notes
-   
+
    git commit -m "chore(release): v1.2.0"
 
 3. Create PR to main
@@ -281,6 +294,7 @@ The scope is optional but highly recommended. Common scopes:
 ### Footer
 
 Use for:
+
 - Breaking changes: `BREAKING CHANGE: description`
 - Closing issues: `Closes #123`, `Fixes #456`
 
@@ -365,12 +379,14 @@ BREAKING CHANGE: Intents API changed, update client initialization
 ## 🔀 Merging Strategy
 
 ### Feature → Develop
+
 - **Strategy**: Squash and Merge
 - **Reason**: Keeps develop history clean
 - **Result**: One commit per feature
 - **Delete**: Yes (automatic)
 
 ### Release → Main
+
 - **Strategy**: Create a Merge Commit
 - **Reason**: Preserves release history
 - **Result**: Merge commit with all changes
@@ -378,6 +394,7 @@ BREAKING CHANGE: Intents API changed, update client initialization
 - **Tag**: Automatic with version tag
 
 ### Hotfix → Main
+
 - **Strategy**: Create a Merge Commit
 - **Reason**: Critical fix history preservation
 - **Result**: Merge commit
@@ -385,11 +402,13 @@ BREAKING CHANGE: Intents API changed, update client initialization
 - **Tag**: Automatic with patch version tag
 
 ### Any Branch → Develop
+
 - **Strategy**: Squash and Merge (default)
 - **Result**: Clean history
 - **Delete**: Yes (automatic)
 
 ### Merge Back to Develop
+
 - After merging release or hotfix to main
 - **Strategy**: Create a Merge Commit (preserves history)
 - **Reason**: Documents release point in develop
@@ -495,6 +514,7 @@ Format: `MAJOR.MINOR.PATCH`
 ## 📊 Branch Status Commands
 
 ### View All Branches
+
 ```bash
 # Local branches
 git branch
@@ -507,6 +527,7 @@ git branch -a
 ```
 
 ### View Branch Status
+
 ```bash
 # What changes are in develop but not in main
 git log main..develop
@@ -519,6 +540,7 @@ git diff main develop
 ```
 
 ### Cleanup Old Branches
+
 ```bash
 # Delete local branches
 git branch -d feature/old-feature
@@ -537,6 +559,7 @@ git fetch -p
 ### Issue: Feature branch too far behind develop
 
 **Solution:**
+
 ```bash
 git fetch origin
 git rebase origin/develop
@@ -547,6 +570,7 @@ git merge origin/develop
 ### Issue: Accidental commit to wrong branch
 
 **Solution:**
+
 ```bash
 git log  # Find commit hash
 git reset --soft HEAD~1  # Undo last commit, keep changes
@@ -559,6 +583,7 @@ git commit -m "feat: message"
 ### Issue: Need to cherry-pick a commit
 
 **Solution:**
+
 ```bash
 git checkout target-branch
 git cherry-pick <commit-hash>
@@ -569,6 +594,7 @@ git cherry-pick --continue
 ### Issue: Merge conflict
 
 **Solution:**
+
 ```bash
 git status  # See conflicting files
 # Edit files and resolve conflicts
@@ -583,6 +609,7 @@ git commit -m "merge: resolve conflicts from feature/branch"
 The following are enforced on `main` and `develop`:
 
 ### Main Branch
+
 - ✅ Require pull request reviews (1 minimum)
 - ✅ Require status checks to pass:
   - ESLint
@@ -595,6 +622,7 @@ The following are enforced on `main` and `develop`:
 - ✅ Allow deletions: No
 
 ### Develop Branch
+
 - ✅ Require status checks to pass:
   - ESLint
   - Tests

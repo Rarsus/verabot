@@ -52,38 +52,45 @@ Enhancement suggestions are tracked as GitHub issues. When creating an enhanceme
 1. **Fork the repository** on GitHub
 
 2. **Clone your fork locally:**
+
    ```bash
    git clone https://github.com/YOUR_USERNAME/verabot.git
    cd verabot
    ```
 
 3. **Add upstream remote:**
+
    ```bash
    git remote add upstream https://github.com/Rarsus/verabot.git
    ```
 
 4. **Install dependencies:**
+
    ```bash
    npm install
    ```
 
 5. **Create a feature branch:**
+
    ```bash
    git checkout -b feature/your-feature-name develop
    ```
 
 6. **Make your changes** and commit them:
+
    ```bash
    git commit -m "feat(scope): your message"
    ```
 
 7. **Keep your branch updated:**
+
    ```bash
    git fetch upstream
    git rebase upstream/develop
    ```
 
 8. **Push to your fork:**
+
    ```bash
    git push origin feature/your-feature-name
    ```
@@ -194,6 +201,7 @@ const { DatabaseService } = require('./services');
 Follow [Conventional Commits](https://www.conventionalcommits.org/) specification:
 
 ### Format
+
 ```
 type(scope): subject
 

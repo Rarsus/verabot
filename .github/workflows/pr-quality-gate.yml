@@ -123,27 +123,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `## 🚀 Quality Gate Checks
-
-This PR will run through the following automated checks:
-
-### ✅ Code Quality
-- **Linting**: ESLint rules validation
-- **Formatting**: Prettier code style
-- **Tests**: Full test suite (80%+ coverage required)
-- **Security**: npm audit for vulnerabilities
-
-### 📋 Best Practices
-- **Commits**: Should follow [conventional commits](https://www.conventionalcommits.org/)
-- **PR Title**: Should follow \`type(scope): description\` format
-- **Linked Issues**: Link related issues using \`Closes #123\`
-
-### 💡 Tips for Success
-- Keep PRs focused and reviewable (<500 lines if possible)
-- Include tests for new functionality
-- Update documentation if needed
-- Respond to review feedback promptly
-
-Thank you for contributing! 🎉`
+              body: '## 🚀 Quality Gate Checks\n\nThis PR will run through the following automated checks:\n\n### ✅ Code Quality\n- **Linting**: ESLint rules validation\n- **Formatting**: Prettier code style\n- **Tests**: Full test suite (80%+ coverage required)\n- **Security**: npm audit for vulnerabilities\n\n### 📋 Best Practices\n- **Commits**: Should follow [conventional commits](https://www.conventionalcommits.org/)\n- **PR Title**: Should follow `type(scope): description` format\n- **Linked Issues**: Link related issues using `Closes #123`\n\n### 💡 Tips for Success\n- Keep PRs focused and reviewable (<500 lines if possible)\n- Include tests for new functionality\n- Update documentation if needed\n- Respond to review feedback promptly\n\nThank you for contributing! 🎉'
             })
-

@@ -1,10 +1,9 @@
 ---
 name: 🐛 Bug Report
 about: Report a bug to help us improve
-title: "[BUG] "
+title: '[BUG] '
 labels: 'bug'
 assignees: ''
-
 ---
 
 ## 🐛 Bug Description
@@ -14,6 +13,7 @@ A clear and concise description of what the bug is.
 ## 📍 Location
 
 Where in the application does this bug occur?
+
 - Command: (e.g., `/help`, `/ping`)
 - Middleware: (e.g., permission, rate-limit)
 - Service: (e.g., Discord, Database)
@@ -66,6 +66,7 @@ If applicable, add screenshots or recordings to help explain the problem.
 ## 📝 Additional Context
 
 Add any other context about the problem here:
+
 - Does it happen consistently?
 - Under what conditions?
 - Recent changes that might be related?

@@ -30,7 +30,7 @@ This document describes the recommended branch protection rules and GitHub setti
   - Require review from code owners: **✅**
   - Restrict who can dismiss pull request reviews: **✅**
   - Dismiss stale pull request approvals when new commits are pushed: **✅**
-  - Allow specified actors to bypass required pull requests**: **❌** (no exceptions)
+  - Allow specified actors to bypass required pull requests**: **❌\*\* (no exceptions)
 
 ### Require Commits to be Signed
 
@@ -44,6 +44,7 @@ This document describes the recommended branch protection rules and GitHub setti
 - ✅ **Require branches to be up to date before merging**
 
 **Required status checks:**
+
 - `lint` - Linting must pass
 - `test` - Tests must pass with coverage
 - `security` - Security audit
@@ -104,6 +105,7 @@ This document describes the recommended branch protection rules and GitHub setti
 - ✅ **Require branches to be up to date before merging**
 
 **Required status checks:**
+
 - `lint` - Linting must pass
 - `test` - Tests must pass
 - `security` - Security audit (non-blocking)
@@ -150,6 +152,7 @@ File: `.github/CODEOWNERS`
 ```
 
 **Effects:**
+
 - Code owners are automatically requested as reviewers
 - Cannot be dismissed in PRs (when enabled in branch protection)
 - Can override individual PR reviews if needed
@@ -180,6 +183,7 @@ The following GitHub Actions must pass:
 ### Automatic PR Comments
 
 PRs receive automated comments with:
+
 - Quality gate status
 - Contributing guidelines
 - Expected checks
@@ -187,6 +191,7 @@ PRs receive automated comments with:
 ### Automatic Branch Deletion
 
 After merge, feature branches are automatically deleted:
+
 - Keeps repository organized
 - Prevents stale branch accumulation
 
@@ -236,6 +241,7 @@ Consider enabling branch naming restrictions to enforce the convention:
 **Pattern**: `^(main|develop|feature|bugfix|hotfix|release)\/.*`
 
 This ensures all branches follow the naming convention:
+
 - `feature/*` - New features
 - `bugfix/*` - Bug fixes
 - `hotfix/*` - Production fixes
@@ -246,11 +252,13 @@ This ensures all branches follow the naming convention:
 ## 🔄 Merge Strategies
 
 ### Main Branch
+
 - **Strategy**: Create a merge commit
 - **Reason**: Preserves full history for releases
 - **Result**: One merge commit per feature
 
 ### Develop Branch
+
 - **Strategy**: Squash and merge
 - **Reason**: Keeps history clean
 - **Result**: One commit per feature
@@ -258,6 +266,7 @@ This ensures all branches follow the naming convention:
 ### Automatic Commits
 
 If enabling automatic merge:
+
 - Don't use auto-merge on main
 - Can enable auto-merge on develop with restrictions
 
@@ -280,6 +289,7 @@ All of these must pass:
 ### Optional Status Checks
 
 These are informational:
+
 - Code coverage
 - Documentation
 - Performance benchmarks
