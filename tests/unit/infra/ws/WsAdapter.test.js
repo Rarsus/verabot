@@ -322,7 +322,7 @@ describe('WsAdapter', () => {
 
         expect(mockLogger.error).toHaveBeenCalledWith(
           { err: expect.any(Error) },
-          'WS command error'
+          'WS command error',
         );
       });
     });

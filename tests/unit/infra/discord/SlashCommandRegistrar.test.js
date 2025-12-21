@@ -68,7 +68,7 @@ describe('SlashCommandRegistrar', () => {
             ],
           ],
           ['core', [{ name: 'help', description: 'Show help', options: [] }]],
-        ])
+        ]),
       ),
     };
 
@@ -168,7 +168,7 @@ describe('SlashCommandRegistrar', () => {
       await registrar.registerCommands();
 
       expect(mockLogger.info).toHaveBeenCalledWith(
-        expect.stringContaining('Registering global slash commands')
+        expect.stringContaining('Registering global slash commands'),
       );
     });
 
@@ -176,7 +176,7 @@ describe('SlashCommandRegistrar', () => {
       await registrar.registerCommands();
 
       expect(mockLogger.info).toHaveBeenCalledWith(
-        expect.stringContaining('Slash commands registered')
+        expect.stringContaining('Slash commands registered'),
       );
     });
 
@@ -245,7 +245,7 @@ describe('SlashCommandRegistrar', () => {
               { name: 'cmd' }, // No description
             ],
           ],
-        ])
+        ]),
       );
 
       const mockBuilder = {
@@ -305,7 +305,7 @@ describe('SlashCommandRegistrar', () => {
               },
             ],
           ],
-        ])
+        ]),
       );
 
       const mockBuilder = {
@@ -353,7 +353,7 @@ describe('SlashCommandRegistrar', () => {
               },
             ],
           ],
-        ])
+        ]),
       );
 
       const mockBuilder = {
@@ -394,7 +394,7 @@ describe('SlashCommandRegistrar', () => {
           ['core', [{ name: 'help', description: 'Help', options: [] }]],
           ['messaging', [{ name: 'send', description: 'Send message', options: [] }]],
           ['operations', [{ name: 'status', description: 'Status', options: [] }]],
-        ])
+        ]),
       );
 
       const mockBuilder = {
@@ -417,7 +417,7 @@ describe('SlashCommandRegistrar', () => {
         new Map([
           ['admin', [{ name: 'ban', description: 'Ban', options: [] }]],
           ['core', [{ name: 'help', description: 'Help', options: [] }]],
-        ])
+        ]),
       );
 
       const mockBuilder = {
@@ -472,7 +472,7 @@ describe('SlashCommandRegistrar', () => {
               },
             ],
           ],
-        ])
+        ]),
       );
 
       const mockBuilder = {
@@ -524,7 +524,7 @@ describe('SlashCommandRegistrar', () => {
               },
             ],
           ],
-        ])
+        ]),
       );
 
       const mockOptionBuilder = {
@@ -588,7 +588,7 @@ describe('SlashCommandRegistrar', () => {
               },
             ],
           ],
-        ])
+        ]),
       );
 
       const mockOptionBuilder = {
@@ -645,7 +645,7 @@ describe('SlashCommandRegistrar', () => {
               },
             ],
           ],
-        ])
+        ]),
       );
 
       const mockOptionBuilder = {
@@ -699,7 +699,7 @@ describe('SlashCommandRegistrar', () => {
               },
             ],
           ],
-        ])
+        ]),
       );
 
       const mockOptionBuilder = {
@@ -763,7 +763,7 @@ describe('SlashCommandRegistrar', () => {
               },
             ],
           ],
-        ])
+        ]),
       );
 
       const mockOptionBuilder = {
@@ -820,7 +820,7 @@ describe('SlashCommandRegistrar', () => {
               },
             ],
           ],
-        ])
+        ]),
       );
 
       const mockOptionBuilder = {
@@ -876,7 +876,7 @@ describe('SlashCommandRegistrar', () => {
               },
             ],
           ],
-        ])
+        ]),
       );
 
       const mockOptionBuilder = {
@@ -930,7 +930,7 @@ describe('SlashCommandRegistrar', () => {
               },
             ],
           ],
-        ])
+        ]),
       );
 
       const mockOptionBuilder = {
@@ -984,7 +984,7 @@ describe('SlashCommandRegistrar', () => {
               },
             ],
           ],
-        ])
+        ]),
       );
 
       const mockOptionBuilder = {
@@ -1042,7 +1042,7 @@ describe('SlashCommandRegistrar', () => {
               },
             ],
           ],
-        ])
+        ]),
       );
 
       const mockOptionBuilder = {
@@ -1098,7 +1098,7 @@ describe('SlashCommandRegistrar', () => {
               },
             ],
           ],
-        ])
+        ]),
       );
 
       const mockOptionBuilder = {
@@ -1152,7 +1152,7 @@ describe('SlashCommandRegistrar', () => {
               },
             ],
           ],
-        ])
+        ]),
       );
 
       const mockBuilder = {
@@ -1190,7 +1190,7 @@ describe('SlashCommandRegistrar', () => {
               },
             ],
           ],
-        ])
+        ]),
       );
 
       const mockBuilder = {
@@ -1273,7 +1273,7 @@ describe('SlashCommandRegistrar', () => {
               },
             ],
           ],
-        ])
+        ]),
       );
 
       const mockOptionBuilder = {

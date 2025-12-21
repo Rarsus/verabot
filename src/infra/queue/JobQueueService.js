@@ -62,7 +62,7 @@ class JobQueueService {
 
         return { ok: true };
       },
-      { connection: redisConnection }
+      { connection: redisConnection },
     );
 
     this.worker.on('completed', (job) => {

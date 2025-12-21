@@ -30,7 +30,7 @@ describe('HeavyWorkHandler', () => {
         source: 'discord',
         args: ['analyze'],
       }),
-      expect.any(Object)
+      expect.any(Object),
     );
     expect(result.data.jobId).toBe('job123');
   });
@@ -63,7 +63,7 @@ describe('HeavyWorkHandler', () => {
       expect.objectContaining({
         attempts: 5,
         backoff: expect.objectContaining({ type: 'exponential', delay: 2000 }),
-      })
+      }),
     );
   });
 
@@ -93,7 +93,7 @@ describe('HeavyWorkHandler', () => {
       expect.objectContaining({
         args: ['analyze', 'param1', 'param2'],
       }),
-      expect.any(Object)
+      expect.any(Object),
     );
   });
 
@@ -109,7 +109,7 @@ describe('HeavyWorkHandler', () => {
     expect(mockJobQueue.enqueue).toHaveBeenCalledWith(
       expect.any(String),
       expect.any(Object),
-      expect.objectContaining({ removeOnComplete: true })
+      expect.objectContaining({ removeOnComplete: true }),
     );
   });
 

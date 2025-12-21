@@ -33,7 +33,7 @@ class Scheduler {
       {
         repeat: { cron: '* * * * *' },
         removeOnComplete: true,
-      }
+      },
     );
   }
 }

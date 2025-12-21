@@ -44,7 +44,7 @@ describe('Scheduler', () => {
       expect(mockQueue.add).toHaveBeenCalledWith(
         'cron:heartbeat',
         expect.objectContaining({ timestamp: expect.any(Number) }),
-        expect.objectContaining({ repeat: { cron: '* * * * *' } })
+        expect.objectContaining({ repeat: { cron: '* * * * *' } }),
       );
     });
 
@@ -55,7 +55,7 @@ describe('Scheduler', () => {
         expect.objectContaining({
           repeat: { cron: '* * * * *' },
           removeOnComplete: true,
-        })
+        }),
       );
     });
 

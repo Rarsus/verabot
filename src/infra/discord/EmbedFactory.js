@@ -31,7 +31,7 @@ class EmbedFactory {
     const embed = this.base()
       .setTitle(`✅ ${command.name}`)
       .setDescription(
-        result.success ? result.data?.message || 'Success.' : result.error?.message || 'Failed.'
+        result.success ? result.data?.message || 'Success.' : result.error?.message || 'Failed.',
       );
 
     if (elapsedSec !== undefined || cooldownSec !== undefined) {
@@ -75,7 +75,7 @@ class EmbedFactory {
       .setDescription(meta.description)
       .addFields(
         { name: 'Category', value: meta.category, inline: true },
-        { name: 'Usage', value: `\`${meta.usage}\``, inline: true }
+        { name: 'Usage', value: `\`${meta.usage}\``, inline: true },
       )
       .addFields({
         name: 'Examples',
@@ -109,7 +109,7 @@ class EmbedFactory {
         name: c.name,
         value: c.description,
         inline: false,
-      }))
+      })),
     );
   }
 
@@ -125,7 +125,7 @@ class EmbedFactory {
       .setDescription(
         suggestions.length
           ? suggestions.map((s) => `• \`${s}\``).join('\n')
-          : 'No suggestions found.'
+          : 'No suggestions found.',
       );
   }
 
@@ -153,7 +153,7 @@ class EmbedFactory {
         .setCustomId(`help:${catKey}:${page + 1}`)
         .setLabel('Next')
         .setStyle(ButtonStyle.Secondary)
-        .setDisabled(nextDisabled)
+        .setDisabled(nextDisabled),
     );
   }
 
@@ -174,10 +174,10 @@ class EmbedFactory {
         entries.length
           ? entries
               .map(
-                (e) => `• [${e.timestamp}] ${e.command} by ${e.user} (${e.success ? '✅' : '❌'})`
+                (e) => `• [${e.timestamp}] ${e.command} by ${e.user} (${e.success ? '✅' : '❌'})`,
               )
               .join('\n')
-          : 'No audit entries.'
+          : 'No audit entries.',
       );
   }
 }

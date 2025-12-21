@@ -32,7 +32,7 @@ function createCommandRepository(db) {
     async addAllowed(command, addedBy) {
       conn
         .prepare(
-          'INSERT OR IGNORE INTO allowed_commands (command, added_by, added_at) VALUES (?, ?, datetime("now"))'
+          'INSERT OR IGNORE INTO allowed_commands (command, added_by, added_at) VALUES (?, ?, datetime("now"))',
         )
         .run(command, addedBy);
     },
@@ -164,7 +164,7 @@ function createAuditRepository(db) {
     async log(command, result) {
       conn
         .prepare(
-          'INSERT INTO audit_log (source, command, user, channel, timestamp, args, success) VALUES (?, ?, ?, ?, datetime("now"), ?, ?)'
+          'INSERT INTO audit_log (source, command, user, channel, timestamp, args, success) VALUES (?, ?, ?, ?, datetime("now"), ?, ?)',
         )
         .run(
           command.source,
@@ -172,7 +172,7 @@ function createAuditRepository(db) {
           command.userId || null,
           command.channelId || null,
           JSON.stringify(command.args || []),
-          result.success ? 1 : 0
+          result.success ? 1 : 0,
         );
     },
   };
@@ -205,7 +205,7 @@ function createRateLimitRepository(db) {
     async setLastUsed(command, timestamp) {
       conn
         .prepare(
-          'INSERT INTO rate_limits (command, last_used) VALUES (?, ?) ON CONFLICT(command) DO UPDATE SET last_used = excluded.last_used'
+          'INSERT INTO rate_limits (command, last_used) VALUES (?, ?) ON CONFLICT(command) DO UPDATE SET last_used = excluded.last_used',
         )
         .run(command, timestamp);
     },

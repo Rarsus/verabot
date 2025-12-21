@@ -151,7 +151,7 @@ describe('AuditMiddleware', () => {
       mockNext.mockResolvedValue({ success: true });
 
       await expect(middleware.handle(mockContext, mockNext)).rejects.toThrow(
-        'Audit system failure'
+        'Audit system failure',
       );
     });
 

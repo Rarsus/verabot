@@ -95,7 +95,7 @@ class SlashCommandRegistrar {
 
       for (const cmd of commands) {
         builder.addSubcommand((sub) =>
-          sub.setName(cmd.name).setDescription(cmd.description || 'No description')
+          sub.setName(cmd.name).setDescription(cmd.description || 'No description'),
         );
         const subDef = builder.options.at(-1);
         applyOptionsToSubcommand(subDef, cmd.options);

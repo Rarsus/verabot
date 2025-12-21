@@ -67,7 +67,7 @@ describe('DiscordClientFactory', () => {
             GatewayIntentBits.GuildMessages,
             GatewayIntentBits.MessageContent,
           ]),
-        })
+        }),
       );
     });
 
@@ -98,7 +98,7 @@ describe('DiscordClientFactory', () => {
       expect(Client).toHaveBeenCalledWith(
         expect.objectContaining({
           partials: expect.arrayContaining([Partials.Channel]),
-        })
+        }),
       );
     });
 
@@ -116,7 +116,7 @@ describe('DiscordClientFactory', () => {
 
       expect(mockLogger.info).toHaveBeenCalledWith(
         { user: 'TestBot#1234' },
-        'Discord client ready'
+        'Discord client ready',
       );
     });
 
@@ -129,7 +129,7 @@ describe('DiscordClientFactory', () => {
 
       expect(mockLogger.info).toHaveBeenCalledWith(
         expect.objectContaining({ user: 'MyBot#5678' }),
-        'Discord client ready'
+        'Discord client ready',
       );
     });
   });
@@ -257,7 +257,7 @@ describe('DiscordClientFactory', () => {
 
       expect(mockLogger.info).toHaveBeenCalledWith(
         expect.objectContaining({ user: null }),
-        expect.any(String)
+        expect.any(String),
       );
     });
   });

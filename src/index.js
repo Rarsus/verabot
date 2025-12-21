@@ -31,7 +31,7 @@ async function main() {
     bus,
     registry,
     container.logger,
-    container.services.helpService
+    container.services.helpService,
   );
   slashAdapter.registerListeners();
 

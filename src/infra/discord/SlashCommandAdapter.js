@@ -119,7 +119,7 @@ class SlashCommandAdapter {
           result.data.category,
           result.data.page,
           result.data.pages,
-          result.data.items
+          result.data.items,
         );
         components = [EmbedFactory.helpPaginationRow(result.data.category || null, result.data)];
       } else if (sub === 'audit') {
@@ -194,7 +194,7 @@ class SlashCommandAdapter {
       category,
       paginated.page,
       paginated.pages,
-      paginated.items
+      paginated.items,
     );
     const row = EmbedFactory.helpPaginationRow(category, paginated);
 

@@ -43,7 +43,7 @@ describe('Repositories Factory', () => {
         const result = await repo().isAllowed('test');
         expect(result).toBe(true);
         expect(mockPrepare).toHaveBeenCalledWith(
-          'SELECT 1 FROM allowed_commands WHERE command = ?'
+          'SELECT 1 FROM allowed_commands WHERE command = ?',
         );
       });
 
@@ -77,7 +77,7 @@ describe('Repositories Factory', () => {
         await repo().addAllowed('test', 'user123');
 
         expect(mockPrepare).toHaveBeenCalledWith(
-          expect.stringContaining('INSERT OR IGNORE INTO allowed_commands')
+          expect.stringContaining('INSERT OR IGNORE INTO allowed_commands'),
         );
         expect(mockRun).toHaveBeenCalledWith('test', 'user123');
       });
@@ -128,7 +128,7 @@ describe('Repositories Factory', () => {
 
         expect(result).toEqual(['role1', 'role2']);
         expect(mockPrepare).toHaveBeenCalledWith(
-          'SELECT role_id FROM command_roles WHERE command = ?'
+          'SELECT role_id FROM command_roles WHERE command = ?',
         );
       });
 
@@ -166,7 +166,7 @@ describe('Repositories Factory', () => {
         await repo().addRole('test', 'admin');
 
         expect(mockPrepare).toHaveBeenCalledWith(
-          expect.stringContaining('INSERT OR IGNORE INTO command_roles')
+          expect.stringContaining('INSERT OR IGNORE INTO command_roles'),
         );
         expect(mockRun).toHaveBeenCalledWith('test', 'admin');
       });
@@ -177,7 +177,7 @@ describe('Repositories Factory', () => {
         await repo().addChannel('test', 'general');
 
         expect(mockPrepare).toHaveBeenCalledWith(
-          expect.stringContaining('INSERT OR IGNORE INTO command_channels')
+          expect.stringContaining('INSERT OR IGNORE INTO command_channels'),
         );
         expect(mockRun).toHaveBeenCalledWith('test', 'general');
       });
@@ -188,7 +188,7 @@ describe('Repositories Factory', () => {
         await repo().addUser('test', 'user123');
 
         expect(mockPrepare).toHaveBeenCalledWith(
-          expect.stringContaining('INSERT OR IGNORE INTO command_users')
+          expect.stringContaining('INSERT OR IGNORE INTO command_users'),
         );
         expect(mockRun).toHaveBeenCalledWith('test', 'user123');
       });
@@ -203,7 +203,7 @@ describe('Repositories Factory', () => {
 
         expect(result).toEqual(entries);
         expect(mockPrepare).toHaveBeenCalledWith(
-          'SELECT * FROM audit_log ORDER BY id DESC LIMIT ?'
+          'SELECT * FROM audit_log ORDER BY id DESC LIMIT ?',
         );
       });
 
@@ -263,7 +263,7 @@ describe('Repositories Factory', () => {
 
         expect(result).toBe(123456);
         expect(mockPrepare).toHaveBeenCalledWith(
-          'SELECT last_used FROM rate_limits WHERE command = ?'
+          'SELECT last_used FROM rate_limits WHERE command = ?',
         );
       });
 
@@ -279,7 +279,7 @@ describe('Repositories Factory', () => {
         await repo().setLastUsed('test', 123456);
 
         expect(mockPrepare).toHaveBeenCalledWith(
-          expect.stringContaining('INSERT INTO rate_limits')
+          expect.stringContaining('INSERT INTO rate_limits'),
         );
         expect(mockRun).toHaveBeenCalledWith('test', 123456);
       });

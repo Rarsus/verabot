@@ -64,7 +64,7 @@ describe('SlashCommandAdapter', () => {
       mockBus,
       mockRegistry,
       mockLogger,
-      mockHelpService
+      mockHelpService,
     );
   });
 
@@ -196,7 +196,7 @@ describe('SlashCommandAdapter', () => {
         expect(mockBus.execute).toHaveBeenCalledWith(
           expect.objectContaining({
             args: expect.arrayContaining(['7']),
-          })
+          }),
         );
       });
 
@@ -230,7 +230,7 @@ describe('SlashCommandAdapter', () => {
         expect(mockBus.execute).toHaveBeenCalledWith(
           expect.objectContaining({
             args: expect.arrayContaining(['true']),
-          })
+          }),
         );
       });
 
@@ -264,7 +264,7 @@ describe('SlashCommandAdapter', () => {
         expect(mockBus.execute).toHaveBeenCalledWith(
           expect.objectContaining({
             args: expect.arrayContaining(['target123']),
-          })
+          }),
         );
       });
 
@@ -298,7 +298,7 @@ describe('SlashCommandAdapter', () => {
         expect(mockBus.execute).toHaveBeenCalledWith(
           expect.objectContaining({
             args: expect.arrayContaining(['role789']),
-          })
+          }),
         );
       });
 
@@ -332,7 +332,7 @@ describe('SlashCommandAdapter', () => {
         expect(mockBus.execute).toHaveBeenCalledWith(
           expect.objectContaining({
             args: expect.arrayContaining(['channel999']),
-          })
+          }),
         );
       });
 
@@ -366,7 +366,7 @@ describe('SlashCommandAdapter', () => {
         expect(mockBus.execute).toHaveBeenCalledWith(
           expect.objectContaining({
             args: expect.arrayContaining(['Violation of TOS']),
-          })
+          }),
         );
       });
 
@@ -403,7 +403,7 @@ describe('SlashCommandAdapter', () => {
         expect(mockBus.execute).toHaveBeenCalledWith(
           expect.objectContaining({
             args: [],
-          })
+          }),
         );
       });
 
@@ -441,7 +441,7 @@ describe('SlashCommandAdapter', () => {
         expect(mockBus.execute).toHaveBeenCalledWith(
           expect.objectContaining({
             args: [],
-          })
+          }),
         );
       });
     });
@@ -608,7 +608,7 @@ describe('SlashCommandAdapter', () => {
         expect.objectContaining({
           embeds: expect.any(Array),
           components: expect.any(Array),
-        })
+        }),
       );
     });
 
@@ -653,7 +653,7 @@ describe('SlashCommandAdapter', () => {
       expect(EmbedFactory.commandList).toHaveBeenCalledWith('admin', 1, 2, expect.any(Array));
       expect(EmbedFactory.helpPaginationRow).toHaveBeenCalledWith(
         'admin',
-        expect.objectContaining({ category: 'admin' })
+        expect.objectContaining({ category: 'admin' }),
       );
       expect(interaction.reply).toHaveBeenCalled();
     });
@@ -752,7 +752,7 @@ describe('SlashCommandAdapter', () => {
         'admin',
         1,
         3,
-        expect.arrayContaining([expect.objectContaining({ name: 'ban' })])
+        expect.arrayContaining([expect.objectContaining({ name: 'ban' })]),
       );
       expect(EmbedFactory.helpPaginationRow).toHaveBeenCalled();
       expect(interaction.reply).toHaveBeenCalled();
@@ -807,7 +807,7 @@ describe('SlashCommandAdapter', () => {
       expect(interaction.reply).toHaveBeenCalledWith(
         expect.objectContaining({
           embeds: expect.any(Array),
-        })
+        }),
       );
     });
   });
@@ -859,7 +859,7 @@ describe('SlashCommandAdapter', () => {
         expect.objectContaining({
           cooldownSec: 30,
           elapsedSec: expect.any(Number),
-        })
+        }),
       );
     });
 
@@ -901,7 +901,7 @@ describe('SlashCommandAdapter', () => {
         expect.objectContaining({
           cooldownSec: null,
           elapsedSec: expect.any(Number),
-        })
+        }),
       );
     });
   });
@@ -1072,7 +1072,7 @@ describe('SlashCommandAdapter', () => {
       await handler(interaction);
 
       expect(interaction.respond).toHaveBeenCalledWith(
-        expect.arrayContaining([{ name: 'production', value: 'production' }])
+        expect.arrayContaining([{ name: 'production', value: 'production' }]),
       );
     });
 
@@ -1134,7 +1134,7 @@ describe('SlashCommandAdapter', () => {
         expect.arrayContaining([
           expect.objectContaining({ name: 'ban' }),
           expect.objectContaining({ name: 'broadcast' }),
-        ])
+        ]),
       );
     });
 
@@ -1162,7 +1162,7 @@ describe('SlashCommandAdapter', () => {
         Array.from({ length: 20 }, (_, i) => ({
           name: `cmd${i}`,
           description: `Command ${i}`,
-        }))
+        })),
       );
 
       await handler(interaction);

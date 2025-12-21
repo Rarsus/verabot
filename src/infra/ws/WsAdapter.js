@@ -67,7 +67,7 @@ class WsAdapter {
               type: 'error',
               command: command.name,
               error: { code: err.code || 'ERROR', message: err.message },
-            })
+            }),
           );
         }
       });

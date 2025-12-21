@@ -45,7 +45,7 @@ describe('PermissionMiddleware', () => {
 
       expect(mockPermissionService.canExecute).toHaveBeenCalledWith(
         mockContext.command,
-        mockContext.category
+        mockContext.category,
       );
     });
 
@@ -109,7 +109,7 @@ describe('PermissionMiddleware', () => {
 
       expect(mockPermissionService.canExecute).toHaveBeenCalledWith(
         differentContext.command,
-        differentContext.category
+        differentContext.category,
       );
     });
 
@@ -124,7 +124,7 @@ describe('PermissionMiddleware', () => {
 
       expect(mockPermissionService.canExecute).toHaveBeenCalledWith(
         messagingContext.command,
-        'messaging'
+        'messaging',
       );
     });
 
@@ -139,7 +139,7 @@ describe('PermissionMiddleware', () => {
 
       expect(mockPermissionService.canExecute).toHaveBeenCalledWith(
         opsContext.command,
-        'operations'
+        'operations',
       );
     });
   });

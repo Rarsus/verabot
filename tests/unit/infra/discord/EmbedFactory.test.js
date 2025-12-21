@@ -209,7 +209,7 @@ describe('EmbedFactory', () => {
 
       expect(embed.addFields).toHaveBeenCalledWith(
         { name: 'Category', value: 'admin', inline: true },
-        { name: 'Usage', value: '`kick <user>`', inline: true }
+        { name: 'Usage', value: '`kick <user>`', inline: true },
       );
     });
 
@@ -293,7 +293,7 @@ describe('EmbedFactory', () => {
             value: 'Kick a user',
             inline: false,
           }),
-        ])
+        ]),
       );
     });
 

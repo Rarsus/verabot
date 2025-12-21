@@ -40,7 +40,7 @@ describe('LoggingMiddleware', () => {
 
       expect(mockLogger.info).toHaveBeenCalledWith(
         { cmd: 'ping', src: 'test', category: 'core' },
-        'Executing command'
+        'Executing command',
       );
     });
 
@@ -55,7 +55,7 @@ describe('LoggingMiddleware', () => {
 
       expect(mockLogger.info).toHaveBeenCalledWith(
         { cmd: 'ping', success: true },
-        'Command complete'
+        'Command complete',
       );
     });
 
@@ -97,7 +97,7 @@ describe('LoggingMiddleware', () => {
 
       expect(mockLogger.error).toHaveBeenCalledWith(
         expect.objectContaining({ cmd: 'ping', err: error }),
-        'Command failed'
+        'Command failed',
       );
     });
 
@@ -130,7 +130,7 @@ describe('LoggingMiddleware', () => {
       }
 
       expect(mockMetrics.errorCounter.inc).toHaveBeenCalledWith(
-        expect.objectContaining({ code: 'ERROR' })
+        expect.objectContaining({ code: 'ERROR' }),
       );
     });
   });

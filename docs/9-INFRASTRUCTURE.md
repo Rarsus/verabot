@@ -53,7 +53,7 @@ await queue.enqueue(
     priority: 5,
     delay: 1000,
     attempts: 3,
-  }
+  },
 );
 ```
 

@@ -60,7 +60,7 @@ describe('WsClientFactory', () => {
     it('should log connection attempt', () => {
       expect(mockLogger.info).toHaveBeenCalledWith(
         { url: mockConfig.WS_URL },
-        'Connecting to WebSocket'
+        'Connecting to WebSocket',
       );
     });
 
@@ -139,7 +139,7 @@ describe('WsClientFactory', () => {
         JSON.stringify({
           type: 'hello',
           client: 'discord-bridge',
-        })
+        }),
       );
     });
 
@@ -166,7 +166,7 @@ describe('WsClientFactory', () => {
           code: 1000,
           reason: expect.any(String),
         }),
-        expect.stringContaining('reconnecting')
+        expect.stringContaining('reconnecting'),
       );
     });
 
@@ -199,7 +199,7 @@ describe('WsClientFactory', () => {
 
       expect(mockLogger.warn).toHaveBeenCalledWith(
         expect.objectContaining({ code: 4000 }),
-        expect.any(String)
+        expect.any(String),
       );
     });
 
@@ -211,7 +211,7 @@ describe('WsClientFactory', () => {
           code: 1006,
           reason: 'Abnormal closure',
         }),
-        expect.any(String)
+        expect.any(String),
       );
     });
 
@@ -267,7 +267,7 @@ describe('WsClientFactory', () => {
 
       expect(mockLogger.info).toHaveBeenCalledWith(
         { url: 'ws://localhost:8080' },
-        expect.any(String)
+        expect.any(String),
       );
     });
 

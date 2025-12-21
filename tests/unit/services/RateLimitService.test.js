@@ -45,7 +45,7 @@ describe('RateLimitService', () => {
       mockRateLimitRepo.getLastUsed.mockResolvedValue(now - 1000); // Only 1s ago
 
       await expect(service.tryConsume({ name: 'say' }, 'messaging')).rejects.toThrow(
-        RateLimitError
+        RateLimitError,
       );
       expect(mockRateLimitRepo.setLastUsed).not.toHaveBeenCalled();
     });
@@ -65,7 +65,7 @@ describe('RateLimitService', () => {
       mockRateLimitRepo.getLastUsed.mockResolvedValue(now - 5000); // Only 5s ago
 
       await expect(service.tryConsume({ name: 'deploy' }, 'operations')).rejects.toThrow(
-        RateLimitError
+        RateLimitError,
       );
     });
 
@@ -158,7 +158,7 @@ describe('RateLimitService', () => {
       mockRateLimitRepo.setLastUsed.mockRejectedValue(new Error('Write failed'));
 
       await expect(service.tryConsume({ name: 'test' }, 'messaging')).rejects.toThrow(
-        'Write failed'
+        'Write failed',
       );
     });
 
@@ -166,7 +166,7 @@ describe('RateLimitService', () => {
       mockRateLimitRepo.getLastUsed.mockResolvedValue(Date.now());
 
       await expect(service.tryConsume({ name: 'test' }, 'messaging')).rejects.toThrow(
-        RateLimitError
+        RateLimitError,
       );
     });
   });

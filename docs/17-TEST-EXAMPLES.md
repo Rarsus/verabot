@@ -97,7 +97,7 @@ describe('PermissionService', () => {
     await service.grantPermission('user123', 'admin');
     expect(db.insert).toHaveBeenCalledWith(
       'permissions',
-      expect.objectContaining({ userId: 'user123' })
+      expect.objectContaining({ userId: 'user123' }),
     );
   });
 

@@ -25,7 +25,7 @@ describe('RateLimitMiddleware', () => {
 
       expect(mockRateLimitService.tryConsume).toHaveBeenCalledWith(
         mockContext.command,
-        mockContext.category
+        mockContext.category,
       );
     });
 
@@ -131,7 +131,7 @@ describe('RateLimitMiddleware', () => {
 
       expect(mockRateLimitService.tryConsume).toHaveBeenCalledWith(
         messagingContext.command,
-        'messaging'
+        'messaging',
       );
     });
 
@@ -145,7 +145,7 @@ describe('RateLimitMiddleware', () => {
 
       expect(mockRateLimitService.tryConsume).toHaveBeenCalledWith(
         opsContext.command,
-        'operations'
+        'operations',
       );
     });
 

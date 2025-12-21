@@ -94,7 +94,7 @@ describe('JobQueueService', () => {
       expect(mockQueue.add).toHaveBeenCalledWith(
         'heavywork',
         { handler: 'heavywork', payload: { data: 'test' } },
-        {}
+        {},
       );
       expect(result).toEqual({ id: 'job123' });
     });
@@ -106,7 +106,7 @@ describe('JobQueueService', () => {
       expect(mockQueue.add).toHaveBeenCalledWith(
         'cron:task',
         { handler: 'cron:task', payload: { task: 'data' } },
-        options
+        options,
       );
     });
 
@@ -154,7 +154,7 @@ describe('JobQueueService', () => {
         expect(result).toEqual({ ok: true });
         expect(mockLogger.info).toHaveBeenCalledWith(
           { jobId: 'job1', name: undefined },
-          'Processing job'
+          'Processing job',
         );
       });
 
@@ -200,7 +200,7 @@ describe('JobQueueService', () => {
 
         expect(mockLogger.info).toHaveBeenCalledWith(
           { handler: 'cron:daily', payload: { task: 'backup' } },
-          'Cron job executed'
+          'Cron job executed',
         );
       });
 
@@ -226,7 +226,7 @@ describe('JobQueueService', () => {
 
         expect(mockLogger.warn).toHaveBeenCalledWith(
           { handler: 'unknown' },
-          'Unknown handler in job queue'
+          'Unknown handler in job queue',
         );
         expect(result).toEqual({ ok: true });
       });
@@ -253,7 +253,7 @@ describe('JobQueueService', () => {
 
         expect(mockLogger.info).toHaveBeenCalledWith(
           { jobId: 'job123', name: 'task' },
-          'Processing job'
+          'Processing job',
         );
       });
     });
@@ -295,7 +295,7 @@ describe('JobQueueService', () => {
 
         expect(mockLogger.error).toHaveBeenCalledWith(
           { jobId: 'job123', err: error },
-          'Job failed'
+          'Job failed',
         );
       });
 
@@ -306,7 +306,7 @@ describe('JobQueueService', () => {
 
         expect(mockLogger.error).toHaveBeenCalledWith(
           { jobId: undefined, err: error },
-          'Job failed'
+          'Job failed',
         );
       });
 
