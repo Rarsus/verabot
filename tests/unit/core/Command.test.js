@@ -6,7 +6,7 @@ describe('Command', () => {
       name: 'ping',
       source: 'discord',
       userId: 'user123',
-      channelId: 'channel456'
+      channelId: 'channel456',
     });
 
     expect(command.name).toBe('ping');
@@ -18,7 +18,7 @@ describe('Command', () => {
   it('should initialize args as empty array by default', () => {
     const command = new Command({
       name: 'test',
-      source: 'discord'
+      source: 'discord',
     });
 
     expect(command.args).toEqual([]);
@@ -27,7 +27,7 @@ describe('Command', () => {
   it('should initialize metadata as empty object by default', () => {
     const command = new Command({
       name: 'test',
-      source: 'discord'
+      source: 'discord',
     });
 
     expect(command.metadata).toEqual({});
@@ -37,7 +37,7 @@ describe('Command', () => {
     const command = new Command({
       name: 'say',
       source: 'discord',
-      args: ['hello', 'world']
+      args: ['hello', 'world'],
     });
 
     expect(command.args).toEqual(['hello', 'world']);
@@ -47,7 +47,7 @@ describe('Command', () => {
     const command = new Command({
       name: 'test',
       source: 'discord',
-      metadata: { priority: 'high', retry: true }
+      metadata: { priority: 'high', retry: true },
     });
 
     expect(command.metadata).toEqual({ priority: 'high', retry: true });
@@ -56,7 +56,7 @@ describe('Command', () => {
   it('should set userId to null if not provided', () => {
     const command = new Command({
       name: 'test',
-      source: 'discord'
+      source: 'discord',
     });
 
     expect(command.userId).toBeNull();
@@ -65,7 +65,7 @@ describe('Command', () => {
   it('should set channelId to null if not provided', () => {
     const command = new Command({
       name: 'test',
-      source: 'discord'
+      source: 'discord',
     });
 
     expect(command.channelId).toBeNull();
@@ -74,10 +74,10 @@ describe('Command', () => {
   it('should support different sources', () => {
     const sources = ['discord', 'api', 'cli', 'webhook'];
 
-    sources.forEach(source => {
+    sources.forEach((source) => {
       const command = new Command({
         name: 'test',
-        source
+        source,
       });
 
       expect(command.source).toBe(source);
@@ -91,7 +91,7 @@ describe('Command', () => {
       userId: 'admin123',
       channelId: 'mod-channel',
       args: ['user', 'ban'],
-      metadata: { admin: true, timestamp: 123456 }
+      metadata: { admin: true, timestamp: 123456 },
     };
 
     const command = new Command(props);
@@ -108,7 +108,7 @@ describe('Command', () => {
     const command = new Command({
       name: 'test',
       source: 'discord',
-      args: []
+      args: [],
     });
 
     expect(command.args).toEqual([]);
@@ -118,7 +118,7 @@ describe('Command', () => {
     const command = new Command({
       name: 'test',
       source: 'discord',
-      args: undefined
+      args: undefined,
     });
 
     expect(command.args).toEqual([]);
@@ -127,7 +127,7 @@ describe('Command', () => {
   it('should handle metadata not provided', () => {
     const command = new Command({
       name: 'test',
-      source: 'discord'
+      source: 'discord',
     });
 
     expect(command.metadata).toEqual({});
@@ -137,7 +137,7 @@ describe('Command', () => {
     const command = new Command({
       name: 'test',
       source: 'discord',
-      userId: null
+      userId: null,
     });
 
     expect(command.userId).toBeNull();

@@ -8,8 +8,8 @@ describe('AuditHandler', () => {
   beforeEach(() => {
     mockRepos = {
       permissionRepo: {
-        listAudit: jest.fn()
-      }
+        listAudit: jest.fn(),
+      },
     };
     handler = new AuditHandler(mockRepos);
   });
@@ -17,7 +17,7 @@ describe('AuditHandler', () => {
   it('should list audit entries with default limit of 20', async () => {
     const mockEntries = [
       { id: 1, action: 'allow', command: 'ping', user: 'user1' },
-      { id: 2, action: 'deny', command: 'say', user: 'user2' }
+      { id: 2, action: 'deny', command: 'say', user: 'user2' },
     ];
     mockRepos.permissionRepo.listAudit.mockResolvedValue(mockEntries);
 
@@ -32,7 +32,7 @@ describe('AuditHandler', () => {
   it('should use custom limit from args', async () => {
     const mockEntries = Array.from({ length: 50 }, (_, i) => ({
       id: i,
-      action: 'allow'
+      action: 'allow',
     }));
     mockRepos.permissionRepo.listAudit.mockResolvedValue(mockEntries);
 

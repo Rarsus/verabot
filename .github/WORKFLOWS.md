@@ -5,14 +5,17 @@ This project uses GitHub Actions for continuous integration, testing, security a
 ## Workflows Overview
 
 ### 1. **CI Workflow** (`ci.yml`)
+
 Main continuous integration workflow that runs on every push and pull request.
 
 **Triggers:**
+
 - Push to `main` or `develop` branches
 - Pull requests to `main` or `develop` branches
 - Daily schedule at 2 AM UTC (security audit only)
 
 **Jobs:**
+
 - **Lint**: Runs ESLint to check code quality
 - **Test**: Runs full test suite with coverage reporting
 - **Security**: Performs npm audit on production dependencies
@@ -20,13 +23,16 @@ Main continuous integration workflow that runs on every push and pull request.
 **Timeout:** 10-15 minutes
 
 ### 2. **Code Quality Workflow** (`code-quality.yml`)
+
 Analyzes code coverage, formatting, and complexity.
 
 **Triggers:**
+
 - Push to `main` or `develop` branches
 - Pull requests to `main` or `develop` branches
 
 **Jobs:**
+
 - **Coverage**: Analyzes test coverage and comments on PRs
 - **Format**: Checks code formatting with Prettier
 - **Complexity**: Checks for overly complex code patterns
@@ -34,28 +40,35 @@ Analyzes code coverage, formatting, and complexity.
 **Timeout:** 10-15 minutes
 
 ### 3. **Dependency Check Workflow** (`dependency-check.yml`)
+
 Monitors dependencies for outdated versions and security issues.
 
 **Triggers:**
+
 - Weekly schedule (Mondays at 9 AM UTC)
 - Manual workflow dispatch
 
 **Jobs:**
+
 - **Check Dependencies**: Identifies outdated packages and creates issues
 
 **Timeout:** 10 minutes
 
 ### 4. **PR Quality Gate Workflow** (`pr-quality-gate.yml`)
+
 Comprehensive quality validation for pull requests.
 
 **Triggers:**
+
 - Pull request opened, synchronized, or reopened on `main` or `develop`
 
 **Jobs:**
+
 - **Validate PR**: Runs linting, tests, security audit, and validates commit messages
 - **Comment on PR**: Adds helpful comment on newly opened PRs
 
 **Requirements:**
+
 - All tests must pass
 - ESLint must pass without violations
 - npm audit must pass (no moderate/high/critical vulnerabilities)
@@ -63,17 +76,21 @@ Comprehensive quality validation for pull requests.
 **Timeout:** 20 minutes
 
 ### 5. **Release Workflow** (`release.yml`)
+
 Handles building and publishing releases to npm.
 
 **Triggers:**
+
 - Push to tags matching `v*` pattern
 - Push to `main` branch
 
 **Jobs:**
+
 - **Build**: Verifies code quality before release
 - **Publish**: Publishes to npm registry and creates GitHub releases
 
 **Requirements:**
+
 - `NPM_TOKEN` secret must be set in repository settings
 - Tests must pass
 - Linting must pass
@@ -132,12 +149,14 @@ View workflow status and logs:
 ## Troubleshooting
 
 ### Lint Failures
+
 ```bash
 # Fix linting errors locally
 npm run lint:fix
 ```
 
 ### Test Failures
+
 ```bash
 # Run tests locally to debug
 npm test
@@ -147,11 +166,13 @@ npm test:watch
 ```
 
 ### Coverage Below Threshold
+
 - The coverage threshold is 90%
 - Run `npm test -- --coverage` to see detailed coverage report
 - Fix uncovered code paths before submitting PR
 
 ### Security Audit Failures
+
 ```bash
 # Check for vulnerabilities locally
 npm audit

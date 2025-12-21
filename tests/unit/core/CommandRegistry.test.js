@@ -46,7 +46,7 @@ describe('CommandRegistry', () => {
       usage: '/mod ban <user>',
       examples: ['ban @user'],
       permissions: ['ADMINISTRATOR'],
-      cooldown: 5000
+      cooldown: 5000,
     };
 
     registry.register('ban', handler, options);
@@ -129,9 +129,7 @@ describe('CommandRegistry', () => {
     const grouped = registry.listByGroup();
 
     expect(grouped.has('core')).toBe(true);
-    expect(grouped.get('core')).toContainEqual(
-      expect.objectContaining({ name: 'test' })
-    );
+    expect(grouped.get('core')).toContainEqual(expect.objectContaining({ name: 'test' }));
   });
 
   it('should handle multiple handlers in same group', () => {
@@ -145,8 +143,8 @@ describe('CommandRegistry', () => {
     const modCommands = grouped.get('mod');
 
     expect(modCommands).toHaveLength(2);
-    expect(modCommands.map(c => c.name)).toContain('kick');
-    expect(modCommands.map(c => c.name)).toContain('ban');
+    expect(modCommands.map((c) => c.name)).toContain('kick');
+    expect(modCommands.map((c) => c.name)).toContain('ban');
   });
 
   it('should overwrite handler with same name', () => {
@@ -165,13 +163,13 @@ describe('CommandRegistry', () => {
       category: 'admin',
       group: 'moderation',
       description: 'Test command',
-      examples: ['example1', 'example2']
+      examples: ['example1', 'example2'],
     };
 
     registry.register('test', handler, options);
 
     const commands = registry.listCommands();
-    const testCommand = commands.find(c => c.name === 'test');
+    const testCommand = commands.find((c) => c.name === 'test');
 
     expect(testCommand.category).toBe('admin');
     expect(testCommand.group).toBe('moderation');

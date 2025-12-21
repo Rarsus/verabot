@@ -9,11 +9,11 @@ describe('bootstrap', () => {
 
   beforeEach(() => {
     mockDb = {
-      isConnected: jest.fn().mockReturnValue(true)
+      isConnected: jest.fn().mockReturnValue(true),
     };
 
     mockHelpService = {
-      registry: null
+      registry: null,
     };
 
     mockDiscordClient = {
@@ -21,14 +21,14 @@ describe('bootstrap', () => {
       channels: {
         fetch: jest.fn().mockResolvedValue({
           isTextBased: () => true,
-          send: jest.fn().mockResolvedValue(undefined)
-        })
-      }
+          send: jest.fn().mockResolvedValue(undefined),
+        }),
+      },
     };
 
     mockContainer = {
       config: {
-        NODE_ENV: 'test'
+        NODE_ENV: 'test',
       },
       db: mockDb,
       discordClient: mockDiscordClient,
@@ -36,27 +36,27 @@ describe('bootstrap', () => {
       services: {
         helpService: mockHelpService,
         permissionService: {
-          canExecute: jest.fn().mockResolvedValue(true)
+          canExecute: jest.fn().mockResolvedValue(true),
         },
         rateLimitService: {
-          checkLimit: jest.fn().mockResolvedValue(true)
-        }
+          checkLimit: jest.fn().mockResolvedValue(true),
+        },
       },
       repositories: {
         auditRepo: {
-          log: jest.fn().mockResolvedValue(undefined)
-        }
+          log: jest.fn().mockResolvedValue(undefined),
+        },
       },
       logger: {
         info: jest.fn(),
-        error: jest.fn()
+        error: jest.fn(),
       },
       metrics: {
-        increment: jest.fn()
+        increment: jest.fn(),
       },
       jobQueue: {
-        enqueue: jest.fn().mockResolvedValue({ id: 'job123' })
-      }
+        enqueue: jest.fn().mockResolvedValue({ id: 'job123' }),
+      },
     };
   });
 
@@ -72,10 +72,10 @@ describe('bootstrap', () => {
       const result = bootstrap(mockContainer);
       const commands = result.registry.listCommands();
 
-      const coreCommands = commands.filter(cmd => cmd.group === 'core');
+      const coreCommands = commands.filter((cmd) => cmd.group === 'core');
       expect(coreCommands.length).toBeGreaterThan(0);
 
-      const commandNames = coreCommands.map(cmd => cmd.name);
+      const commandNames = coreCommands.map((cmd) => cmd.name);
       expect(commandNames).toContain('ping');
       expect(commandNames).toContain('info');
     });
@@ -84,7 +84,7 @@ describe('bootstrap', () => {
       const result = bootstrap(mockContainer);
       const commands = result.registry.listCommands();
 
-      const messagingCommands = commands.filter(cmd => cmd.group === 'msg');
+      const messagingCommands = commands.filter((cmd) => cmd.group === 'msg');
       expect(messagingCommands.length).toBeGreaterThan(0);
     });
 
@@ -92,10 +92,10 @@ describe('bootstrap', () => {
       const result = bootstrap(mockContainer);
       const commands = result.registry.listCommands();
 
-      const adminCommands = commands.filter(cmd => cmd.group === 'admin');
+      const adminCommands = commands.filter((cmd) => cmd.group === 'admin');
       expect(adminCommands.length).toBeGreaterThan(0);
 
-      const commandNames = adminCommands.map(cmd => cmd.name);
+      const commandNames = adminCommands.map((cmd) => cmd.name);
       expect(commandNames).toContain('allow');
       expect(commandNames).toContain('deny');
     });
@@ -104,7 +104,7 @@ describe('bootstrap', () => {
       const result = bootstrap(mockContainer);
       const commands = result.registry.listCommands();
 
-      const operationsCommands = commands.filter(cmd => cmd.group === 'ops');
+      const operationsCommands = commands.filter((cmd) => cmd.group === 'ops');
       expect(operationsCommands.length).toBeGreaterThan(0);
     });
 
@@ -168,7 +168,7 @@ describe('bootstrap', () => {
       const result = bootstrap(mockContainer);
       const command = {
         source: 'discord',
-        channelId: 'channel123'
+        channelId: 'channel123',
       };
 
       await result.messageService.broadcast(command, 'Hello!');
@@ -180,7 +180,7 @@ describe('bootstrap', () => {
       const result = bootstrap(mockContainer);
       const command = {
         source: 'api',
-        channelId: 'channel123'
+        channelId: 'channel123',
       };
 
       await result.messageService.broadcast(command, 'Hello!');
@@ -191,13 +191,13 @@ describe('bootstrap', () => {
 
     it('should not send to non-text channels', async () => {
       mockDiscordClient.channels.fetch.mockResolvedValue({
-        isTextBased: () => false
+        isTextBased: () => false,
       });
 
       const result = bootstrap(mockContainer);
       const command = {
         source: 'discord',
-        channelId: 'voice-channel'
+        channelId: 'voice-channel',
       };
 
       await result.messageService.broadcast(command, 'Hello!');
@@ -211,7 +211,7 @@ describe('bootstrap', () => {
       const result = bootstrap(mockContainer);
       const coreCommands = ['ping', 'info', 'stats', 'uptime', 'help'];
 
-      coreCommands.forEach(cmd => {
+      coreCommands.forEach((cmd) => {
         expect(result.registry.getHandler(cmd)).toBeDefined();
       });
     });
@@ -220,7 +220,7 @@ describe('bootstrap', () => {
       const result = bootstrap(mockContainer);
       const commands = result.registry.listCommands();
 
-      commands.forEach(cmd => {
+      commands.forEach((cmd) => {
         expect(cmd.description).toBeDefined();
         expect(cmd.description).not.toBe('');
       });
@@ -230,7 +230,7 @@ describe('bootstrap', () => {
       const result = bootstrap(mockContainer);
       const commands = result.registry.listCommands();
 
-      commands.forEach(cmd => {
+      commands.forEach((cmd) => {
         expect(cmd.usage).toBeDefined();
         expect(cmd.examples).toBeDefined();
       });

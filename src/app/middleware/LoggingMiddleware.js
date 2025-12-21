@@ -40,7 +40,7 @@ class LoggingMiddleware {
         this.metrics.errorCounter.inc({
           command: command.name,
           source: command.source,
-          code: err.code || 'ERROR'
+          code: err.code || 'ERROR',
         });
       }
       throw err;

@@ -8,7 +8,7 @@ const createMockLogger = () => ({
   info: jest.fn(),
   debug: jest.fn(),
   warn: jest.fn(),
-  error: jest.fn()
+  error: jest.fn(),
 });
 
 // Mock command result
@@ -16,7 +16,7 @@ const createMockCommandResult = (data = {}, success = true) => ({
   success,
   data,
   error: success ? null : new Error('Command failed'),
-  timestamp: new Date().toISOString()
+  timestamp: new Date().toISOString(),
 });
 
 // Mock middleware
@@ -27,35 +27,35 @@ const createMockRegistry = (handlers = {}) => ({
   get: jest.fn((name) => handlers[name] || null),
   register: jest.fn(),
   getAll: jest.fn(() => Object.values(handlers)),
-  has: jest.fn((name) => name in handlers)
+  has: jest.fn((name) => name in handlers),
 });
 
 // Mock permission service
 const createMockPermissionService = () => ({
   checkPermission: jest.fn().mockResolvedValue(true),
   hasRole: jest.fn().mockResolvedValue(true),
-  validateUser: jest.fn().mockResolvedValue({ valid: true })
+  validateUser: jest.fn().mockResolvedValue({ valid: true }),
 });
 
 // Mock rate limit service
 const createMockRateLimitService = () => ({
   checkLimit: jest.fn().mockResolvedValue({ allowed: true }),
   resetLimit: jest.fn().mockResolvedValue(true),
-  getUserLimit: jest.fn().mockResolvedValue({ remaining: 10 })
+  getUserLimit: jest.fn().mockResolvedValue({ remaining: 10 }),
 });
 
 // Mock command service
 const createMockCommandService = () => ({
   execute: jest.fn().mockResolvedValue({ success: true, data: {} }),
   validateCommand: jest.fn().mockResolvedValue(true),
-  registerHandler: jest.fn()
+  registerHandler: jest.fn(),
 });
 
 // Mock help service
 const createMockHelpService = () => ({
   getHelp: jest.fn().mockResolvedValue('Help text'),
   listCommands: jest.fn().mockResolvedValue([]),
-  getCommandHelp: jest.fn().mockResolvedValue('Command help')
+  getCommandHelp: jest.fn().mockResolvedValue('Command help'),
 });
 
 module.exports = {
@@ -66,5 +66,5 @@ module.exports = {
   createMockPermissionService,
   createMockRateLimitService,
   createMockCommandService,
-  createMockHelpService
+  createMockHelpService,
 };

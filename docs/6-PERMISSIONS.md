@@ -26,6 +26,7 @@ System Admin (Discord Server Owner)
 ## Permission Types
 
 ### 1. Role-Based
+
 Allow command for entire Discord role
 
 ```
@@ -33,6 +34,7 @@ Allow command for entire Discord role
 ```
 
 ### 2. User-Based
+
 Allow command for specific user
 
 ```
@@ -40,6 +42,7 @@ Allow command for specific user
 ```
 
 ### 3. Channel-Based
+
 Allow command in specific channel
 
 ```
@@ -47,6 +50,7 @@ Allow command in specific channel
 ```
 
 ### 4. Global Deny
+
 Block command for everyone
 
 ```
@@ -68,6 +72,7 @@ When checking permissions:
 ```
 
 Example:
+
 ```
 If user has deny-command permission, nothing allows it.
 If admin, user, role, and channel all deny, user blocked.

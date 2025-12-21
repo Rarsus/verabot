@@ -9,12 +9,14 @@
 ## 📋 Executive Summary
 
 VeraBot is a well-architected Discord bot built with modern enterprise patterns. The project demonstrates:
+
 - **Strong Architecture**: Clean separation of concerns with clear layers (app, core, infra, interfaces)
 - **Scalability Foundation**: Command Bus pattern, middleware pipeline, Redis integration
 - **Production-Ready**: Comprehensive configuration validation, logging, health checks, metrics
 - **Partially Tested**: Jest configured with coverage thresholds (70%), minimal existing tests (1 integration test)
 
 **Key Metrics:**
+
 - **Lines of Code**: ~2,500+ LOC across handlers, services, and middleware
 - **Test Coverage**: Minimal (~0.4%) - 1 integration test for CommandBus
 - **Test Infrastructure**: Jest configured but significantly underutilized
@@ -28,18 +30,21 @@ VeraBot is a well-architected Discord bot built with modern enterprise patterns.
 ### Current Architecture Strengths
 
 #### 1. **Command Bus Pattern** ✅
+
 ```
-Request → SlashCommandAdapter/WsAdapter 
-  → CommandBus 
-  → MiddlewarePipeline 
-  → Handler 
+Request → SlashCommandAdapter/WsAdapter
+  → CommandBus
+  → MiddlewarePipeline
+  → Handler
   → CommandResult
 ```
+
 - Clear separation of command execution from Discord integration
 - Testable command pipeline
 - Extensible middleware system
 
 #### 2. **Layered Architecture** ✅
+
 ```
 ┌─────────────────────────────────────┐
 │  Interfaces (HTTP, Discord, WS)     │
@@ -53,19 +58,24 @@ Request → SlashCommandAdapter/WsAdapter
 ```
 
 #### 3. **Dependency Injection** ✅
+
 - `infra/di/container.js` manages all service dependencies
 - Reduces coupling, improves testability
 - Centralized configuration management
 
 #### 4. **Middleware Pipeline** ✅
+
 Implemented middlewares:
+
 - `AuditMiddleware` - Command auditing
 - `LoggingMiddleware` - Operation logging
 - `PermissionMiddleware` - Access control
 - `RateLimitMiddleware` - Rate limiting with Redis
 
 #### 5. **Service Layer** ✅
+
 Core services:
+
 - `CommandService` - Command execution logic
 - `HelpService` - Help documentation
 - `PermissionService` - Authorization
@@ -74,6 +84,7 @@ Core services:
 ### Infrastructure & DevOps
 
 #### Strong Points:
+
 - ✅ **Configuration Management**: Zod schema validation (secure, typed env vars)
 - ✅ **Logging**: Pino integration with pretty-printing for dev, structured logs for production
 - ✅ **Monitoring**: Prometheus metrics (`prom-client`)
@@ -98,6 +109,7 @@ Jest Configuration: ✅ Present but underutilized
 ```
 
 **Existing Test:**
+
 ```javascript
 // tests/integration/CommandBus.test.js
 - CommandBus integration: executes ping through empty pipeline
@@ -105,15 +117,15 @@ Jest Configuration: ✅ Present but underutilized
 
 ### Testing Gaps
 
-| Component | Status | Priority |
-|-----------|--------|----------|
-| Command Handlers | ❌ No tests | HIGH |
-| Middleware Pipeline | ❌ No tests | HIGH |
-| Services (Permission, RateLimit, Help) | ❌ No tests | HIGH |
-| Utilities & Helpers | ❌ No tests | HIGH |
-| Error Handling | ❌ No tests | MEDIUM |
-| Command Registry | ❌ No tests | MEDIUM |
-| Configuration | ❌ No tests | MEDIUM |
+| Component                              | Status      | Priority |
+| -------------------------------------- | ----------- | -------- |
+| Command Handlers                       | ❌ No tests | HIGH     |
+| Middleware Pipeline                    | ❌ No tests | HIGH     |
+| Services (Permission, RateLimit, Help) | ❌ No tests | HIGH     |
+| Utilities & Helpers                    | ❌ No tests | HIGH     |
+| Error Handling                         | ❌ No tests | MEDIUM   |
+| Command Registry                       | ❌ No tests | MEDIUM   |
+| Configuration                          | ❌ No tests | MEDIUM   |
 
 ---
 
@@ -144,17 +156,20 @@ Jest Configuration: ✅ Present but underutilized
 ### Phase 1: Testing Foundation (Weeks 1-2)
 
 #### 1.1 Set Up TDD Infrastructure
+
 ```bash
 npm install --save-dev @testing-library/jest-dom jest-mock-extended
 ```
 
 **Tasks:**
+
 - [ ] Add test utilities and mocks library
 - [ ] Create `tests/fixtures/` for mock data
 - [ ] Create `tests/setup.js` for test environment
 - [ ] Document testing patterns in `docs/TESTING.md`
 
 #### 1.2 Unit Test Command Handlers
+
 ```
 Target: tests/unit/handlers/
 ├── core/
@@ -168,6 +183,7 @@ Target: tests/unit/handlers/
 **Minimum Coverage:** 70% → Target 85%
 
 #### 1.3 Unit Test Core Services
+
 ```
 Target: tests/unit/services/
 ├── CommandService.test.js
@@ -177,6 +193,7 @@ Target: tests/unit/services/
 ```
 
 #### 1.4 Unit Test Middleware
+
 ```
 Target: tests/unit/middleware/
 ├── AuditMiddleware.test.js
@@ -186,6 +203,7 @@ Target: tests/unit/middleware/
 ```
 
 **Success Criteria:**
+
 - All core handlers have tests (coverage > 80%)
 - All services tested
 - All middleware tested
@@ -194,11 +212,13 @@ Target: tests/unit/middleware/
 ### Phase 2: Code Quality & Linting (Weeks 2-3)
 
 #### 2.1 Set Up ESLint & Prettier
+
 ```bash
 npm install --save-dev eslint prettier eslint-config-prettier eslint-plugin-jest @eslint/js
 ```
 
 **Create `.eslintrc.json`:**
+
 ```json
 {
   "extends": ["eslint:recommended", "prettier"],
@@ -213,12 +233,14 @@ npm install --save-dev eslint prettier eslint-config-prettier eslint-plugin-jest
 ```
 
 #### 2.2 Set Up Pre-commit Hooks
+
 ```bash
 npm install --save-dev husky lint-staged
 npx husky install
 ```
 
 **Create `.husky/pre-commit`:**
+
 ```bash
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
@@ -226,6 +248,7 @@ npx lint-staged
 ```
 
 **Create `.lintstagedrc.json`:**
+
 ```json
 {
   "*.js": ["eslint --fix", "prettier --write"],
@@ -234,6 +257,7 @@ npx lint-staged
 ```
 
 #### 2.3 Add Code Quality Scripts
+
 ```json
 {
   "scripts": {
@@ -246,6 +270,7 @@ npx lint-staged
 ```
 
 **Success Criteria:**
+
 - `npm run lint` passes with 0 errors
 - Pre-commit hooks configured and working
 - All files properly formatted
@@ -255,6 +280,7 @@ npx lint-staged
 #### 3.1 Set Up GitHub Actions Workflows
 
 **Create `.github/workflows/test.yml`:**
+
 ```yaml
 name: Test & Coverage
 
@@ -280,6 +306,7 @@ jobs:
 ```
 
 **Create `.github/workflows/security.yml`:**
+
 ```yaml
 name: Security
 
@@ -294,6 +321,7 @@ jobs:
 ```
 
 **Create `.github/workflows/docker.yml`:**
+
 ```yaml
 name: Docker Build
 
@@ -314,7 +342,9 @@ jobs:
 ```
 
 #### 3.2 Set Up Dependabot
+
 Create `.github/dependabot.yml`:
+
 ```yaml
 version: 2
 updates:
@@ -328,14 +358,18 @@ updates:
 ```
 
 #### 3.3 Set Up Branch Protection
+
 In GitHub repository settings:
+
 - ✅ Require status checks (test, lint, security)
 - ✅ Require code review before merge
 - ✅ Require branches up to date before merge
 - ✅ Restrict who can push to main
 
 #### 3.4 Add CD for Deployment
+
 Create `.github/workflows/deploy.yml`:
+
 ```yaml
 name: Deploy
 
@@ -361,6 +395,7 @@ jobs:
 ```
 
 **Success Criteria:**
+
 - All workflows pass on push
 - Coverage reports generated
 - Status checks required for PRs
@@ -369,7 +404,9 @@ jobs:
 ### Phase 4: Documentation & Best Practices (Weeks 4-5)
 
 #### 4.1 Create Testing Documentation
+
 `docs/TESTING.md`:
+
 - TDD workflow guidelines
 - Test file structure
 - Mocking patterns
@@ -377,7 +414,9 @@ jobs:
 - Coverage expectations
 
 #### 4.2 Create CI/CD Documentation
+
 `docs/CI-CD.md`:
+
 - GitHub Actions workflow overview
 - Branch protection rules
 - Deployment process
@@ -385,7 +424,9 @@ jobs:
 - Monitoring alerts
 
 #### 4.3 Add JSDoc Comments
+
 Document all public methods:
+
 ```javascript
 /**
  * Executes a command through the middleware pipeline
@@ -399,7 +440,9 @@ async execute(command) {
 ```
 
 #### 4.4 Create Contributing Guide
+
 `CONTRIBUTING.md`:
+
 - Development setup
 - TDD workflow
 - PR process
@@ -411,24 +454,28 @@ async execute(command) {
 ## 📈 Metrics & Success Criteria
 
 ### By End of Phase 1 (Testing):
+
 - ✅ Test coverage: 70%+
 - ✅ All critical paths tested (handlers, services, middleware)
 - ✅ `npm test` passing 100%
 - ✅ Jest configuration optimized
 
 ### By End of Phase 2 (Code Quality):
+
 - ✅ 0 ESLint errors
 - ✅ Pre-commit hooks working
 - ✅ Code formatted consistently
 - ✅ JSDoc comments for public APIs
 
 ### By End of Phase 3 (CI/CD):
+
 - ✅ All GitHub Actions workflows passing
 - ✅ Status checks required for PRs
 - ✅ Automated deployments working
 - ✅ Coverage reports in PRs
 
 ### By End of Phase 4 (Documentation):
+
 - ✅ Complete testing guide
 - ✅ Complete CI/CD guide
 - ✅ Contributing guide
@@ -439,6 +486,7 @@ async execute(command) {
 ## 🎯 Quick Implementation Commands
 
 ### Setup Testing
+
 ```bash
 # Install testing dependencies
 npm install --save-dev jest-mock-extended
@@ -452,6 +500,7 @@ npm set-script "test:coverage" "jest --coverage"
 ```
 
 ### Setup Linting
+
 ```bash
 # Install ESLint & Prettier
 npm install --save-dev eslint prettier eslint-config-prettier eslint-plugin-jest
@@ -462,6 +511,7 @@ npx prettier --init
 ```
 
 ### Setup Git Hooks
+
 ```bash
 # Install Husky
 npm install --save-dev husky lint-staged
@@ -476,7 +526,8 @@ npx husky add .husky/pre-commit "npx lint-staged"
 ## 📦 Dependency Audit
 
 ### Current Dependencies (13)
-- ✅ @bull-board/* - Job queue admin UI
+
+- ✅ @bull-board/\* - Job queue admin UI
 - ✅ better-sqlite3 - Fast SQLite driver
 - ✅ bullmq - Job queue
 - ✅ discord.js - Discord bot framework
@@ -490,6 +541,7 @@ npx husky add .husky/pre-commit "npx lint-staged"
 - ✅ zod - Schema validation
 
 ### Recommended Additions
+
 ```json
 {
   "devDependencies": {
@@ -550,6 +602,7 @@ VeraBot has a **strong architectural foundation** ready for enterprise use. The 
 4. **Documentation** (Medium) - Limited guides
 
 Implementing the 4-phase plan above will:
+
 - ✅ Increase test coverage from ~0.4% to 85%+
 - ✅ Establish quality gates on all commits
 - ✅ Enable automated testing and deployments

@@ -42,4 +42,3 @@ class BroadcastHandler {
 }
 
 module.exports = BroadcastHandler;
-

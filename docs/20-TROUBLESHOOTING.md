@@ -11,12 +11,14 @@ Solutions for common VeraBot issues and errors.
 **Symptoms:** Commands don't work, bot appears offline
 
 **Diagnosis:**
+
 1. Check bot status in Discord (green/red dot)
 2. Check logs: `LOG_LEVEL=debug npm start`
 3. Try `/ping` command
 4. Check Redis connection
 
 **Solutions:**
+
 ```bash
 # Restart bot
 npm start
@@ -36,6 +38,7 @@ ping discord.com
 **Cause:** Bot process crashed or disconnected
 
 **Solution:**
+
 ```bash
 # Restart bot
 npm start
@@ -56,6 +59,7 @@ lsof -i :3000
 **Cause:** User doesn't have permission for command
 
 **Solution:**
+
 ```
 # Admin runs:
 /allow-command deploy @user
@@ -68,6 +72,7 @@ lsof -i :3000
 **Cause:** Admin permissions not setup
 
 **Solution:**
+
 1. Verify you're Discord server admin
 2. Try `/info` to check your role
 3. Ask server owner for admin role
@@ -81,6 +86,7 @@ lsof -i :3000
 **Cause:** Multiple bot instances or processes accessing SQLite simultaneously
 
 **Solution:**
+
 ```bash
 # Only run one instance
 npm start
@@ -94,6 +100,7 @@ DATABASE_PATH=./db-2.db npm start
 **Cause:** Unexpected crash while writing
 
 **Solution:**
+
 ```bash
 # Backup old database
 mv database.db database.db.backup
@@ -114,11 +121,13 @@ npm start
 **Symptoms:** Slash command not in Discord autocomplete
 
 **Diagnosis:**
+
 1. Type `/` and search for command
 2. Check logs for registration errors
 3. Verify bot has permissions
 
 **Solutions:**
+
 ```bash
 # Restart bot to re-register
 npm start
@@ -137,6 +146,7 @@ npm start
 **Cause:** Command taking too long to execute
 
 **Solution:**
+
 1. Check system resources
 2. Look for slow database queries
 3. Check logs: `LOG_LEVEL=debug npm start`
@@ -150,11 +160,13 @@ npm start
 **Error:** `ECONNREFUSED 127.0.0.1:6379`
 
 **Check:**
+
 1. Is Redis running?
 2. Correct host/port?
 3. Firewall blocking?
 
 **Solutions:**
+
 ```bash
 # Start Redis
 redis-server
@@ -175,6 +187,7 @@ cat .env | grep REDIS
 **Error:** `NOAUTH Authentication required`
 
 **Solution:**
+
 ```env
 REDIS_PASSWORD=your_password
 ```
@@ -190,6 +203,7 @@ Make sure password matches Redis config.
 **Cause:** Network, permissions, or Node version issues
 
 **Solution:**
+
 ```bash
 # Check Node version
 node --version  # Should be 18+
@@ -209,6 +223,7 @@ yarn install
 **Error:** `Cannot find module 'discord.js'`
 
 **Solution:**
+
 ```bash
 # Reinstall dependencies
 rm -rf node_modules
@@ -227,6 +242,7 @@ npm ls
 **Error:** No tests found or jest not running
 
 **Solution:**
+
 ```bash
 # Install dependencies
 npm install
@@ -243,6 +259,7 @@ npm test -- --no-cache
 **Error:** Test takes longer than 5 seconds
 
 **Solution:**
+
 1. Optimize slow operations
 2. Increase timeout for specific test
 3. Check for infinite loops
@@ -250,6 +267,7 @@ npm test -- --no-cache
 ### Coverage Not Generated
 
 **Solution:**
+
 ```bash
 npm run test:coverage
 
@@ -266,7 +284,9 @@ open coverage/lcov-report/index.html
 **Error:** Application won't start without token
 
 **Solution:**
+
 1. Create `.env` file:
+
    ```bash
    cat > .env << EOF
    DISCORD_TOKEN=your_token
@@ -282,6 +302,7 @@ open coverage/lcov-report/index.html
 ### Environment Variables Not Loading
 
 **Solution:**
+
 1. Verify `.env` file exists in project root
 2. Check file permissions: `chmod 600 .env`
 3. Restart bot after changing `.env`
@@ -297,11 +318,13 @@ open coverage/lcov-report/index.html
 ### High Memory Usage
 
 **Check:**
+
 ```bash
 ps aux | grep node    # See memory usage
 ```
 
 **Solutions:**
+
 1. Increase available RAM
 2. Check for memory leaks
 3. Monitor job queue size
@@ -310,12 +333,14 @@ ps aux | grep node    # See memory usage
 ### Slow Command Response
 
 **Diagnosis:**
+
 ```bash
 LOG_LEVEL=debug npm start
 # Look for command execution times
 ```
 
 **Solutions:**
+
 1. Add database indexes
 2. Cache frequently-used data
 3. Offload to job queue
@@ -330,6 +355,7 @@ LOG_LEVEL=debug npm start
 **Cause:** Wrong or expired Discord token
 
 **Solution:**
+
 1. Get new token from Discord Developer Portal
 2. Update `.env`
 3. Restart bot
@@ -339,6 +365,7 @@ LOG_LEVEL=debug npm start
 **Cause:** Wrong or missing CLIENT_ID
 
 **Solution:**
+
 1. Get correct ID from Discord Developer Portal
 2. Update `.env`
 3. Restart bot
@@ -348,6 +375,7 @@ LOG_LEVEL=debug npm start
 **Cause:** Too many API requests
 
 **Solution:**
+
 1. Reduce request frequency
 2. Implement backoff/retry logic
 3. Increase rate limit windows
@@ -359,6 +387,7 @@ LOG_LEVEL=debug npm start
 ### Debug Steps
 
 When reporting issues, provide:
+
 1. Error message (full text)
 2. Steps to reproduce
 3. Log output: `LOG_LEVEL=debug npm start`

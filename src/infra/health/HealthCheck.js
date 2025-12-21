@@ -17,7 +17,7 @@ async function healthCheck(container) {
     status: 'ok',
     db: container.db.isConnected() ? 'up' : 'down',
     ws: container.wsClient?.isConnected() ? 'up' : 'down',
-    discord: container.discordClient?.user ? 'up' : 'down'
+    discord: container.discordClient?.user ? 'up' : 'down',
   };
 }
 

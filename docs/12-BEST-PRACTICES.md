@@ -24,20 +24,22 @@ Coding standards, patterns, and conventions for VeraBot development.
 ### JavaScript Standards
 
 **Use ES6+ features:**
+
 ```javascript
 // ✅ GOOD
 const user = { name: 'John', age: 30 };
 const { name } = user;
-const result = data.map(x => x * 2).filter(x => x > 5);
+const result = data.map((x) => x * 2).filter((x) => x > 5);
 const promise = new Promise((resolve) => {});
 
 // ❌ AVOID
 var user = { name: 'John', age: 30 };
 user = user || {};
-result = data.reduce((a, x) => x * 2 > 5 ? [...a, x*2] : a, []);
+result = data.reduce((a, x) => (x * 2 > 5 ? [...a, x * 2] : a), []);
 ```
 
 **Prefer async/await over promises:**
+
 ```javascript
 // ✅ GOOD
 async function fetchUser(id) {
@@ -52,9 +54,10 @@ async function fetchUser(id) {
 
 // ❌ AVOID
 function fetchUser(id) {
-  return db.getUser(id)
-    .then(user => user)
-    .catch(error => {
+  return db
+    .getUser(id)
+    .then((user) => user)
+    .catch((error) => {
       console.log(error);
       throw error;
     });
@@ -62,14 +65,19 @@ function fetchUser(id) {
 ```
 
 **Use strict equality:**
+
 ```javascript
 // ✅ GOOD
-if (value === undefined) {}
-if (count > 0) {}
+if (value === undefined) {
+}
+if (count > 0) {
+}
 
 // ❌ AVOID
-if (value == undefined) {}
-if (count) {}  // Could be false, 0, '', null
+if (value == undefined) {
+}
+if (count) {
+} // Could be false, 0, '', null
 ```
 
 ### Formatting
@@ -85,20 +93,21 @@ if (count) {}  // Could be false, 0, '', null
 const config = {
   host: 'localhost',
   port: 3000,
-  debug: true,  // trailing comma
+  debug: true, // trailing comma
 };
 
 // ❌ AVOID
 const config = {
   host: 'localhost',
   port: 3000,
-  debug: true   // no trailing comma
-}
+  debug: true, // no trailing comma
+};
 ```
 
 ### Linting
 
 Run before committing:
+
 ```bash
 npm run lint
 ```
@@ -241,7 +250,7 @@ class MyCommandHandler {
     // 1. Validate input
     validateInput(command.args, {
       required: ['arg1'],
-      types: { arg1: 'string' }
+      types: { arg1: 'string' },
     });
 
     // 2. Extract arguments
@@ -279,7 +288,7 @@ if (!user) {
   throw new DomainError('User not found');
 }
 
-if (!await permission.check(userId)) {
+if (!(await permission.check(userId))) {
   throw new PermissionError('Insufficient permissions');
 }
 
@@ -292,8 +301,8 @@ if (!user) {
   throw new Error('bad');
 }
 
-if (!await permission.check(userId)) {
-  return { error: 'no permission' };  // Inconsistent error handling
+if (!(await permission.check(userId))) {
+  return { error: 'no permission' }; // Inconsistent error handling
 }
 ```
 
@@ -320,9 +329,9 @@ throw new RateLimitError('Command rate limited');
 throw new DomainError('Invalid operation');
 
 // ❌ AVOID
-throw new Error('error');  // Generic, not specific
-return { error: 'message' };  // Not thrown
-throw 'string error';  // Invalid
+throw new Error('error'); // Generic, not specific
+return { error: 'message' }; // Not thrown
+throw 'string error'; // Invalid
 ```
 
 ### Try-Catch Best Practices
@@ -346,8 +355,8 @@ try {
 try {
   const result = await operation();
 } catch (error) {
-  console.log('Error:', error);  // Generic logging
-  return null;  // Silently fail
+  console.log('Error:', error); // Generic logging
+  return null; // Silently fail
 }
 ```
 
@@ -453,10 +462,7 @@ const user = db.prepare(`SELECT * FROM users WHERE id = ${userId}`).get();
 
 ```javascript
 // ✅ GOOD - Parallel when independent
-const [users, permissions] = await Promise.all([
-  db.getAllUsers(),
-  db.getAllPermissions()
-]);
+const [users, permissions] = await Promise.all([db.getAllUsers(), db.getAllPermissions()]);
 
 // ❌ AVOID - Sequential when parallel possible
 const users = await db.getAllUsers();
@@ -485,13 +491,13 @@ console.error('error');
 // ✅ GOOD - Validate all inputs
 const schema = z.object({
   userId: z.string().uuid(),
-  action: z.enum(['create', 'update', 'delete'])
+  action: z.enum(['create', 'update', 'delete']),
 });
 
 const validated = schema.parse(input);
 
 // ❌ AVOID - Trusting user input
-const userId = input.userId;  // Could be anything
+const userId = input.userId; // Could be anything
 ```
 
 ### SQL Injection Prevention
@@ -508,12 +514,13 @@ db.prepare(`SELECT * FROM users WHERE id = ${userId}`).get();
 
 ```javascript
 // ✅ GOOD - Check permissions before action
-if (!await permissionService.check(userId, 'admin')) {
+if (!(await permissionService.check(userId, 'admin'))) {
   throw new PermissionError('Admin required');
 }
 
 // ❌ AVOID - Trusting client-side checks
-if (user.isAdmin) {  // Client might lie
+if (user.isAdmin) {
+  // Client might lie
   // Do something
 }
 ```
@@ -599,6 +606,7 @@ src/infra/
 ### ESLint Configuration
 
 ESLint is configured in `jest.config.js`. Key rules:
+
 - Enforce `const` over `var`
 - Require semicolons
 - Single quotes for strings
@@ -609,6 +617,7 @@ Run: `npm run lint`
 ### Testing Setup
 
 Jest is configured for:
+
 - Unit tests in `tests/unit/`
 - Integration tests in `tests/integration/`
 - 70% coverage target
@@ -630,17 +639,17 @@ This ensures linting and tests pass before commits.
 
 ## Quick Reference
 
-| Topic | Best Practice |
-|-------|----------------|
-| **Variables** | Use `const`, be descriptive |
-| **Functions** | Single responsibility, document |
-| **Async** | Use async/await, handle errors |
-| **Database** | Parameterized queries only |
-| **Errors** | Throw specific error types |
-| **Logging** | Structured with context |
-| **Testing** | Comprehensive, isolated, clear |
-| **Git** | Focused commits, clear messages |
-| **Security** | Validate input, check permissions |
+| Topic           | Best Practice                       |
+| --------------- | ----------------------------------- |
+| **Variables**   | Use `const`, be descriptive         |
+| **Functions**   | Single responsibility, document     |
+| **Async**       | Use async/await, handle errors      |
+| **Database**    | Parameterized queries only          |
+| **Errors**      | Throw specific error types          |
+| **Logging**     | Structured with context             |
+| **Testing**     | Comprehensive, isolated, clear      |
+| **Git**         | Focused commits, clear messages     |
+| **Security**    | Validate input, check permissions   |
 | **Performance** | Use indexes, parallelize operations |
 
 ---

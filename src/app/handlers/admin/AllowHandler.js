@@ -31,4 +31,3 @@ class AllowHandler {
 }
 
 module.exports = AllowHandler;
-

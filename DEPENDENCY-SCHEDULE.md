@@ -1,11 +1,13 @@
 # Dependency Update and Maintenance Schedule
 
 ## Overview
+
 This document outlines the schedule and process for updating and maintaining project dependencies in Verabot.
 
 ## Update Frequency
 
 ### Security Updates
+
 - **Frequency**: Immediate
 - **Priority**: Critical
 - **Process**: Emergency hotfix branch → Direct merge after review
@@ -13,6 +15,7 @@ This document outlines the schedule and process for updating and maintaining pro
 - **Testing**: Full regression testing required
 
 ### Patch Updates (Patch Version)
+
 - **Frequency**: Weekly (Mondays 09:00 UTC)
 - **Priority**: High
 - **Process**: Standard feature branch → Pull request → Merge
@@ -20,6 +23,7 @@ This document outlines the schedule and process for updating and maintaining pro
 - **Testing**: Full test suite
 
 ### Minor Updates (Minor Version)
+
 - **Frequency**: Bi-weekly (1st and 3rd Monday of month)
 - **Priority**: Medium
 - **Process**: Feature branch → Pull request with changelog
@@ -27,6 +31,7 @@ This document outlines the schedule and process for updating and maintaining pro
 - **Testing**: Full test suite + integration tests
 
 ### Major Updates (Major Version)
+
 - **Frequency**: Monthly (Last Monday of month)
 - **Priority**: Normal
 - **Process**: Dedicated feature branch → Detailed PR with migration guide
@@ -36,6 +41,7 @@ This document outlines the schedule and process for updating and maintaining pro
 ## Maintenance Windows
 
 ### Standard Maintenance
+
 - **Day**: Monday
 - **Time**: 09:00 - 12:00 UTC
 - **Duration**: 3 hours
@@ -43,6 +49,7 @@ This document outlines the schedule and process for updating and maintaining pro
 - **Activities**: Dependency audits, performance reviews
 
 ### Extended Maintenance
+
 - **Day**: Last Friday of the month
 - **Time**: 14:00 - 18:00 UTC
 - **Duration**: 4 hours
@@ -52,16 +59,19 @@ This document outlines the schedule and process for updating and maintaining pro
 ## Dependency Categories
 
 ### Direct Dependencies
+
 - Keep within 2 minor versions of latest
 - Update on minor release schedule
 - No version pinning except for critical stability
 
 ### Dev Dependencies
+
 - Update every 2 weeks
 - May include beta/RC versions for testing
 - Test quality of tooling before promoting to stable
 
 ### Peer Dependencies
+
 - Verify compatibility with ecosystem
 - Update when parent dependency requires
 - Document breaking changes
@@ -81,12 +91,14 @@ This document outlines the schedule and process for updating and maintaining pro
 ## Tools and Automation
 
 ### Automated Checks
+
 - **Dependabot**: Enabled for security alerts
 - **npm audit**: Runs on every pull request
 - **Snyk**: Integrated security scanning
 - **GitHub Actions**: Automated test runs on dependency PRs
 
 ### Manual Review
+
 - All dependency updates require at least one approval
 - Security updates require maintainer sign-off
 - Major version updates require 2 approvals
@@ -101,11 +113,13 @@ This document outlines the schedule and process for updating and maintaining pro
 ## Rollback Procedures
 
 ### Minor Issues (< 1 hour impact)
+
 1. Revert to previous version immediately
 2. Create incident report
 3. Root cause analysis within 24 hours
 
 ### Major Issues (> 1 hour impact)
+
 1. Declare incident
 2. Rollback to last known good version
 3. Post-mortem within 48 hours
@@ -113,14 +127,14 @@ This document outlines the schedule and process for updating and maintaining pro
 
 ## Schedule Summary Table
 
-| Update Type | Frequency | Day | Time (UTC) | Priority |
-|---|---|---|---|---|
-| Security | Immediate | Any | ASAP | Critical |
-| Patch | Weekly | Monday | 09:00 | High |
-| Minor | Bi-weekly | 1st & 3rd Mon | 09:00 | Medium |
-| Major | Monthly | Last Mon | 14:00 | Normal |
-| Standard Maintenance | Weekly | Monday | 09:00 | - |
-| Extended Maintenance | Monthly | Last Fri | 14:00 | - |
+| Update Type          | Frequency | Day           | Time (UTC) | Priority |
+| -------------------- | --------- | ------------- | ---------- | -------- |
+| Security             | Immediate | Any           | ASAP       | Critical |
+| Patch                | Weekly    | Monday        | 09:00      | High     |
+| Minor                | Bi-weekly | 1st & 3rd Mon | 09:00      | Medium   |
+| Major                | Monthly   | Last Mon      | 14:00      | Normal   |
+| Standard Maintenance | Weekly    | Monday        | 09:00      | -        |
+| Extended Maintenance | Monthly   | Last Fri      | 14:00      | -        |
 
 ## Next Scheduled Updates
 

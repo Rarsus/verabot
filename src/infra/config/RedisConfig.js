@@ -9,7 +9,7 @@ const { z } = require('zod');
 const RedisSchema = z.object({
   REDIS_HOST: z.string().default('localhost'),
   REDIS_PORT: z.string().default('6379'),
-  REDIS_PASSWORD: z.string().optional()
+  REDIS_PASSWORD: z.string().optional(),
 });
 
 /**

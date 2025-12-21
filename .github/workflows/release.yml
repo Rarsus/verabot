@@ -77,7 +77,7 @@ jobs:
           release_name: Release ${{ github.ref_name }}
           body: |
             ## Release Notes
-            
+
             See [CHANGELOG.md](CHANGELOG.md) for detailed changes.
           draft: false
           prerelease: false

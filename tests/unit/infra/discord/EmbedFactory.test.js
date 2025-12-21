@@ -8,8 +8,8 @@ jest.mock('discord.js', () => ({
   ButtonStyle: {
     Secondary: 2,
     Primary: 1,
-    Danger: 4
-  }
+    Danger: 4,
+  },
 }));
 
 describe('EmbedFactory', () => {
@@ -23,18 +23,18 @@ describe('EmbedFactory', () => {
       setDescription: jest.fn().mockReturnThis(),
       setFooter: jest.fn().mockReturnThis(),
       setFields: jest.fn().mockReturnThis(),
-      addFields: jest.fn().mockReturnThis()
+      addFields: jest.fn().mockReturnThis(),
     }));
 
     ButtonBuilder.mockImplementation(() => ({
       setCustomId: jest.fn().mockReturnThis(),
       setLabel: jest.fn().mockReturnThis(),
       setStyle: jest.fn().mockReturnThis(),
-      setDisabled: jest.fn().mockReturnThis()
+      setDisabled: jest.fn().mockReturnThis(),
     }));
 
     ActionRowBuilder.mockImplementation(() => ({
-      addComponents: jest.fn().mockReturnThis()
+      addComponents: jest.fn().mockReturnThis(),
     }));
   });
 
@@ -58,7 +58,7 @@ describe('EmbedFactory', () => {
       const command = { name: 'ping' };
       const result = {
         success: true,
-        data: { message: 'Pong!' }
+        data: { message: 'Pong!' },
       };
 
       const embed = EmbedFactory.commandResult(command, result);
@@ -71,7 +71,7 @@ describe('EmbedFactory', () => {
       const command = { name: 'test' };
       const result = {
         success: false,
-        error: { message: 'Permission denied' }
+        error: { message: 'Permission denied' },
       };
 
       const embed = EmbedFactory.commandResult(command, result);
@@ -87,7 +87,7 @@ describe('EmbedFactory', () => {
       const embed = EmbedFactory.commandResult(command, result, { elapsedSec: 1.234 });
 
       expect(embed.setFooter).toHaveBeenCalledWith({
-        text: expect.stringContaining('took 1.23s')
+        text: expect.stringContaining('took 1.23s'),
       });
     });
 
@@ -98,7 +98,7 @@ describe('EmbedFactory', () => {
       const embed = EmbedFactory.commandResult(command, result, { cooldownSec: 30 });
 
       expect(embed.setFooter).toHaveBeenCalledWith({
-        text: expect.stringContaining('cooldown 30s')
+        text: expect.stringContaining('cooldown 30s'),
       });
     });
 
@@ -108,14 +108,14 @@ describe('EmbedFactory', () => {
 
       const embed = EmbedFactory.commandResult(command, result, {
         elapsedSec: 2.5,
-        cooldownSec: 10
+        cooldownSec: 10,
       });
 
       expect(embed.setFooter).toHaveBeenCalledWith({
-        text: expect.stringContaining('took 2.50s')
+        text: expect.stringContaining('took 2.50s'),
       });
       expect(embed.setFooter).toHaveBeenCalledWith({
-        text: expect.stringContaining('cooldown 10s')
+        text: expect.stringContaining('cooldown 10s'),
       });
     });
 
@@ -174,7 +174,7 @@ describe('EmbedFactory', () => {
         description: 'Ban a user from the server',
         category: 'admin',
         usage: 'ban <user> [reason]',
-        examples: ['ban @user', 'ban @user spamming']
+        examples: ['ban @user', 'ban @user spamming'],
       };
 
       const embed = EmbedFactory.commandHelp(meta);
@@ -188,7 +188,7 @@ describe('EmbedFactory', () => {
         description: 'Test command',
         category: 'core',
         usage: 'test',
-        examples: []
+        examples: [],
       };
 
       const embed = EmbedFactory.commandHelp(meta);
@@ -202,7 +202,7 @@ describe('EmbedFactory', () => {
         description: 'Kick a user',
         category: 'admin',
         usage: 'kick <user>',
-        examples: []
+        examples: [],
       };
 
       const embed = EmbedFactory.commandHelp(meta);
@@ -219,14 +219,14 @@ describe('EmbedFactory', () => {
         description: 'Ban user',
         category: 'admin',
         usage: 'ban <user>',
-        examples: ['ban @user', 'ban @user reason']
+        examples: ['ban @user', 'ban @user reason'],
       };
 
       const embed = EmbedFactory.commandHelp(meta);
 
       expect(embed.addFields).toHaveBeenCalledWith({
         name: 'Examples',
-        value: expect.stringContaining('• `ban @user`')
+        value: expect.stringContaining('• `ban @user`'),
       });
     });
 
@@ -236,14 +236,14 @@ describe('EmbedFactory', () => {
         description: 'Test',
         category: 'core',
         usage: 'test',
-        examples: []
+        examples: [],
       };
 
       const embed = EmbedFactory.commandHelp(meta);
 
       expect(embed.addFields).toHaveBeenCalledWith({
         name: 'Examples',
-        value: 'None'
+        value: 'None',
       });
     });
   });
@@ -276,7 +276,7 @@ describe('EmbedFactory', () => {
     it('should add command fields for non-empty list', () => {
       const items = [
         { name: 'ban', description: 'Ban a user' },
-        { name: 'kick', description: 'Kick a user' }
+        { name: 'kick', description: 'Kick a user' },
       ];
 
       const embed = EmbedFactory.commandList('admin', 1, 1, items);
@@ -286,13 +286,13 @@ describe('EmbedFactory', () => {
           expect.objectContaining({
             name: 'ban',
             value: 'Ban a user',
-            inline: false
+            inline: false,
           }),
           expect.objectContaining({
             name: 'kick',
             value: 'Kick a user',
-            inline: false
-          })
+            inline: false,
+          }),
         ])
       );
     });
@@ -318,9 +318,7 @@ describe('EmbedFactory', () => {
 
       const embed = EmbedFactory.autocomplete(suggestions);
 
-      expect(embed.setDescription).toHaveBeenCalledWith(
-        expect.stringContaining('• `ban`')
-      );
+      expect(embed.setDescription).toHaveBeenCalledWith(expect.stringContaining('• `ban`'));
     });
 
     it('should show all suggestions', () => {
@@ -328,15 +326,9 @@ describe('EmbedFactory', () => {
 
       const embed = EmbedFactory.autocomplete(suggestions);
 
-      expect(embed.setDescription).toHaveBeenCalledWith(
-        expect.stringMatching(/user1/)
-      );
-      expect(embed.setDescription).toHaveBeenCalledWith(
-        expect.stringMatching(/user2/)
-      );
-      expect(embed.setDescription).toHaveBeenCalledWith(
-        expect.stringMatching(/user3/)
-      );
+      expect(embed.setDescription).toHaveBeenCalledWith(expect.stringMatching(/user1/));
+      expect(embed.setDescription).toHaveBeenCalledWith(expect.stringMatching(/user2/));
+      expect(embed.setDescription).toHaveBeenCalledWith(expect.stringMatching(/user3/));
     });
 
     it('should show no suggestions message when empty', () => {
@@ -382,7 +374,7 @@ describe('EmbedFactory', () => {
         setCustomId: jest.fn().mockReturnThis(),
         setLabel: jest.fn().mockReturnThis(),
         setStyle: jest.fn().mockReturnThis(),
-        setDisabled: jest.fn().mockReturnThis()
+        setDisabled: jest.fn().mockReturnThis(),
       };
       ButtonBuilder.mockImplementation(() => mockButton);
 
@@ -397,7 +389,7 @@ describe('EmbedFactory', () => {
         setCustomId: jest.fn().mockReturnThis(),
         setLabel: jest.fn().mockReturnThis(),
         setStyle: jest.fn().mockReturnThis(),
-        setDisabled: jest.fn().mockReturnThis()
+        setDisabled: jest.fn().mockReturnThis(),
       };
       ButtonBuilder.mockImplementation(() => mockButton);
 
@@ -411,7 +403,7 @@ describe('EmbedFactory', () => {
         setCustomId: jest.fn().mockReturnThis(),
         setLabel: jest.fn().mockReturnThis(),
         setStyle: jest.fn().mockReturnThis(),
-        setDisabled: jest.fn().mockReturnThis()
+        setDisabled: jest.fn().mockReturnThis(),
       };
       ButtonBuilder.mockImplementation(() => mockButton);
 
@@ -425,7 +417,7 @@ describe('EmbedFactory', () => {
         setCustomId: jest.fn().mockReturnThis(),
         setLabel: jest.fn().mockReturnThis(),
         setStyle: jest.fn().mockReturnThis(),
-        setDisabled: jest.fn().mockReturnThis()
+        setDisabled: jest.fn().mockReturnThis(),
       };
       ButtonBuilder.mockImplementation(() => mockButton);
 
@@ -448,21 +440,19 @@ describe('EmbedFactory', () => {
           timestamp: '2025-01-01 10:00:00',
           command: 'ban',
           user: 'admin#1234',
-          success: true
+          success: true,
         },
         {
           timestamp: '2025-01-01 10:05:00',
           command: 'kick',
           user: 'moderator#5678',
-          success: false
-        }
+          success: false,
+        },
       ];
 
       const embed = EmbedFactory.audit(entries);
 
-      expect(embed.setDescription).toHaveBeenCalledWith(
-        expect.stringContaining('ban')
-      );
+      expect(embed.setDescription).toHaveBeenCalledWith(expect.stringContaining('ban'));
     });
 
     it('should show success checkmark for successful commands', () => {
@@ -471,15 +461,13 @@ describe('EmbedFactory', () => {
           timestamp: '2025-01-01 10:00:00',
           command: 'ban',
           user: 'admin#1234',
-          success: true
-        }
+          success: true,
+        },
       ];
 
       const embed = EmbedFactory.audit(entries);
 
-      expect(embed.setDescription).toHaveBeenCalledWith(
-        expect.stringContaining('✅')
-      );
+      expect(embed.setDescription).toHaveBeenCalledWith(expect.stringContaining('✅'));
     });
 
     it('should show failure mark for failed commands', () => {
@@ -488,15 +476,13 @@ describe('EmbedFactory', () => {
           timestamp: '2025-01-01 10:00:00',
           command: 'ban',
           user: 'admin#1234',
-          success: false
-        }
+          success: false,
+        },
       ];
 
       const embed = EmbedFactory.audit(entries);
 
-      expect(embed.setDescription).toHaveBeenCalledWith(
-        expect.stringContaining('❌')
-      );
+      expect(embed.setDescription).toHaveBeenCalledWith(expect.stringContaining('❌'));
     });
 
     it('should show no entries message when empty', () => {
@@ -511,33 +497,27 @@ describe('EmbedFactory', () => {
           timestamp: '2025-01-01 10:00:00',
           command: 'ban',
           user: 'admin#1234',
-          success: true
+          success: true,
         },
         {
           timestamp: '2025-01-01 10:05:00',
           command: 'kick',
           user: 'mod#5678',
-          success: true
+          success: true,
         },
         {
           timestamp: '2025-01-01 10:10:00',
           command: 'warn',
           user: 'mod#9012',
-          success: false
-        }
+          success: false,
+        },
       ];
 
       const embed = EmbedFactory.audit(entries);
 
-      expect(embed.setDescription).toHaveBeenCalledWith(
-        expect.stringContaining('ban')
-      );
-      expect(embed.setDescription).toHaveBeenCalledWith(
-        expect.stringContaining('kick')
-      );
-      expect(embed.setDescription).toHaveBeenCalledWith(
-        expect.stringContaining('warn')
-      );
+      expect(embed.setDescription).toHaveBeenCalledWith(expect.stringContaining('ban'));
+      expect(embed.setDescription).toHaveBeenCalledWith(expect.stringContaining('kick'));
+      expect(embed.setDescription).toHaveBeenCalledWith(expect.stringContaining('warn'));
     });
   });
 

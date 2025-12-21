@@ -98,6 +98,7 @@ npm test
 ```
 
 Expected output:
+
 ```
 PASS  tests/unit/core/commands/Command.test.js
 PASS  tests/unit/app/handlers/core/PingHandler.test.js
@@ -123,6 +124,7 @@ npm run test:coverage
 ```
 
 Output includes:
+
 - Statement coverage (lines executed)
 - Branch coverage (if/else paths)
 - Function coverage (functions called)
@@ -175,25 +177,29 @@ describe('PingHandler', () => {
 ### Anatomy of a Test
 
 ```javascript
-describe('Feature', () => {           // Test suite
-  let dependencies;                    // Setup
-  
-  beforeEach(() => {                   // Before each test
+describe('Feature', () => {
+  // Test suite
+  let dependencies; // Setup
+
+  beforeEach(() => {
+    // Before each test
     dependencies = createMocks();
   });
 
-  it('should do something', () => {    // Test case
+  it('should do something', () => {
+    // Test case
     // Arrange - Set up test data
     const input = { id: 1 };
-    
+
     // Act - Perform operation
     const result = myFunction(input);
-    
+
     // Assert - Verify result
     expect(result).toBe(expectedValue);
   });
 
-  afterEach(() => {                    // After each test
+  afterEach(() => {
+    // After each test
     jest.clearAllMocks();
   });
 });
@@ -213,11 +219,11 @@ describe('DeployHandler', () => {
 
   beforeEach(() => {
     mockService = {
-      deploy: jest.fn().mockResolvedValue({ status: 'success' })
+      deploy: jest.fn().mockResolvedValue({ status: 'success' }),
     };
     mockLogger = {
       info: jest.fn(),
-      error: jest.fn()
+      error: jest.fn(),
     };
     handler = new DeployHandler(mockService, mockLogger);
   });
@@ -225,7 +231,7 @@ describe('DeployHandler', () => {
   it('should deploy with valid environment', async () => {
     const command = {
       name: 'deploy',
-      args: ['production']
+      args: ['production'],
     };
 
     const result = await handler.handle(command);
@@ -237,7 +243,7 @@ describe('DeployHandler', () => {
   it('should throw error on invalid environment', async () => {
     const command = {
       name: 'deploy',
-      args: ['invalid']
+      args: ['invalid'],
     };
 
     mockService.deploy.mockRejectedValue(new Error('Invalid env'));
@@ -252,12 +258,12 @@ describe('DeployHandler', () => {
 ```javascript
 // ✅ GOOD - Mock external dependencies
 const mockDatabase = {
-  query: jest.fn().mockResolvedValue([{ id: 1 }])
+  query: jest.fn().mockResolvedValue([{ id: 1 }]),
 };
 
 // ❌ AVOID - Don't mock internal logic
 const mockCommandBus = {
-  execute: jest.fn()  // Only mock if external
+  execute: jest.fn(), // Only mock if external
 };
 ```
 
@@ -272,7 +278,7 @@ it('should fetch user', async () => {
 
 // ✅ ALSO GOOD - Return promise
 it('should fetch user', () => {
-  return userService.getUser(1).then(user => {
+  return userService.getUser(1).then((user) => {
     expect(user.id).toBe(1);
   });
 });
@@ -280,7 +286,7 @@ it('should fetch user', () => {
 // ❌ AVOID - Missing async/await
 it('should fetch user', () => {
   userService.getUser(1);
-  expect(user.id).toBe(1);  // Might not wait for promise
+  expect(user.id).toBe(1); // Might not wait for promise
 });
 ```
 
@@ -291,9 +297,7 @@ it('should fetch user', () => {
 it('should throw PermissionError', async () => {
   mockPermissionService.check.mockResolvedValue(false);
 
-  await expect(
-    handler.handle(command)
-  ).rejects.toThrow(PermissionError);
+  await expect(handler.handle(command)).rejects.toThrow(PermissionError);
 });
 
 // ✅ ALSO GOOD - Check error message
@@ -319,10 +323,10 @@ describe('UserRepository', () => {
         get: jest.fn().mockReturnValue({ id: 1, name: 'John' }),
         all: jest.fn().mockReturnValue([
           { id: 1, name: 'John' },
-          { id: 2, name: 'Jane' }
+          { id: 2, name: 'Jane' },
         ]),
-        run: jest.fn()
-      })
+        run: jest.fn(),
+      }),
     };
     repo = new UserRepository(mockDb);
   });
@@ -330,9 +334,7 @@ describe('UserRepository', () => {
   it('should get user by id', () => {
     const user = repo.getUser(1);
     expect(user.name).toBe('John');
-    expect(mockDb.prepare).toHaveBeenCalledWith(
-      expect.stringContaining('WHERE id = ?')
-    );
+    expect(mockDb.prepare).toHaveBeenCalledWith(expect.stringContaining('WHERE id = ?'));
   });
 
   it('should list all users', () => {
@@ -353,7 +355,7 @@ describe('PermissionMiddleware', () => {
 
   beforeEach(() => {
     mockPermissionService = {
-      check: jest.fn().mockResolvedValue(true)
+      check: jest.fn().mockResolvedValue(true),
     };
     mockNext = jest.fn().mockResolvedValue({ success: true });
     middleware = new PermissionMiddleware(mockPermissionService);
@@ -370,9 +372,7 @@ describe('PermissionMiddleware', () => {
   it('should block command without permissions', async () => {
     mockPermissionService.check.mockResolvedValue(false);
 
-    await expect(
-      middleware.handle(mockCommand, mockNext)
-    ).rejects.toThrow(PermissionError);
+    await expect(middleware.handle(mockCommand, mockNext)).rejects.toThrow(PermissionError);
   });
 });
 ```
@@ -394,10 +394,10 @@ describe('RateLimitService', () => {
 
   it('should enforce rate limits', async () => {
     service.record('user1', 'ping');
-    expect(service.check('user1', 'ping')).toBe(false);  // Still limited
+    expect(service.check('user1', 'ping')).toBe(false); // Still limited
 
-    jest.advanceTimersByTime(60000);  // Advance 1 minute
-    expect(service.check('user1', 'ping')).toBe(true);  // Now allowed
+    jest.advanceTimersByTime(60000); // Advance 1 minute
+    expect(service.check('user1', 'ping')).toBe(true); // Now allowed
   });
 });
 ```
@@ -419,6 +419,7 @@ Coverage Report:
 ### Coverage Gaps (Phase 1)
 
 Priority files needing tests:
+
 1. `infra/db/Repositories.js` - 0% → target +5-6%
 2. `infra/queue/JobQueueService.js` - 0% → target +2-3%
 3. `infra/discord/SlashCommandRegistrar.js` - 11.6% → target +3-4%
@@ -434,6 +435,7 @@ npm run test:coverage
 ```
 
 View HTML report:
+
 ```bash
 open coverage/lcov-report/index.html
 ```
@@ -447,10 +449,11 @@ open coverage/lcov-report/index.html
 **Problem:** Test times out after 5 seconds
 
 **Solution:** Increase timeout for slow tests
+
 ```javascript
 it('should fetch data', async () => {
   // ... test
-}, 10000);  // 10 second timeout
+}, 10000); // 10 second timeout
 ```
 
 ### Mock Not Being Called
@@ -458,6 +461,7 @@ it('should fetch data', async () => {
 **Problem:** Expected mock call not detected
 
 **Solution:** Verify mock setup and call timing
+
 ```javascript
 expect(mockFn).toHaveBeenCalled();
 expect(mockFn).toHaveBeenCalledWith(expectedArg);
@@ -469,14 +473,17 @@ expect(mockFn).toHaveBeenCalledTimes(1);
 **Problem:** Test fails with "expected promise, got undefined"
 
 **Solution:** Return promise or use async/await
+
 ```javascript
 // ✅ GOOD
 return promise;
 // or
-async () => { await promise; }
+async () => {
+  await promise;
+};
 
 // ❌ BAD
-promise;  // Not waiting
+promise; // Not waiting
 ```
 
 ### Module Not Found
@@ -484,6 +491,7 @@ promise;  // Not waiting
 **Problem:** Cannot find module when importing test file
 
 **Solution:** Check import paths (relative to test file)
+
 ```javascript
 // From: tests/unit/core/commands/Command.test.js
 // Import from: src/core/commands/Command.js
@@ -495,6 +503,7 @@ const Command = require('../../../src/core/commands/Command');
 **Problem:** Tests not running or wrong environment
 
 **Solution:** Check `jest.config.js`
+
 ```bash
 npm test -- --showConfig
 ```

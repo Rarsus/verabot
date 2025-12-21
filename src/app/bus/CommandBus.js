@@ -48,7 +48,7 @@ class CommandBus {
 
     const context = {
       command,
-      category: meta.category || 'core'
+      category: meta.category || 'core',
     };
 
     return this.pipeline.execute(context, async (ctx) => handler.handle(ctx.command));

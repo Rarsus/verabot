@@ -26,22 +26,21 @@ class HeavyWorkHandler {
     const payload = {
       userId: command.userId,
       source: command.source,
-      args: command.args
+      args: command.args,
     };
 
     const job = await this.jobQueue.enqueue('heavywork', payload, {
       attempts: 5,
       backoff: { type: 'exponential', delay: 2000 },
       removeOnComplete: true,
-      removeOnFail: false
+      removeOnFail: false,
     });
 
     return CommandResult.ok({
       message: 'Heavy job queued',
-      jobId: job.id
+      jobId: job.id,
     });
   }
 }
 
 module.exports = HeavyWorkHandler;
-

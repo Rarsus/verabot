@@ -28,10 +28,9 @@ class AuditHandler {
 
     return CommandResult.ok({
       type: 'audit',
-      entries: rows
+      entries: rows,
     });
   }
 }
 
 module.exports = AuditHandler;
-

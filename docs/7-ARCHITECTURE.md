@@ -47,6 +47,7 @@ VeraBot follows a **layered architecture** with clear separation of concerns:
 ## Architectural Layers
 
 ### 1. **Interfaces Layer** (`src/interfaces/`)
+
 Handles all external communication:
 
 - **Discord Integration** - Slash commands, message parsing
@@ -55,12 +56,14 @@ Handles all external communication:
 - **Response Formatting** - Embeds, error messages
 
 **Responsibilities:**
+
 - Parse incoming commands/requests
 - Validate input format
 - Format responses for each interface
 - Handle authentication/permissions
 
 ### 2. **Application Layer** (`src/app/`)
+
 Business logic and command execution:
 
 - **Command Bus** - Routes and executes commands
@@ -73,12 +76,14 @@ Business logic and command execution:
   - Permissions - Check access control
 
 **Responsibilities:**
+
 - Implement command logic
 - Enforce business rules
 - Call appropriate services
 - Handle errors gracefully
 
 ### 3. **Core Layer** (`src/core/`)
+
 Core abstractions and services:
 
 - **Command** - Command abstraction, structure, metadata
@@ -91,46 +96,55 @@ Core abstractions and services:
   - HelpService - Generate help documentation
 
 **Responsibilities:**
+
 - Define command contract
 - Manage command lifecycle
 - Provide common services
 - Abstract core functionality
 
 ### 4. **Infrastructure Layer** (`src/infra/`)
+
 Technical infrastructure:
 
 **Database:** SQLite with better-sqlite3
+
 - Command allowance list
 - Permission rules (roles, channels, users)
 - Audit logs
 - Rate limit tracking
 
 **Job Queue:** BullMQ with Redis backend
+
 - Heavy background work
 - Cron job scheduling
 - Job worker management
 - Event handling
 
 **Discord Integration:**
+
 - DiscordClientFactory - Initialize Discord client
 - SlashCommandAdapter - Handle slash commands
 - SlashCommandRegistrar - Register commands with Discord
 - EmbedFactory - Create rich Discord embeds
 
 **WebSocket:**
+
 - WsAdapter - WebSocket message handling
 - WsClientFactory - Client creation
 
 **HTTP Servers:**
+
 - HealthMetricsServer - `/health`, `/metrics` endpoints
 - BullBoardServer - Job queue admin UI
 
 **Utilities:**
+
 - Logger (Pino) - Structured logging
 - HealthCheck - System health monitoring
 - Metrics - Performance metrics collection
 
 **Configuration:**
+
 - Config - Application settings
 - RedisConfig - Redis connection setup
 
@@ -139,6 +153,7 @@ Technical infrastructure:
 ## Core Components
 
 ### Command Bus
+
 The central dispatcher for all commands:
 
 ```
@@ -159,6 +174,7 @@ The central dispatcher for all commands:
 ```
 
 **Execution Flow:**
+
 ```javascript
 const result = await bus.execute(command);
 
@@ -171,14 +187,16 @@ const result = await bus.execute(command);
 ```
 
 ### Middleware Pipeline
+
 Cross-cutting concerns applied in order:
 
 ```
-Command → LoggingMiddleware → PermissionMiddleware → AuditMiddleware 
+Command → LoggingMiddleware → PermissionMiddleware → AuditMiddleware
 → RateLimitMiddleware → Handler → Response
 ```
 
 Each middleware can:
+
 - Inspect the command
 - Modify command metadata
 - Block execution (throw error)
@@ -186,6 +204,7 @@ Each middleware can:
 - Enforce business rules
 
 ### Command Registry
+
 Central registry of all available commands:
 
 ```javascript
@@ -195,6 +214,7 @@ const all = registry.listAll();
 ```
 
 Maintains:
+
 - Command metadata
 - Handler references
 - Permission mappings
@@ -291,76 +311,88 @@ Handler execution or Error response
 ## Communication Patterns
 
 ### Request-Response (Discord Commands)
+
 ```
 User Input → Command → Handler → Response → User
 ```
+
 Synchronous, immediate feedback.
 
 ### Publish-Subscribe (Job Events)
+
 ```
 Job Completed → Worker → Event Handler → Response
 ```
+
 Asynchronous, deferred execution.
 
 ### Audit Trail
+
 ```
 Permission Change → AuditMiddleware → AuditRepository → Database
 ```
+
 All state changes logged for compliance.
 
 ### Health Checks
+
 ```
 Periodic / Manual → HealthCheck service → HTTP response
 ```
+
 System status monitoring.
 
 ---
 
 ## Technology Stack
 
-| Component | Technology | Version | Purpose |
-|-----------|-----------|---------|---------|
-| **Runtime** | Node.js | 18+ | JavaScript execution |
-| **Discord** | discord.js | 14.16 | Discord API client |
-| **Job Queue** | BullMQ | 5.9 | Async job processing |
-| **Cache/Queue** | Redis | 6.0+ | In-memory data store |
-| **Database** | SQLite | 3.x | Local persistence |
-| **HTTP** | Express | 4.21 | HTTP server framework |
-| **Logging** | Pino | 9.0 | Structured logging |
-| **Monitoring** | prom-client | 15.0 | Prometheus metrics |
-| **WebSocket** | ws | 8.18 | WebSocket communication |
-| **Testing** | Jest | 29.7 | Test framework |
-| **Admin UI** | Bull-Board | 5.21 | Job queue admin |
-| **Validation** | Zod | 3.23 | Schema validation |
+| Component       | Technology  | Version | Purpose                 |
+| --------------- | ----------- | ------- | ----------------------- |
+| **Runtime**     | Node.js     | 18+     | JavaScript execution    |
+| **Discord**     | discord.js  | 14.16   | Discord API client      |
+| **Job Queue**   | BullMQ      | 5.9     | Async job processing    |
+| **Cache/Queue** | Redis       | 6.0+    | In-memory data store    |
+| **Database**    | SQLite      | 3.x     | Local persistence       |
+| **HTTP**        | Express     | 4.21    | HTTP server framework   |
+| **Logging**     | Pino        | 9.0     | Structured logging      |
+| **Monitoring**  | prom-client | 15.0    | Prometheus metrics      |
+| **WebSocket**   | ws          | 8.18    | WebSocket communication |
+| **Testing**     | Jest        | 29.7    | Test framework          |
+| **Admin UI**    | Bull-Board  | 5.21    | Job queue admin         |
+| **Validation**  | Zod         | 3.23    | Schema validation       |
 
 ---
 
 ## Scalability & Performance
 
 ### Horizontal Scaling
+
 - **Job Queue:** Redis allows multiple workers
 - **Stateless Design:** Each instance independent
 - **Load Balancing:** Multiple bot instances with shared Redis
 
 ### Performance Optimizations
+
 - **Database Indexing:** Fast permission lookups
 - **Job Queue Workers:** Offload long operations
 - **Caching:** Redis reduces database queries
 - **Connection Pooling:** Reuse SQLite connections
 
 ### Monitoring
+
 - **Health Checks:** `/health` endpoint
 - **Metrics:** Prometheus format via `/metrics`
 - **Job Queue Admin:** Bull Board UI
 - **Structured Logging:** All operations logged with context
 
 ### Resource Usage
-| Resource | Target | Notes |
-|----------|--------|-------|
-| Memory | < 200MB | Depends on job queue size |
-| CPU | < 20% | Mostly idle (event-driven) |
-| Disk | < 500MB | SQLite database size |
-| Network | < 1 Mbps | Discord API traffic |
+
+| Resource | Target   | Notes                      |
+| -------- | -------- | -------------------------- |
+| Memory   | < 200MB  | Depends on job queue size  |
+| CPU      | < 20%    | Mostly idle (event-driven) |
+| Disk     | < 500MB  | SQLite database size       |
+| Network  | < 1 Mbps | Discord API traffic        |
 
 ---
 
@@ -375,6 +407,7 @@ System status monitoring.
 5. **Response** - Returns standardized error format
 
 **Error Types:**
+
 - `PermissionError` - Access denied
 - `RateLimitError` - Rate limit exceeded
 - `DomainError` - Business rule violation

@@ -9,23 +9,20 @@ describe('AllowedHandler', () => {
   beforeEach(() => {
     mockRepos = {
       commandRepo: {
-        listAllowed: jest.fn()
-      }
+        listAllowed: jest.fn(),
+      },
     };
     mockRegistry = {
-      listCommands: jest.fn()
+      listCommands: jest.fn(),
     };
     handler = new AllowedHandler(mockRepos, mockRegistry);
   });
 
   it('should list all allowed commands', async () => {
-    mockRepos.commandRepo.listAllowed.mockResolvedValue([
-      { command: 'ping' },
-      { command: 'say' }
-    ]);
+    mockRepos.commandRepo.listAllowed.mockResolvedValue([{ command: 'ping' }, { command: 'say' }]);
     mockRegistry.listCommands.mockReturnValue([
       { name: 'ping', category: 'core', description: 'Ping command' },
-      { name: 'say', category: 'messaging', description: 'Say command' }
+      { name: 'say', category: 'messaging', description: 'Say command' },
     ]);
 
     const command = { args: [] };
@@ -37,13 +34,10 @@ describe('AllowedHandler', () => {
   });
 
   it('should filter by category', async () => {
-    mockRepos.commandRepo.listAllowed.mockResolvedValue([
-      { command: 'ping' },
-      { command: 'say' }
-    ]);
+    mockRepos.commandRepo.listAllowed.mockResolvedValue([{ command: 'ping' }, { command: 'say' }]);
     mockRegistry.listCommands.mockReturnValue([
       { name: 'ping', category: 'core', description: 'Ping' },
-      { name: 'say', category: 'messaging', description: 'Say' }
+      { name: 'say', category: 'messaging', description: 'Say' },
     ]);
 
     const command = { args: ['core'] };
@@ -56,12 +50,12 @@ describe('AllowedHandler', () => {
 
   it('should paginate results', async () => {
     const allowed = Array.from({ length: 12 }, (_, i) => ({
-      command: `cmd${i}`
+      command: `cmd${i}`,
     }));
     const meta = Array.from({ length: 12 }, (_, i) => ({
       name: `cmd${i}`,
       category: 'core',
-      description: `Command ${i}`
+      description: `Command ${i}`,
     }));
 
     mockRepos.commandRepo.listAllowed.mockResolvedValue(allowed);
@@ -77,12 +71,12 @@ describe('AllowedHandler', () => {
 
   it('should handle page 2', async () => {
     const allowed = Array.from({ length: 12 }, (_, i) => ({
-      command: `cmd${i}`
+      command: `cmd${i}`,
     }));
     const meta = Array.from({ length: 12 }, (_, i) => ({
       name: `cmd${i}`,
       category: 'core',
-      description: `Command ${i}`
+      description: `Command ${i}`,
     }));
 
     mockRepos.commandRepo.listAllowed.mockResolvedValue(allowed);
@@ -96,12 +90,8 @@ describe('AllowedHandler', () => {
   });
 
   it('should handle unknown commands gracefully', async () => {
-    mockRepos.commandRepo.listAllowed.mockResolvedValue([
-      { command: 'unknown-cmd' }
-    ]);
-    mockRegistry.listCommands.mockReturnValue([
-      { name: 'ping', category: 'core' }
-    ]);
+    mockRepos.commandRepo.listAllowed.mockResolvedValue([{ command: 'unknown-cmd' }]);
+    mockRegistry.listCommands.mockReturnValue([{ name: 'ping', category: 'core' }]);
 
     const command = { args: [] };
     const result = await handler.handle(command);

@@ -33,4 +33,3 @@ class AllowUserHandler {
 }
 
 module.exports = AllowUserHandler;
-

@@ -28,7 +28,7 @@ class JobQueueService {
      * @type {Queue}
      */
     this.queue = new Queue('commands', {
-      connection: redisConnection
+      connection: redisConnection,
     });
 
     /**
@@ -36,7 +36,7 @@ class JobQueueService {
      * @type {QueueScheduler}
      */
     this.scheduler = new QueueScheduler('commands', {
-      connection: redisConnection
+      connection: redisConnection,
     });
 
     /**

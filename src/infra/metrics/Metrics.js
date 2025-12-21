@@ -19,13 +19,13 @@ function createMetrics() {
   const commandCounter = new client.Counter({
     name: 'command_executed_total',
     help: 'Total commands executed',
-    labelNames: ['command', 'source']
+    labelNames: ['command', 'source'],
   });
 
   const errorCounter = new client.Counter({
     name: 'command_errors_total',
     help: 'Total command errors',
-    labelNames: ['command', 'source', 'code']
+    labelNames: ['command', 'source', 'code'],
   });
 
   return { client, commandCounter, errorCounter };

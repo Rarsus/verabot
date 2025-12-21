@@ -18,4 +18,3 @@ class PermissionError extends DomainError {
 }
 
 module.exports = PermissionError;
-

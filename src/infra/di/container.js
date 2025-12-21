@@ -41,16 +41,12 @@ function createContainer() {
 
   const commandService = new CommandService(repositories.commandRepo);
   const permissionService = new PermissionService(repositories.permissionRepo);
-  const rateLimitService = new RateLimitService(
-    repositories.rateLimitRepo,
-    3000,
-    {
-      core: 0,
-      messaging: 3000,
-      operations: 10000,
-      admin: 0
-    }
-  );
+  const rateLimitService = new RateLimitService(repositories.rateLimitRepo, 3000, {
+    core: 0,
+    messaging: 3000,
+    operations: 10000,
+    admin: 0,
+  });
   const helpService = new HelpService(null); // registry attached in bootstrap
 
   const redisConfig = loadRedisConfig(process.env);
@@ -62,7 +58,7 @@ function createContainer() {
     commandService,
     permissionService,
     rateLimitService,
-    helpService
+    helpService,
   };
 
   return {
@@ -74,7 +70,7 @@ function createContainer() {
     services,
     redis,
     jobQueue,
-    scheduler
+    scheduler,
   };
 }
 

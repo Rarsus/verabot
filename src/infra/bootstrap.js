@@ -42,7 +42,7 @@ function createMessageService(discordClient) {
         const channel = await discordClient.channels.fetch(command.channelId);
         if (channel && channel.isTextBased()) await channel.send(text);
       }
-    }
+    },
   };
 }
 
@@ -59,9 +59,9 @@ function createStatusProvider(container) {
         env: container.config.NODE_ENV,
         db: container.db.isConnected(),
         ws: container.wsClient?.isConnected() || false,
-        discord: !!container.discordClient?.user
+        discord: !!container.discordClient?.user,
       };
-    }
+    },
   };
 }
 
@@ -97,7 +97,7 @@ function bootstrap(container) {
     usage: '/core ping',
     examples: ['/core ping'],
     options: [],
-    cooldown: { seconds: 0 }
+    cooldown: { seconds: 0 },
   });
 
   registry.register('info', new InfoHandler(statusProvider), {
@@ -107,7 +107,7 @@ function bootstrap(container) {
     usage: '/core info',
     examples: ['/core info'],
     options: [],
-    cooldown: { seconds: 0 }
+    cooldown: { seconds: 0 },
   });
 
   registry.register('stats', new StatsHandler(), {
@@ -117,7 +117,7 @@ function bootstrap(container) {
     usage: '/core stats',
     examples: ['/core stats'],
     options: [],
-    cooldown: { seconds: 5 }
+    cooldown: { seconds: 5 },
   });
 
   registry.register('uptime', new UptimeHandler(), {
@@ -127,7 +127,7 @@ function bootstrap(container) {
     usage: '/core uptime',
     examples: ['/core uptime'],
     options: [],
-    cooldown: { seconds: 0 }
+    cooldown: { seconds: 0 },
   });
 
   registry.register('help', new HelpHandler(helpService), {
@@ -138,10 +138,16 @@ function bootstrap(container) {
     examples: ['/core help', '/core help operations', '/core help deploy'],
     options: [
       { name: 'category', type: 'string', description: 'Command category', required: false },
-      { name: 'command', type: 'string', description: 'Command name', required: false, autocomplete: true },
-      { name: 'page', type: 'integer', description: 'Page number', required: false }
+      {
+        name: 'command',
+        type: 'string',
+        description: 'Command name',
+        required: false,
+        autocomplete: true,
+      },
+      { name: 'page', type: 'integer', description: 'Page number', required: false },
     ],
-    cooldown: { seconds: 0 }
+    cooldown: { seconds: 0 },
   });
 
   // MESSAGING
@@ -151,10 +157,8 @@ function bootstrap(container) {
     description: 'Send a message to the current channel.',
     usage: '/msg say text:<message>',
     examples: ['/msg say text:Hello world'],
-    options: [
-      { name: 'text', type: 'string', description: 'Message text', required: true }
-    ],
-    cooldown: { seconds: 3 }
+    options: [{ name: 'text', type: 'string', description: 'Message text', required: true }],
+    cooldown: { seconds: 3 },
   });
 
   registry.register('broadcast', new BroadcastHandler(container.discordClient), {
@@ -163,10 +167,8 @@ function bootstrap(container) {
     description: 'Send a message to all text channels.',
     usage: '/msg broadcast text:<message>',
     examples: ['/msg broadcast text:Maintenance in 5 minutes'],
-    options: [
-      { name: 'text', type: 'string', description: 'Message text', required: true }
-    ],
-    cooldown: { seconds: 10 }
+    options: [{ name: 'text', type: 'string', description: 'Message text', required: true }],
+    cooldown: { seconds: 10 },
   });
 
   registry.register('notify', new NotifyHandler(container.discordClient), {
@@ -177,9 +179,9 @@ function bootstrap(container) {
     examples: ['/msg notify user:@User text:Hello!'],
     options: [
       { name: 'user', type: 'user', description: 'User to notify', required: true },
-      { name: 'text', type: 'string', description: 'Message text', required: true }
+      { name: 'text', type: 'string', description: 'Message text', required: true },
     ],
-    cooldown: { seconds: 5 }
+    cooldown: { seconds: 5 },
   });
 
   // OPERATIONS
@@ -198,12 +200,12 @@ function bootstrap(container) {
         autocomplete: true,
         choices: [
           { name: 'staging', value: 'staging' },
-          { name: 'production', value: 'production' }
-        ]
-      }
+          { name: 'production', value: 'production' },
+        ],
+      },
     ],
     permissions: { discordPermissions: ['ManageGuild'] },
-    cooldown: { seconds: 10 }
+    cooldown: { seconds: 10 },
   });
 
   registry.register('heavywork', new HeavyWorkHandler(container.jobQueue), {
@@ -213,10 +215,10 @@ function bootstrap(container) {
     usage: '/ops heavywork args:<args>',
     examples: ['/ops heavywork args:"process 5000 items"'],
     options: [
-      { name: 'args', type: 'string', description: 'Arguments for heavy work', required: true }
+      { name: 'args', type: 'string', description: 'Arguments for heavy work', required: true },
     ],
     permissions: { discordPermissions: ['ManageGuild'] },
-    cooldown: { seconds: 30 }
+    cooldown: { seconds: 30 },
   });
 
   registry.register('jobstatus', new JobStatusHandler(container.jobQueue), {
@@ -225,11 +227,9 @@ function bootstrap(container) {
     description: 'Check the status of a background job.',
     usage: '/ops jobstatus id:<jobId>',
     examples: ['/ops jobstatus id:12345'],
-    options: [
-      { name: 'id', type: 'string', description: 'Job ID', required: true }
-    ],
+    options: [{ name: 'id', type: 'string', description: 'Job ID', required: true }],
     permissions: { discordPermissions: ['ManageGuild'] },
-    cooldown: { seconds: 3 }
+    cooldown: { seconds: 3 },
   });
 
   // ADMIN
@@ -239,11 +239,9 @@ function bootstrap(container) {
     description: 'Allow a command to be executed.',
     usage: '/admin allow command:<name>',
     examples: ['/admin allow command:deploy'],
-    options: [
-      { name: 'command', type: 'string', description: 'Command to allow', required: true }
-    ],
+    options: [{ name: 'command', type: 'string', description: 'Command to allow', required: true }],
     permissions: { discordPermissions: ['Administrator'] },
-    cooldown: { seconds: 0 }
+    cooldown: { seconds: 0 },
   });
 
   registry.register('deny', new DenyHandler(container.repositories), {
@@ -252,11 +250,9 @@ function bootstrap(container) {
     description: 'Remove a command from the allowed list.',
     usage: '/admin deny command:<name>',
     examples: ['/admin deny command:deploy'],
-    options: [
-      { name: 'command', type: 'string', description: 'Command to deny', required: true }
-    ],
+    options: [{ name: 'command', type: 'string', description: 'Command to deny', required: true }],
     permissions: { discordPermissions: ['Administrator'] },
-    cooldown: { seconds: 0 }
+    cooldown: { seconds: 0 },
   });
 
   registry.register('allowrole', new AllowRoleHandler(container.repositories), {
@@ -267,10 +263,10 @@ function bootstrap(container) {
     examples: ['/admin allowrole command:deploy role:@DevOps'],
     options: [
       { name: 'command', type: 'string', description: 'Command name', required: true },
-      { name: 'role', type: 'role', description: 'Role to allow', required: true }
+      { name: 'role', type: 'role', description: 'Role to allow', required: true },
     ],
     permissions: { discordPermissions: ['Administrator'] },
-    cooldown: { seconds: 0 }
+    cooldown: { seconds: 0 },
   });
 
   registry.register('allowuser', new AllowUserHandler(container.repositories), {
@@ -281,10 +277,10 @@ function bootstrap(container) {
     examples: ['/admin allowuser command:deploy user:@Olav'],
     options: [
       { name: 'command', type: 'string', description: 'Command name', required: true },
-      { name: 'user', type: 'user', description: 'User to allow', required: true }
+      { name: 'user', type: 'user', description: 'User to allow', required: true },
     ],
     permissions: { discordPermissions: ['Administrator'] },
-    cooldown: { seconds: 0 }
+    cooldown: { seconds: 0 },
   });
 
   registry.register('allowchannel', new AllowChannelHandler(container.repositories), {
@@ -295,10 +291,10 @@ function bootstrap(container) {
     examples: ['/admin allowchannel command:deploy channel:#ops'],
     options: [
       { name: 'command', type: 'string', description: 'Command name', required: true },
-      { name: 'channel', type: 'channel', description: 'Channel to allow', required: true }
+      { name: 'channel', type: 'channel', description: 'Channel to allow', required: true },
     ],
     permissions: { discordPermissions: ['Administrator'] },
-    cooldown: { seconds: 0 }
+    cooldown: { seconds: 0 },
   });
 
   registry.register('allowed', new AllowedHandler(container.repositories, registry), {
@@ -309,10 +305,10 @@ function bootstrap(container) {
     examples: ['/admin allowed', '/admin allowed category:operations page:2'],
     options: [
       { name: 'category', type: 'string', description: 'Filter by category', required: false },
-      { name: 'page', type: 'integer', description: 'Page number', required: false }
+      { name: 'page', type: 'integer', description: 'Page number', required: false },
     ],
     permissions: { discordPermissions: ['Administrator'] },
-    cooldown: { seconds: 0 }
+    cooldown: { seconds: 0 },
   });
 
   registry.register('audit', new AuditHandler(container.repositories), {
@@ -322,17 +318,17 @@ function bootstrap(container) {
     usage: '/admin audit [limit]',
     examples: ['/admin audit', '/admin audit limit:50'],
     options: [
-      { name: 'limit', type: 'integer', description: 'Number of entries', required: false }
+      { name: 'limit', type: 'integer', description: 'Number of entries', required: false },
     ],
     permissions: { discordPermissions: ['Administrator'] },
-    cooldown: { seconds: 0 }
+    cooldown: { seconds: 0 },
   });
 
   const pipeline = new MiddlewarePipeline([
     new LoggingMiddleware(container.logger, container.metrics),
     new PermissionMiddleware(container.services.permissionService),
     new RateLimitMiddleware(container.services.rateLimitService),
-    new AuditMiddleware(container.repositories.auditRepo)
+    new AuditMiddleware(container.repositories.auditRepo),
   ]);
 
   const bus = new CommandBus(registry, pipeline);

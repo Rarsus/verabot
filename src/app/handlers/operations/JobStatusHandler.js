@@ -39,4 +39,3 @@ class JobStatusHandler {
 }
 
 module.exports = JobStatusHandler;
-

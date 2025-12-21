@@ -29,7 +29,7 @@ class RateLimitService {
       messaging: 3000,
       operations: 10000,
       admin: 0,
-      ...categoryCooldowns
+      ...categoryCooldowns,
     };
   }
 

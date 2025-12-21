@@ -21,7 +21,7 @@ function createHealthMetricsServer(container) {
       const status = await healthCheck(container);
       const body = JSON.stringify(status);
       res.writeHead(status.status === 'ok' ? 200 : 500, {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       });
       return res.end(body);
     }

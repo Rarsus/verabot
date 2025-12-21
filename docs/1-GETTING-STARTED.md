@@ -20,16 +20,19 @@ Learn how to install, configure, and run VeraBot locally.
 ## System Requirements
 
 ### Required
+
 - **Node.js:** v18.0.0 or higher
 - **npm:** v9.0.0 or higher
 - **Redis:** v6.0.0+ (for job queue and caching)
 - **SQLite:** v3.x (included with better-sqlite3)
 
 ### Optional
+
 - **Docker:** For containerized deployment
 - **Git:** For cloning the repository
 
 ### Hardware
+
 - **Minimum:** 512MB RAM, 100MB disk space
 - **Recommended:** 2GB RAM, 500MB disk space
 
@@ -51,6 +54,7 @@ npm install
 ```
 
 This will install all production and development dependencies from `package.json`:
+
 - Discord.js v14 - Discord API client
 - BullMQ - Job queue system
 - Express - HTTP server for metrics/admin
@@ -137,16 +141,16 @@ GUILD_ID=optional_test_guild_id_for_faster_registration
 
 ### Environment Variables Explained
 
-| Variable | Required | Default | Purpose |
-|----------|----------|---------|---------|
-| `DISCORD_TOKEN` | Yes | - | Bot authentication token from Discord |
-| `CLIENT_ID` | Yes | - | Application ID from Discord Developer Portal |
-| `REDIS_HOST` | Yes | localhost | Redis server hostname |
-| `REDIS_PORT` | Yes | 6379 | Redis server port |
-| `REDIS_PASSWORD` | No | - | Redis authentication password |
-| `NODE_ENV` | No | development | Environment mode (development/production) |
-| `LOG_LEVEL` | No | info | Logging level (debug/info/warn/error) |
-| `GUILD_ID` | No | - | Discord guild ID for faster slash command registration |
+| Variable         | Required | Default     | Purpose                                                |
+| ---------------- | -------- | ----------- | ------------------------------------------------------ |
+| `DISCORD_TOKEN`  | Yes      | -           | Bot authentication token from Discord                  |
+| `CLIENT_ID`      | Yes      | -           | Application ID from Discord Developer Portal           |
+| `REDIS_HOST`     | Yes      | localhost   | Redis server hostname                                  |
+| `REDIS_PORT`     | Yes      | 6379        | Redis server port                                      |
+| `REDIS_PASSWORD` | No       | -           | Redis authentication password                          |
+| `NODE_ENV`       | No       | development | Environment mode (development/production)              |
+| `LOG_LEVEL`      | No       | info        | Logging level (debug/info/warn/error)                  |
+| `GUILD_ID`       | No       | -           | Discord guild ID for faster slash command registration |
 
 See [Environment Configuration](./3-ENVIRONMENT-CONFIG.md) for detailed explanations.
 
@@ -163,6 +167,7 @@ npm start
 ```
 
 This will:
+
 1. Create `database.db` if it doesn't exist
 2. Initialize schema on first run
 3. Create necessary tables automatically
@@ -176,6 +181,7 @@ node src/schema-enhancement.js
 ```
 
 This script:
+
 - Creates all necessary tables
 - Sets up indexes
 - Configures constraints
@@ -191,6 +197,7 @@ npm start
 ```
 
 The bot will:
+
 1. Connect to Discord
 2. Register slash commands
 3. Start listening for messages
@@ -198,6 +205,7 @@ The bot will:
 5. Start HTTP servers for health/metrics
 
 **Expected Output:**
+
 ```
 [timestamp] INFO: Bot connected as @VeraBot#1234
 [timestamp] INFO: Listening to 45 commands
@@ -216,6 +224,7 @@ Automatically reruns tests when files change.
 ### With Logging
 
 Adjust log level in `.env`:
+
 ```env
 LOG_LEVEL=debug
 ```
@@ -255,6 +264,7 @@ curl http://localhost:3000/health
 ```
 
 Expected response:
+
 ```json
 {
   "status": "healthy",
@@ -266,6 +276,7 @@ Expected response:
 ### Command Registration
 
 The bot automatically registers all slash commands on startup. Check Discord by:
+
 1. Type `/` in your server
 2. You should see all available commands
 3. Try `/ping` - should respond with "Pong!"
@@ -277,10 +288,12 @@ The bot automatically registers all slash commands on startup. Check Discord by:
 ### Common Issues
 
 #### "DISCORD_TOKEN not found"
+
 - **Cause:** `.env` file missing or doesn't contain DISCORD_TOKEN
 - **Solution:** Create `.env` file with DISCORD_TOKEN from Discord Developer Portal
 
 #### "Cannot connect to Redis"
+
 - **Cause:** Redis server not running
 - **Solution:** Start Redis:
   ```bash
@@ -292,6 +305,7 @@ The bot automatically registers all slash commands on startup. Check Discord by:
   ```
 
 #### "Port 3000 already in use"
+
 - **Cause:** Another process using the health metrics port
 - **Solution:** Change port in code or kill the process:
   ```bash
@@ -300,6 +314,7 @@ The bot automatically registers all slash commands on startup. Check Discord by:
   ```
 
 #### "Command not appearing in Discord"
+
 - **Cause:** Bot doesn't have permissions or commands not registered
 - **Solution:**
   1. Verify bot has "Use Application Commands" permission
@@ -308,6 +323,7 @@ The bot automatically registers all slash commands on startup. Check Discord by:
   4. Refresh Discord (`Ctrl+R`)
 
 #### "Database locked error"
+
 - **Cause:** Multiple instances accessing SQLite simultaneously
 - **Solution:** Only run one bot instance, or use different database files
 

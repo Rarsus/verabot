@@ -49,7 +49,7 @@ function createWsClient(config, logger) {
      * Check if WebSocket is currently connected
      * @returns {boolean} True if connection is open
      */
-    isConnected: () => ws && ws.readyState === WebSocket.OPEN
+    isConnected: () => ws && ws.readyState === WebSocket.OPEN,
   };
 }
 

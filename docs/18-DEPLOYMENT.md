@@ -44,8 +44,8 @@ services:
   redis:
     image: redis:7
     ports:
-      - "6379:6379"
-  
+      - '6379:6379'
+
   verabot:
     build: .
     environment:
@@ -145,11 +145,13 @@ http://localhost:3000/admin/queues
 ## Rollback Procedure
 
 1. Keep previous image tagged:
+
    ```bash
    docker tag verabot:latest verabot:previous
    ```
 
 2. If issues occur:
+
    ```bash
    docker run -d --name verabot-new -e ... verabot:previous
    ```

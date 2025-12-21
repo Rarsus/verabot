@@ -4,7 +4,7 @@ const JobQueueService = require('../../../../src/infra/queue/JobQueueService');
 jest.mock('bullmq', () => ({
   Queue: jest.fn(),
   Worker: jest.fn(),
-  QueueScheduler: jest.fn()
+  QueueScheduler: jest.fn(),
 }));
 
 const { Queue, Worker, QueueScheduler } = require('bullmq');
@@ -22,21 +22,21 @@ describe('JobQueueService', () => {
 
     mockRedisConnection = {
       host: 'localhost',
-      port: 6379
+      port: 6379,
     };
 
     mockLogger = {
       info: jest.fn(),
       error: jest.fn(),
-      warn: jest.fn()
+      warn: jest.fn(),
     };
 
     mockQueue = {
-      add: jest.fn().mockResolvedValue({ id: 'job123' })
+      add: jest.fn().mockResolvedValue({ id: 'job123' }),
     };
 
     mockWorker = {
-      on: jest.fn()
+      on: jest.fn(),
     };
 
     Queue.mockImplementation(() => mockQueue);
@@ -53,24 +53,20 @@ describe('JobQueueService', () => {
 
     it('should initialize Queue with correct options', () => {
       expect(Queue).toHaveBeenCalledWith('commands', {
-        connection: mockRedisConnection
+        connection: mockRedisConnection,
       });
     });
 
     it('should initialize QueueScheduler', () => {
       expect(QueueScheduler).toHaveBeenCalledWith('commands', {
-        connection: mockRedisConnection
+        connection: mockRedisConnection,
       });
     });
 
     it('should initialize Worker with handler function', () => {
-      expect(Worker).toHaveBeenCalledWith(
-        'commands',
-        expect.any(Function),
-        {
-          connection: mockRedisConnection
-        }
-      );
+      expect(Worker).toHaveBeenCalledWith('commands', expect.any(Function), {
+        connection: mockRedisConnection,
+      });
     });
 
     it('should store logger reference', () => {
@@ -116,39 +112,25 @@ describe('JobQueueService', () => {
 
     it('should handle priority option', async () => {
       await service.enqueue('heavywork', {}, { priority: 10 });
-      expect(mockQueue.add).toHaveBeenCalledWith(
-        'heavywork',
-        expect.any(Object),
-        { priority: 10 }
-      );
+      expect(mockQueue.add).toHaveBeenCalledWith('heavywork', expect.any(Object), { priority: 10 });
     });
 
     it('should handle delay option', async () => {
       await service.enqueue('cron:scheduled', {}, { delay: 5000 });
-      expect(mockQueue.add).toHaveBeenCalledWith(
-        'cron:scheduled',
-        expect.any(Object),
-        { delay: 5000 }
-      );
+      expect(mockQueue.add).toHaveBeenCalledWith('cron:scheduled', expect.any(Object), {
+        delay: 5000,
+      });
     });
 
     it('should handle retry attempts option', async () => {
       await service.enqueue('task', {}, { attempts: 5 });
-      expect(mockQueue.add).toHaveBeenCalledWith(
-        'task',
-        expect.any(Object),
-        { attempts: 5 }
-      );
+      expect(mockQueue.add).toHaveBeenCalledWith('task', expect.any(Object), { attempts: 5 });
     });
 
     it('should work with empty payload', async () => {
       await service.enqueue('test', {});
 
-      expect(mockQueue.add).toHaveBeenCalledWith(
-        'test',
-        { handler: 'test', payload: {} },
-        {}
-      );
+      expect(mockQueue.add).toHaveBeenCalledWith('test', { handler: 'test', payload: {} }, {});
     });
   });
 
@@ -164,7 +146,7 @@ describe('JobQueueService', () => {
       it('should process heavywork jobs', async () => {
         const job = {
           id: 'job1',
-          data: { handler: 'heavywork', payload: { value: 123 } }
+          data: { handler: 'heavywork', payload: { value: 123 } },
         };
 
         const result = await workerHandler(job);
@@ -192,10 +174,7 @@ describe('JobQueueService', () => {
 
         await workerHandler(job);
 
-        expect(mockLogger.info).toHaveBeenCalledWith(
-          { payload },
-          'Heavywork job logic executed'
-        );
+        expect(mockLogger.info).toHaveBeenCalledWith({ payload }, 'Heavywork job logic executed');
       });
     });
 
@@ -203,7 +182,7 @@ describe('JobQueueService', () => {
       it('should process cron jobs', async () => {
         const job = {
           id: 'job2',
-          data: { handler: 'cron:hourly', payload: { task: 'cleanup' } }
+          data: { handler: 'cron:hourly', payload: { task: 'cleanup' } },
         };
 
         const result = await workerHandler(job);
@@ -214,7 +193,7 @@ describe('JobQueueService', () => {
       it('should log cron job execution', async () => {
         const job = {
           id: 'job2',
-          data: { handler: 'cron:daily', payload: { task: 'backup' } }
+          data: { handler: 'cron:daily', payload: { task: 'backup' } },
         };
 
         await workerHandler(job);
@@ -240,7 +219,7 @@ describe('JobQueueService', () => {
       it('should warn for unknown handler', async () => {
         const job = {
           id: 'job3',
-          data: { handler: 'unknown', payload: {} }
+          data: { handler: 'unknown', payload: {} },
         };
 
         const result = await workerHandler(job);
@@ -286,8 +265,8 @@ describe('JobQueueService', () => {
 
     beforeEach(() => {
       const calls = mockWorker.on.mock.calls;
-      completedHandler = calls.find(c => c[0] === 'completed')?.[1];
-      failedHandler = calls.find(c => c[0] === 'failed')?.[1];
+      completedHandler = calls.find((c) => c[0] === 'completed')?.[1];
+      failedHandler = calls.find((c) => c[0] === 'failed')?.[1];
     });
 
     describe('completed event', () => {
@@ -296,10 +275,7 @@ describe('JobQueueService', () => {
 
         completedHandler(job);
 
-        expect(mockLogger.info).toHaveBeenCalledWith(
-          { jobId: 'job123' },
-          'Job completed'
-        );
+        expect(mockLogger.info).toHaveBeenCalledWith({ jobId: 'job123' }, 'Job completed');
       });
 
       it('should handle multiple completions', () => {
@@ -339,10 +315,10 @@ describe('JobQueueService', () => {
         const errors = [
           new Error('Connection error'),
           new Error('Timeout'),
-          new Error('Invalid data')
+          new Error('Invalid data'),
         ];
 
-        errors.forEach(err => {
+        errors.forEach((err) => {
           failedHandler(job, err);
         });
 
@@ -363,7 +339,7 @@ describe('JobQueueService', () => {
       const promises = [
         service.enqueue('task1', { id: 1 }),
         service.enqueue('task2', { id: 2 }),
-        service.enqueue('task3', { id: 3 })
+        service.enqueue('task3', { id: 3 }),
       ];
 
       const results = await Promise.all(promises);

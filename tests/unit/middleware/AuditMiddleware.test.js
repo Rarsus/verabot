@@ -8,12 +8,12 @@ describe('AuditMiddleware', () => {
 
   beforeEach(() => {
     mockAuditRepo = {
-      log: jest.fn().mockResolvedValue(undefined)
+      log: jest.fn().mockResolvedValue(undefined),
     };
     middleware = new AuditMiddleware(mockAuditRepo);
     mockNext = jest.fn().mockResolvedValue({ success: true, data: {} });
     mockContext = {
-      command: { name: 'test-command', args: ['arg1'] }
+      command: { name: 'test-command', args: ['arg1'] },
     };
   });
 
@@ -38,10 +38,7 @@ describe('AuditMiddleware', () => {
 
       await middleware.handle(mockContext, mockNext);
 
-      expect(mockAuditRepo.log).toHaveBeenCalledWith(
-        mockContext.command,
-        expect.any(Object)
-      );
+      expect(mockAuditRepo.log).toHaveBeenCalledWith(mockContext.command, expect.any(Object));
     });
 
     it('should pass result to audit log', async () => {
@@ -50,10 +47,7 @@ describe('AuditMiddleware', () => {
 
       await middleware.handle(mockContext, mockNext);
 
-      expect(mockAuditRepo.log).toHaveBeenCalledWith(
-        mockContext.command,
-        expectedResult
-      );
+      expect(mockAuditRepo.log).toHaveBeenCalledWith(mockContext.command, expectedResult);
     });
 
     it('should return result from next handler', async () => {
@@ -91,10 +85,7 @@ describe('AuditMiddleware', () => {
 
       await middleware.handle(mockContext, mockNext);
 
-      expect(mockAuditRepo.log).toHaveBeenCalledWith(
-        mockContext.command,
-        failureResult
-      );
+      expect(mockAuditRepo.log).toHaveBeenCalledWith(mockContext.command, failureResult);
     });
 
     it('should still log when next handler throws', async () => {
@@ -110,9 +101,7 @@ describe('AuditMiddleware', () => {
     it('should propagate errors from next handler', async () => {
       mockNext.mockRejectedValue(new Error('Next handler failed'));
 
-      await expect(middleware.handle(mockContext, mockNext)).rejects.toThrow(
-        'Next handler failed'
-      );
+      await expect(middleware.handle(mockContext, mockNext)).rejects.toThrow('Next handler failed');
     });
   });
 
@@ -120,15 +109,12 @@ describe('AuditMiddleware', () => {
     it('should log different command types', async () => {
       mockNext.mockResolvedValue({ success: true });
       const adminCommand = {
-        command: { name: 'admin-cmd', args: [], user: 'admin' }
+        command: { name: 'admin-cmd', args: [], user: 'admin' },
       };
 
       await middleware.handle(adminCommand, mockNext);
 
-      expect(mockAuditRepo.log).toHaveBeenCalledWith(
-        adminCommand.command,
-        expect.any(Object)
-      );
+      expect(mockAuditRepo.log).toHaveBeenCalledWith(adminCommand.command, expect.any(Object));
     });
 
     it('should log commands with complex args', async () => {
@@ -137,30 +123,24 @@ describe('AuditMiddleware', () => {
         command: {
           name: 'complex',
           args: ['arg1', 'arg2', 'arg3'],
-          metadata: { user: 'user1', channel: 'general' }
-        }
+          metadata: { user: 'user1', channel: 'general' },
+        },
       };
 
       await middleware.handle(complexCommand, mockNext);
 
-      expect(mockAuditRepo.log).toHaveBeenCalledWith(
-        complexCommand.command,
-        expect.any(Object)
-      );
+      expect(mockAuditRepo.log).toHaveBeenCalledWith(complexCommand.command, expect.any(Object));
     });
 
     it('should handle empty commands', async () => {
       mockNext.mockResolvedValue({ success: true });
       const emptyContext = {
-        command: { name: '', args: [] }
+        command: { name: '', args: [] },
       };
 
       await middleware.handle(emptyContext, mockNext);
 
-      expect(mockAuditRepo.log).toHaveBeenCalledWith(
-        emptyContext.command,
-        expect.any(Object)
-      );
+      expect(mockAuditRepo.log).toHaveBeenCalledWith(emptyContext.command, expect.any(Object));
     });
   });
 
@@ -205,7 +185,7 @@ describe('AuditMiddleware', () => {
     it('should not interfere with result data', async () => {
       const originalResult = {
         success: true,
-        data: { id: 123, message: 'Success', nested: { value: 'test' } }
+        data: { id: 123, message: 'Success', nested: { value: 'test' } },
       };
       mockNext.mockResolvedValue(originalResult);
 

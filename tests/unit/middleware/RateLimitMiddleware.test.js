@@ -9,13 +9,13 @@ describe('RateLimitMiddleware', () => {
 
   beforeEach(() => {
     mockRateLimitService = {
-      tryConsume: jest.fn().mockResolvedValue(true)
+      tryConsume: jest.fn().mockResolvedValue(true),
     };
     middleware = new RateLimitMiddleware(mockRateLimitService);
     mockNext = jest.fn().mockResolvedValue({ success: true });
     mockContext = {
       command: { name: 'test-command' },
-      category: 'core'
+      category: 'core',
     };
   });
 
@@ -47,7 +47,7 @@ describe('RateLimitMiddleware', () => {
     it('should not interfere with result', async () => {
       const complexResult = {
         success: true,
-        data: { id: 123, message: 'Success', nested: { key: 'value' } }
+        data: { id: 123, message: 'Success', nested: { key: 'value' } },
       };
       mockNext.mockResolvedValue(complexResult);
 
@@ -113,21 +113,18 @@ describe('RateLimitMiddleware', () => {
     it('should pass core category correctly', async () => {
       const coreContext = {
         command: { name: 'ping' },
-        category: 'core'
+        category: 'core',
       };
 
       await middleware.handle(coreContext, mockNext);
 
-      expect(mockRateLimitService.tryConsume).toHaveBeenCalledWith(
-        coreContext.command,
-        'core'
-      );
+      expect(mockRateLimitService.tryConsume).toHaveBeenCalledWith(coreContext.command, 'core');
     });
 
     it('should pass messaging category correctly', async () => {
       const messagingContext = {
         command: { name: 'say' },
-        category: 'messaging'
+        category: 'messaging',
       };
 
       await middleware.handle(messagingContext, mockNext);
@@ -141,7 +138,7 @@ describe('RateLimitMiddleware', () => {
     it('should pass operations category correctly', async () => {
       const opsContext = {
         command: { name: 'deploy' },
-        category: 'operations'
+        category: 'operations',
       };
 
       await middleware.handle(opsContext, mockNext);
@@ -155,15 +152,12 @@ describe('RateLimitMiddleware', () => {
     it('should pass admin category correctly', async () => {
       const adminContext = {
         command: { name: 'allow' },
-        category: 'admin'
+        category: 'admin',
       };
 
       await middleware.handle(adminContext, mockNext);
 
-      expect(mockRateLimitService.tryConsume).toHaveBeenCalledWith(
-        adminContext.command,
-        'admin'
-      );
+      expect(mockRateLimitService.tryConsume).toHaveBeenCalledWith(adminContext.command, 'admin');
     });
   });
 
@@ -178,9 +172,7 @@ describe('RateLimitMiddleware', () => {
       const serviceError = new Error('Service unavailable');
       mockRateLimitService.tryConsume.mockRejectedValue(serviceError);
 
-      await expect(middleware.handle(mockContext, mockNext)).rejects.toThrow(
-        'Service unavailable'
-      );
+      await expect(middleware.handle(mockContext, mockNext)).rejects.toThrow('Service unavailable');
     });
 
     it('should propagate next handler errors', async () => {
@@ -191,9 +183,7 @@ describe('RateLimitMiddleware', () => {
     });
 
     it('should not catch unexpected errors', async () => {
-      mockRateLimitService.tryConsume.mockRejectedValue(
-        new ReferenceError('Undefined variable')
-      );
+      mockRateLimitService.tryConsume.mockRejectedValue(new ReferenceError('Undefined variable'));
 
       await expect(middleware.handle(mockContext, mockNext)).rejects.toThrow(ReferenceError);
     });
@@ -222,7 +212,7 @@ describe('RateLimitMiddleware', () => {
     it('should prevent slow operations when rate limited', async () => {
       mockRateLimitService.tryConsume.mockRejectedValue(new RateLimitError());
       const slowHandler = jest.fn(async () => {
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise((resolve) => setTimeout(resolve, 100));
         return { success: true };
       });
 
@@ -239,7 +229,7 @@ describe('RateLimitMiddleware', () => {
       const contexts = [
         { command: { name: 'cmd1' }, category: 'core' },
         { command: { name: 'cmd2' }, category: 'core' },
-        { command: { name: 'cmd3' }, category: 'core' }
+        { command: { name: 'cmd3' }, category: 'core' },
       ];
 
       mockRateLimitService.tryConsume.mockResolvedValue(true);

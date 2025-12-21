@@ -1,7 +1,7 @@
 # Deprecation Audit
 
 **Last Updated**: 2025-12-21  
-**Audit Status**: Active  
+**Audit Status**: Active
 
 ## Overview
 
@@ -23,21 +23,21 @@ This document provides a comprehensive audit of deprecated software, packages, a
 
 ### High Priority
 
-| Package/Software | Current Version | Deprecated Version | Replacement | Status | Target Date |
-|---|---|---|---|---|---|
-| TBD | - | - | - | Pending Review | - |
+| Package/Software | Current Version | Deprecated Version | Replacement | Status         | Target Date |
+| ---------------- | --------------- | ------------------ | ----------- | -------------- | ----------- |
+| TBD              | -               | -                  | -           | Pending Review | -           |
 
 ### Medium Priority
 
-| Package/Software | Current Version | Deprecated Version | Replacement | Status | Target Date |
-|---|---|---|---|---|---|
-| TBD | - | - | - | Pending Review | - |
+| Package/Software | Current Version | Deprecated Version | Replacement | Status         | Target Date |
+| ---------------- | --------------- | ------------------ | ----------- | -------------- | ----------- |
+| TBD              | -               | -                  | -           | Pending Review | -           |
 
 ### Low Priority
 
-| Package/Software | Current Version | Deprecated Version | Replacement | Status | Target Date |
-|---|---|---|---|---|---|
-| TBD | - | - | - | Pending Review | - |
+| Package/Software | Current Version | Deprecated Version | Replacement | Status         | Target Date |
+| ---------------- | --------------- | ------------------ | ----------- | -------------- | ----------- |
+| TBD              | -               | -                  | -           | Pending Review | -           |
 
 ---
 
@@ -87,9 +87,9 @@ This document provides a comprehensive audit of deprecated software, packages, a
 ```
 ### [Package Name] Migration
 
-**From**: X.X.X  
-**To**: Y.Y.Y  
-**Breaking Changes**: Yes/No  
+**From**: X.X.X
+**To**: Y.Y.Y
+**Breaking Changes**: Yes/No
 
 #### Steps
 
@@ -161,11 +161,11 @@ When updating this document:
 
 ## Approval and Sign-off
 
-| Role | Name | Date | Status |
-|---|---|---|---|
-| Project Lead | - | - | Pending |
-| Tech Lead | - | - | Pending |
-| Security | - | - | Pending |
+| Role         | Name | Date | Status  |
+| ------------ | ---- | ---- | ------- |
+| Project Lead | -    | -    | Pending |
+| Tech Lead    | -    | -    | Pending |
+| Security     | -    | -    | Pending |
 
 ---
 

@@ -8,8 +8,8 @@ describe('DenyHandler', () => {
   beforeEach(() => {
     mockRepos = {
       commandRepo: {
-        removeAllowed: jest.fn().mockResolvedValue(undefined)
-      }
+        removeAllowed: jest.fn().mockResolvedValue(undefined),
+      },
     };
     handler = new DenyHandler(mockRepos);
   });

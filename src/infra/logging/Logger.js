@@ -19,10 +19,10 @@ function createLogger(config) {
     level: config.LOG_LEVEL,
     transport: isDev
       ? {
-        target: 'pino-pretty',
-        options: { colorize: true, translateTime: 'SYS:standard' }
-      }
-      : undefined
+          target: 'pino-pretty',
+          options: { colorize: true, translateTime: 'SYS:standard' },
+        }
+      : undefined,
   });
 }
 

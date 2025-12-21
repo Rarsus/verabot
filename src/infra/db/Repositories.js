@@ -47,7 +47,7 @@ function createCommandRepository(db) {
       conn.prepare('DELETE FROM command_channels WHERE command = ?').run(command);
       conn.prepare('DELETE FROM command_users WHERE command = ?').run(command);
       conn.prepare('DELETE FROM rate_limits WHERE command = ?').run(command);
-    }
+    },
   };
 }
 
@@ -78,7 +78,7 @@ function createPermissionRepository(db) {
       return conn
         .prepare('SELECT role_id FROM command_roles WHERE command = ?')
         .all(command)
-        .map(r => r.role_id);
+        .map((r) => r.role_id);
     },
     /**
      * Get all channels allowed for a command
@@ -89,7 +89,7 @@ function createPermissionRepository(db) {
       return conn
         .prepare('SELECT channel_id FROM command_channels WHERE command = ?')
         .all(command)
-        .map(r => r.channel_id);
+        .map((r) => r.channel_id);
     },
     /**
      * Get all users allowed for a command
@@ -100,7 +100,7 @@ function createPermissionRepository(db) {
       return conn
         .prepare('SELECT user_id FROM command_users WHERE command = ?')
         .all(command)
-        .map(r => r.user_id);
+        .map((r) => r.user_id);
     },
     /**
      * Add role permission for a command
@@ -141,10 +141,8 @@ function createPermissionRepository(db) {
      * @returns {Promise<Array>} Array of audit log entries
      */
     async listAudit(limit = 50) {
-      return conn
-        .prepare('SELECT * FROM audit_log ORDER BY id DESC LIMIT ?')
-        .all(limit);
-    }
+      return conn.prepare('SELECT * FROM audit_log ORDER BY id DESC LIMIT ?').all(limit);
+    },
   };
 }
 
@@ -176,7 +174,7 @@ function createAuditRepository(db) {
           JSON.stringify(command.args || []),
           result.success ? 1 : 0
         );
-    }
+    },
   };
 }
 
@@ -210,7 +208,7 @@ function createRateLimitRepository(db) {
           'INSERT INTO rate_limits (command, last_used) VALUES (?, ?) ON CONFLICT(command) DO UPDATE SET last_used = excluded.last_used'
         )
         .run(command, timestamp);
-    }
+    },
   };
 }
 
@@ -235,7 +233,7 @@ function createRepositories(db, logger) {
     commandRepo: createCommandRepository(db),
     permissionRepo: createPermissionRepository(db),
     auditRepo: createAuditRepository(db),
-    rateLimitRepo: createRateLimitRepository(db)
+    rateLimitRepo: createRateLimitRepository(db),
   };
 }
 

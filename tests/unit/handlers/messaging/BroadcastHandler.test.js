@@ -10,13 +10,13 @@ describe('BroadcastHandler', () => {
     mockChannels = new Map([
       ['ch1', { isTextBased: () => true, send: jest.fn().mockResolvedValue(undefined) }],
       ['ch2', { isTextBased: () => true, send: jest.fn().mockResolvedValue(undefined) }],
-      ['ch3', { isTextBased: () => false, send: jest.fn() }]
+      ['ch3', { isTextBased: () => false, send: jest.fn() }],
     ]);
 
     mockDiscordClient = {
       channels: {
-        cache: mockChannels
-      }
+        cache: mockChannels,
+      },
     };
     handler = new BroadcastHandler(mockDiscordClient);
   });

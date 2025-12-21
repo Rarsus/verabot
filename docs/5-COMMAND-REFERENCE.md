@@ -16,14 +16,17 @@ Complete catalog of all VeraBot commands with descriptions and usage examples.
 ## Core Commands
 
 ### `/ping`
+
 **Description:** Test bot responsiveness
 
 **Usage:**
+
 ```
 /ping
 ```
 
 **Response:**
+
 ```
 Pong! Response time: 125ms
 ```
@@ -33,14 +36,17 @@ Pong! Response time: 125ms
 ---
 
 ### `/info`
+
 **Description:** Display bot information and version
 
 **Usage:**
+
 ```
 /info
 ```
 
 **Response:**
+
 ```
 Bot Name: VeraBot
 Version: 1.0.0
@@ -53,9 +59,11 @@ Commands: 45
 ---
 
 ### `/help`
+
 **Description:** List available commands or get help for specific command
 
 **Usage:**
+
 ```
 /help
 /help deploy
@@ -63,6 +71,7 @@ Commands: 45
 ```
 
 **Response:**
+
 ```
 Available Commands:
 - Core: ping, info, help, stats, uptime
@@ -75,14 +84,17 @@ Available Commands:
 ---
 
 ### `/stats`
+
 **Description:** Show command usage statistics
 
 **Usage:**
+
 ```
 /stats
 ```
 
 **Response:**
+
 ```
 Total Commands Executed: 1,245
 Most Used: ping (234)
@@ -95,14 +107,17 @@ Rate Limited: 5
 ---
 
 ### `/uptime`
+
 **Description:** Show bot uptime and status
 
 **Usage:**
+
 ```
 /uptime
 ```
 
 **Response:**
+
 ```
 Bot Uptime: 5 days 3 hours 24 minutes
 Status: Healthy
@@ -116,9 +131,11 @@ Memory: 125MB / 512MB
 ## Admin Commands
 
 ### `/allow-command`
+
 **Description:** Allow a command for user, role, or channel
 
 **Usage:**
+
 ```
 /allow-command deploy                  # Allow for everyone
 /allow-command deploy @user            # Allow for specific user
@@ -131,9 +148,11 @@ Memory: 125MB / 512MB
 ---
 
 ### `/allow-user`
+
 **Description:** Grant user access to command
 
 **Usage:**
+
 ```
 /allow-user deploy @john
 ```
@@ -143,9 +162,11 @@ Memory: 125MB / 512MB
 ---
 
 ### `/allow-role`
+
 **Description:** Grant role access to command
 
 **Usage:**
+
 ```
 /allow-role admin @developers
 ```
@@ -155,9 +176,11 @@ Memory: 125MB / 512MB
 ---
 
 ### `/allow-channel`
+
 **Description:** Allow command in specific channel
 
 **Usage:**
+
 ```
 /allow-channel ping #general
 ```
@@ -167,9 +190,11 @@ Memory: 125MB / 512MB
 ---
 
 ### `/deny-command`
+
 **Description:** Block a command globally
 
 **Usage:**
+
 ```
 /deny-command dangerous-command
 ```
@@ -179,9 +204,11 @@ Memory: 125MB / 512MB
 ---
 
 ### `/audit`
+
 **Description:** View audit log of permission changes
 
 **Usage:**
+
 ```
 /audit                          # Last 50 entries
 /audit --type permissions       # Only permission changes
@@ -190,6 +217,7 @@ Memory: 125MB / 512MB
 ```
 
 **Response:**
+
 ```
 Permission Changes:
 [2025-12-21 10:30] Admin allowed ping for @user1
@@ -202,9 +230,11 @@ Permission Changes:
 ---
 
 ### `/allowed-commands`
+
 **Description:** List all currently allowed commands
 
 **Usage:**
+
 ```
 /allowed-commands
 /allowed-commands @user
@@ -212,6 +242,7 @@ Permission Changes:
 ```
 
 **Response:**
+
 ```
 Allowed Commands:
 - ping (public)
@@ -227,14 +258,17 @@ Allowed Commands:
 ## Messaging Commands
 
 ### `/say`
+
 **Description:** Send a message as the bot
 
 **Usage:**
+
 ```
 /say Hello everyone!
 ```
 
 **Response:**
+
 ```
 [Message sent to #general]
 Hello everyone!
@@ -245,9 +279,11 @@ Hello everyone!
 ---
 
 ### `/broadcast`
+
 **Description:** Send message to multiple channels
 
 **Usage:**
+
 ```
 /broadcast "Important announcement" #general #announcements
 ```
@@ -257,9 +293,11 @@ Hello everyone!
 ---
 
 ### `/notify`
+
 **Description:** Send notification to specific user
 
 **Usage:**
+
 ```
 /notify @user "Your task is complete"
 ```
@@ -271,15 +309,18 @@ Hello everyone!
 ## Operations Commands
 
 ### `/deploy`
+
 **Description:** Deploy to environment
 
 **Usage:**
+
 ```
 /deploy production
 /deploy production staging    # Deploy to multiple
 ```
 
 **Response:**
+
 ```
 Deployment started to production
 Job ID: deploy-12345
@@ -291,14 +332,17 @@ Status: Running
 ---
 
 ### `/job-status`
+
 **Description:** Check status of a job
 
 **Usage:**
+
 ```
 /job-status deploy-12345
 ```
 
 **Response:**
+
 ```
 Job ID: deploy-12345
 Status: Running
@@ -311,14 +355,17 @@ Started: 2025-12-21 10:30
 ---
 
 ### `/heavy-work`
+
 **Description:** Execute heavy background task
 
 **Usage:**
+
 ```
 /heavy-work
 ```
 
 **Response:**
+
 ```
 Heavy work job queued
 Job ID: heavywork-789
@@ -379,11 +426,11 @@ All slash commands also available with `!` prefix:
 
 ## Permission Levels
 
-| Command | Required |
-|---------|----------|
-| `/ping`, `/info`, `/help`, `/stats`, `/uptime` | Public |
-| `/say`, `/notify` | Role-restricted |
-| `/allow-*`, `/deny-*`, `/audit`, `/deploy` | Admin only |
+| Command                                        | Required        |
+| ---------------------------------------------- | --------------- |
+| `/ping`, `/info`, `/help`, `/stats`, `/uptime` | Public          |
+| `/say`, `/notify`                              | Role-restricted |
+| `/allow-*`, `/deny-*`, `/audit`, `/deploy`     | Admin only      |
 
 ---
 
@@ -392,6 +439,7 @@ All slash commands also available with `!` prefix:
 ### Quick Commands
 
 Use up arrow to repeat last command:
+
 ```
 /ping         ← Enter
 ↑ Repeat with up arrow
@@ -410,6 +458,7 @@ Start typing in `/` dropdown to filter.
 ```
 
 Or use roles:
+
 ```
 /allow-role ping members
 ```
@@ -427,19 +476,22 @@ http://localhost:3002/admin/queues
 ## Command Categories
 
 ### By Frequency
+
 1. `/ping` - Most used, basic test
 2. `/help` - Finding commands
 3. `/say` - Sending messages
 4. `/info` - Bot information
 
 ### By Permission Level
+
 1. **Public** - ping, info, help, stats, uptime
 2. **Role-restricted** - say, notify
-3. **Admin only** - deploy, audit, allow-*, deny-*
+3. **Admin only** - deploy, audit, allow-_, deny-_
 
 ### By Function
+
 1. **Utility** - ping, info, help, stats, uptime
-2. **Admin** - allow-*, deny-*, audit, allowed-commands
+2. **Admin** - allow-_, deny-_, audit, allowed-commands
 3. **Communication** - say, broadcast, notify
 4. **Operations** - deploy, job-status, heavy-work
 

@@ -6,11 +6,11 @@ jest.mock('discord.js', () => ({
   GatewayIntentBits: {
     Guilds: 1,
     GuildMessages: 512,
-    MessageContent: 32768
+    MessageContent: 32768,
   },
   Partials: {
-    Channel: 1
-  }
+    Channel: 1,
+  },
 }));
 
 describe('DiscordClientFactory', () => {
@@ -22,13 +22,13 @@ describe('DiscordClientFactory', () => {
     jest.clearAllMocks();
 
     mockConfig = {
-      DISCORD_TOKEN: 'test-token-12345'
+      DISCORD_TOKEN: 'test-token-12345',
     };
 
     mockLogger = {
       info: jest.fn(),
       error: jest.fn(),
-      warn: jest.fn()
+      warn: jest.fn(),
     };
 
     mockClient = {
@@ -36,8 +36,8 @@ describe('DiscordClientFactory', () => {
       on: jest.fn().mockReturnThis(),
       login: jest.fn().mockResolvedValue('test-token-12345'),
       user: {
-        tag: 'TestBot#1234'
-      }
+        tag: 'TestBot#1234',
+      },
     };
 
     Client.mockImplementation(() => mockClient);
@@ -65,8 +65,8 @@ describe('DiscordClientFactory', () => {
           intents: expect.arrayContaining([
             GatewayIntentBits.Guilds,
             GatewayIntentBits.GuildMessages,
-            GatewayIntentBits.MessageContent
-          ])
+            GatewayIntentBits.MessageContent,
+          ]),
         })
       );
     });
@@ -97,7 +97,7 @@ describe('DiscordClientFactory', () => {
 
       expect(Client).toHaveBeenCalledWith(
         expect.objectContaining({
-          partials: expect.arrayContaining([Partials.Channel])
+          partials: expect.arrayContaining([Partials.Channel]),
         })
       );
     });
@@ -221,7 +221,7 @@ describe('DiscordClientFactory', () => {
         once: jest.fn().mockReturnThis(),
         on: jest.fn().mockReturnThis(),
         login: jest.fn().mockResolvedValue('test-token-12345'),
-        user: { tag: 'SecondBot#9999' }
+        user: { tag: 'SecondBot#9999' },
       };
       Client.mockImplementation(() => mockClient);
 

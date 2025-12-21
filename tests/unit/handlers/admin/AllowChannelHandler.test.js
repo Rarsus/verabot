@@ -8,8 +8,8 @@ describe('AllowChannelHandler', () => {
   beforeEach(() => {
     mockRepos = {
       permissionRepo: {
-        addChannel: jest.fn().mockResolvedValue(undefined)
-      }
+        addChannel: jest.fn().mockResolvedValue(undefined),
+      },
     };
     handler = new AllowChannelHandler(mockRepos);
   });

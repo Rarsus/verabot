@@ -9,13 +9,13 @@ describe('PermissionMiddleware', () => {
 
   beforeEach(() => {
     mockPermissionService = {
-      canExecute: jest.fn()
+      canExecute: jest.fn(),
     };
     middleware = new PermissionMiddleware(mockPermissionService);
     mockNext = jest.fn().mockResolvedValue({ success: true });
     mockContext = {
       command: { name: 'test-command' },
-      category: 'core'
+      category: 'core',
     };
   });
 
@@ -43,7 +43,10 @@ describe('PermissionMiddleware', () => {
 
       await middleware.handle(mockContext, mockNext);
 
-      expect(mockPermissionService.canExecute).toHaveBeenCalledWith(mockContext.command, mockContext.category);
+      expect(mockPermissionService.canExecute).toHaveBeenCalledWith(
+        mockContext.command,
+        mockContext.category
+      );
     });
 
     it('should execute middleware chain when allowed', async () => {
@@ -99,7 +102,7 @@ describe('PermissionMiddleware', () => {
       mockPermissionService.canExecute.mockResolvedValue(true);
       const differentContext = {
         command: { name: 'admin-command' },
-        category: 'admin'
+        category: 'admin',
       };
 
       await middleware.handle(differentContext, mockNext);
@@ -114,7 +117,7 @@ describe('PermissionMiddleware', () => {
       mockPermissionService.canExecute.mockResolvedValue(true);
       const messagingContext = {
         command: { name: 'say' },
-        category: 'messaging'
+        category: 'messaging',
       };
 
       await middleware.handle(messagingContext, mockNext);
@@ -129,12 +132,15 @@ describe('PermissionMiddleware', () => {
       mockPermissionService.canExecute.mockResolvedValue(true);
       const opsContext = {
         command: { name: 'deploy' },
-        category: 'operations'
+        category: 'operations',
       };
 
       await middleware.handle(opsContext, mockNext);
 
-      expect(mockPermissionService.canExecute).toHaveBeenCalledWith(opsContext.command, 'operations');
+      expect(mockPermissionService.canExecute).toHaveBeenCalledWith(
+        opsContext.command,
+        'operations'
+      );
     });
   });
 

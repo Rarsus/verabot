@@ -12,6 +12,7 @@ This document outlines the testing strategy for the verabot project, with a focu
 ### Current Status: In Progress
 
 **Current Coverage Metrics:**
+
 - Overall Coverage: 55-60% (baseline established)
 - Unit Tests: Fully implemented for core modules
 - Integration Tests: Partial implementation
@@ -64,26 +65,29 @@ The following test suites have been successfully implemented:
 
 ### Coverage Progress Timeline
 
-| Phase | Target | Status | ETA |
-|-------|--------|--------|-----|
-| Phase 1: Foundation | 70% | In Progress | End of current sprint |
-| Phase 2: Comprehensive | 85% | Planned | Q1 2026 |
-| Phase 3: Excellence | 95%+ | Planned | Q2 2026 |
+| Phase                  | Target | Status      | ETA                   |
+| ---------------------- | ------ | ----------- | --------------------- |
+| Phase 1: Foundation    | 70%    | In Progress | End of current sprint |
+| Phase 2: Comprehensive | 85%    | Planned     | Q1 2026               |
+| Phase 3: Excellence    | 95%+   | Planned     | Q2 2026               |
 
 ## Testing Best Practices
 
 ### Unit Testing Standards
+
 - Minimum 80% coverage per module
 - All public methods must have tests
 - Test isolation - no external dependencies
 - Clear test naming convention: `test_<function>_<scenario>`
 
 ### Integration Testing Standards
+
 - Test real-world workflows and interactions
 - Use test fixtures and mock external services
 - Validate data flow across component boundaries
 
 ### Code Quality Metrics
+
 - All new code must include tests
 - Pull requests require minimum 85% coverage of changed files
 - Coverage should not decrease with new commits
@@ -107,6 +111,7 @@ coverage-badge -o coverage.svg
 ## Continuous Integration
 
 Coverage checks are automated via GitHub Actions:
+
 - All PRs must maintain or increase overall coverage
 - Failed coverage checks block merge
 - Weekly coverage reports generated

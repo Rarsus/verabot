@@ -9,7 +9,7 @@ describe('CommandService', () => {
       isAllowed: jest.fn(),
       listAllowed: jest.fn(),
       addAllowed: jest.fn(),
-      removeAllowed: jest.fn()
+      removeAllowed: jest.fn(),
     };
     service = new CommandService(mockCommandRepo);
   });

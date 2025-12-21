@@ -7,7 +7,7 @@ describe('HelpService', () => {
   beforeEach(() => {
     mockRegistry = {
       listCommands: jest.fn(),
-      getMeta: jest.fn()
+      getMeta: jest.fn(),
     };
     service = new HelpService(mockRegistry);
   });
@@ -18,7 +18,7 @@ describe('HelpService', () => {
         { name: 'ping', category: 'core' },
         { name: 'info', category: 'core' },
         { name: 'say', category: 'messaging' },
-        { name: 'deploy', category: 'operations' }
+        { name: 'deploy', category: 'operations' },
       ]);
 
       const categories = service.listCategories();
@@ -41,7 +41,7 @@ describe('HelpService', () => {
       mockRegistry.listCommands.mockReturnValue([
         { name: 'ping', category: 'core' },
         { name: 'info', category: 'core' },
-        { name: 'help', category: 'core' }
+        { name: 'help', category: 'core' },
       ]);
 
       const categories = service.listCategories();
@@ -57,7 +57,7 @@ describe('HelpService', () => {
         { name: 'ping', category: 'core' },
         { name: 'info', category: 'core' },
         { name: 'say', category: 'messaging' },
-        { name: 'deploy', category: 'operations' }
+        { name: 'deploy', category: 'operations' },
       ]);
     });
 
@@ -65,7 +65,7 @@ describe('HelpService', () => {
       const commands = service.getCommandsByCategory('core');
 
       expect(commands.length).toBe(2);
-      expect(commands.every(c => c.category === 'core')).toBe(true);
+      expect(commands.every((c) => c.category === 'core')).toBe(true);
     });
 
     it('should return all commands when no category specified', () => {
@@ -97,7 +97,7 @@ describe('HelpService', () => {
       { name: 'cmd5', category: 'core' },
       { name: 'cmd6', category: 'core' },
       { name: 'cmd7', category: 'core' },
-      { name: 'cmd8', category: 'core' }
+      { name: 'cmd8', category: 'core' },
     ];
 
     it('should paginate commands with default page size of 5', () => {
@@ -166,7 +166,7 @@ describe('HelpService', () => {
         { name: 'ping', category: 'core' },
         { name: 'pong', category: 'core' },
         { name: 'help', category: 'core' },
-        { name: 'say', category: 'messaging' }
+        { name: 'say', category: 'messaging' },
       ]);
     });
 
@@ -188,7 +188,7 @@ describe('HelpService', () => {
     it('should limit results to 10', () => {
       const commands = Array.from({ length: 15 }, (_, i) => ({
         name: `test${i}`,
-        category: 'core'
+        category: 'core',
       }));
       mockRegistry.listCommands.mockReturnValue(commands);
 
@@ -206,7 +206,7 @@ describe('HelpService', () => {
     it('should return only command names', () => {
       const results = service.autocomplete('p');
 
-      expect(results.every(r => typeof r === 'string')).toBe(true);
+      expect(results.every((r) => typeof r === 'string')).toBe(true);
     });
   });
 
@@ -235,7 +235,7 @@ describe('HelpService', () => {
         category: 'core',
         description: 'Ping pong',
         usage: '!ping',
-        examples: ['!ping']
+        examples: ['!ping'],
       };
       mockRegistry.getMeta.mockReturnValue(mockMeta);
 

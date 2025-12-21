@@ -134,17 +134,17 @@ groups:
         expr: bot_up != 1
         for: 2m
         annotations:
-          summary: "Bot is down"
-      
+          summary: 'Bot is down'
+
       - alert: HighErrorRate
         expr: rate(bot_errors_total[5m]) > 0.05
         annotations:
-          summary: "Error rate exceeds 5%"
-      
+          summary: 'Error rate exceeds 5%'
+
       - alert: SlowCommands
         expr: histogram_quantile(0.95, bot_command_duration_seconds) > 1
         annotations:
-          summary: "Commands are slow"
+          summary: 'Commands are slow'
 ```
 
 ### Notification Channels
@@ -182,13 +182,13 @@ node --max-old-space-size=512
 
 ## Troubleshooting Alerts
 
-| Alert | Cause | Action |
-|-------|-------|--------|
-| Bot Down | Process crashed | Restart container |
-| High Error Rate | Bad deployment | Rollback version |
-| Slow Commands | DB bottleneck | Check queries |
-| Queue Backlog | Job processor slow | Scale workers |
-| Memory Leak | Memory not freed | Restart and profile |
+| Alert           | Cause              | Action              |
+| --------------- | ------------------ | ------------------- |
+| Bot Down        | Process crashed    | Restart container   |
+| High Error Rate | Bad deployment     | Rollback version    |
+| Slow Commands   | DB bottleneck      | Check queries       |
+| Queue Backlog   | Job processor slow | Scale workers       |
+| Memory Leak     | Memory not freed   | Restart and profile |
 
 ---
 

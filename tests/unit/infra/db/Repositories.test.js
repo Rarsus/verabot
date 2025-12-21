@@ -16,19 +16,19 @@ describe('Repositories Factory', () => {
     mockPrepare = jest.fn(() => ({
       get: mockGet,
       all: mockAll,
-      run: mockRun
+      run: mockRun,
     }));
 
     mockDb = {
       raw: {
-        prepare: mockPrepare
-      }
+        prepare: mockPrepare,
+      },
     };
 
     mockLogger = {
       info: jest.fn(),
       error: jest.fn(),
-      warn: jest.fn()
+      warn: jest.fn(),
     };
 
     repositories = createRepositories(mockDb, mockLogger);
@@ -42,7 +42,9 @@ describe('Repositories Factory', () => {
         mockGet.mockReturnValue({ id: 1 });
         const result = await repo().isAllowed('test');
         expect(result).toBe(true);
-        expect(mockPrepare).toHaveBeenCalledWith('SELECT 1 FROM allowed_commands WHERE command = ?');
+        expect(mockPrepare).toHaveBeenCalledWith(
+          'SELECT 1 FROM allowed_commands WHERE command = ?'
+        );
       });
 
       it('should return false if command is not allowed', async () => {
@@ -125,7 +127,9 @@ describe('Repositories Factory', () => {
         const result = await repo().getRoles('test');
 
         expect(result).toEqual(['role1', 'role2']);
-        expect(mockPrepare).toHaveBeenCalledWith('SELECT role_id FROM command_roles WHERE command = ?');
+        expect(mockPrepare).toHaveBeenCalledWith(
+          'SELECT role_id FROM command_roles WHERE command = ?'
+        );
       });
 
       it('should return empty array if no roles', async () => {
@@ -198,7 +202,9 @@ describe('Repositories Factory', () => {
         const result = await repo().listAudit();
 
         expect(result).toEqual(entries);
-        expect(mockPrepare).toHaveBeenCalledWith('SELECT * FROM audit_log ORDER BY id DESC LIMIT ?');
+        expect(mockPrepare).toHaveBeenCalledWith(
+          'SELECT * FROM audit_log ORDER BY id DESC LIMIT ?'
+        );
       });
 
       it('should accept custom limit', async () => {
@@ -219,23 +225,14 @@ describe('Repositories Factory', () => {
           name: 'test',
           userId: 'user123',
           channelId: 'ch123',
-          args: ['arg1']
+          args: ['arg1'],
         };
         const result = { success: true };
 
         await repo().log(command, result);
 
-        expect(mockPrepare).toHaveBeenCalledWith(
-          expect.stringContaining('INSERT INTO audit_log')
-        );
-        expect(mockRun).toHaveBeenCalledWith(
-          'discord',
-          'test',
-          'user123',
-          'ch123',
-          '["arg1"]',
-          1
-        );
+        expect(mockPrepare).toHaveBeenCalledWith(expect.stringContaining('INSERT INTO audit_log'));
+        expect(mockRun).toHaveBeenCalledWith('discord', 'test', 'user123', 'ch123', '["arg1"]', 1);
       });
 
       it('should log null user and channel if not provided', async () => {
@@ -244,20 +241,13 @@ describe('Repositories Factory', () => {
           name: 'test',
           userId: null,
           channelId: null,
-          args: []
+          args: [],
         };
         const result = { success: false };
 
         await repo().log(command, result);
 
-        expect(mockRun).toHaveBeenCalledWith(
-          'ws',
-          'test',
-          null,
-          null,
-          '[]',
-          0
-        );
+        expect(mockRun).toHaveBeenCalledWith('ws', 'test', null, null, '[]', 0);
       });
     });
   });
@@ -272,7 +262,9 @@ describe('Repositories Factory', () => {
         const result = await repo().getLastUsed('test');
 
         expect(result).toBe(123456);
-        expect(mockPrepare).toHaveBeenCalledWith('SELECT last_used FROM rate_limits WHERE command = ?');
+        expect(mockPrepare).toHaveBeenCalledWith(
+          'SELECT last_used FROM rate_limits WHERE command = ?'
+        );
       });
 
       it('should return null if no record', async () => {

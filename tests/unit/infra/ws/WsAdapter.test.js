@@ -11,21 +11,21 @@ describe('WsAdapter', () => {
   beforeEach(() => {
     mockWs = {
       on: jest.fn(),
-      send: jest.fn()
+      send: jest.fn(),
     };
 
     mockWsHolder = {
-      instance: mockWs
+      instance: mockWs,
     };
 
     mockCommandBus = {
-      execute: jest.fn().mockResolvedValue({ success: true, data: 'result' })
+      execute: jest.fn().mockResolvedValue({ success: true, data: 'result' }),
     };
 
     mockLogger = {
       info: jest.fn(),
       error: jest.fn(),
-      warn: jest.fn()
+      warn: jest.fn(),
     };
 
     adapter = new WsAdapter(mockWsHolder, mockCommandBus, mockLogger);
@@ -100,7 +100,7 @@ describe('WsAdapter', () => {
           type: 'command',
           command: 'help',
           userId: 'user123',
-          args: []
+          args: [],
         });
 
         await messageHandler(Buffer.from(message));
@@ -113,14 +113,12 @@ describe('WsAdapter', () => {
           type: 'command',
           command: 'test',
           userId: 'user123',
-          args: ['arg1']
+          args: ['arg1'],
         });
 
         await messageHandler(Buffer.from(message));
 
-        expect(mockCommandBus.execute).toHaveBeenCalledWith(
-          expect.any(Command)
-        );
+        expect(mockCommandBus.execute).toHaveBeenCalledWith(expect.any(Command));
       });
 
       it('should include userId in command', async () => {
@@ -128,7 +126,7 @@ describe('WsAdapter', () => {
           type: 'command',
           command: 'test',
           userId: 'user456',
-          args: []
+          args: [],
         });
 
         await messageHandler(Buffer.from(message));
@@ -142,7 +140,7 @@ describe('WsAdapter', () => {
           type: 'command',
           command: 'mycommand',
           userId: 'user123',
-          args: []
+          args: [],
         });
 
         await messageHandler(Buffer.from(message));
@@ -156,7 +154,7 @@ describe('WsAdapter', () => {
           type: 'command',
           command: 'test',
           userId: 'user123',
-          args: ['arg1', 'arg2']
+          args: ['arg1', 'arg2'],
         });
 
         await messageHandler(Buffer.from(message));
@@ -171,7 +169,7 @@ describe('WsAdapter', () => {
           command: 'test',
           userId: 'user123',
           args: [],
-          metadata: { priority: 'high', source: 'api' }
+          metadata: { priority: 'high', source: 'api' },
         });
 
         await messageHandler(Buffer.from(message));
@@ -185,7 +183,7 @@ describe('WsAdapter', () => {
           type: 'command',
           command: 'test',
           userId: 'user123',
-          args: []
+          args: [],
         });
 
         await messageHandler(Buffer.from(message));
@@ -199,7 +197,7 @@ describe('WsAdapter', () => {
           type: 'command',
           command: 'test',
           userId: 'user123',
-          args: []
+          args: [],
         });
 
         await messageHandler(Buffer.from(message));
@@ -215,7 +213,7 @@ describe('WsAdapter', () => {
           type: 'command',
           command: 'test',
           userId: 'user123',
-          args: []
+          args: [],
         });
 
         await messageHandler(Buffer.from(message));
@@ -233,7 +231,7 @@ describe('WsAdapter', () => {
           type: 'command',
           command: 'test',
           userId: 'user123',
-          args: []
+          args: [],
         });
 
         await messageHandler(Buffer.from(message));
@@ -251,7 +249,7 @@ describe('WsAdapter', () => {
           type: 'command',
           command: 'test',
           userId: 'user123',
-          args: []
+          args: [],
         });
 
         await messageHandler(Buffer.from(message));
@@ -269,7 +267,7 @@ describe('WsAdapter', () => {
           type: 'command',
           command: 'test',
           userId: 'user123',
-          args: []
+          args: [],
         });
 
         await messageHandler(Buffer.from(message));
@@ -285,7 +283,7 @@ describe('WsAdapter', () => {
           type: 'command',
           command: 'test',
           userId: 'user123',
-          args: []
+          args: [],
         });
 
         await messageHandler(Buffer.from(message));
@@ -301,7 +299,7 @@ describe('WsAdapter', () => {
           type: 'command',
           command: 'test',
           userId: 'user123',
-          args: []
+          args: [],
         });
 
         await messageHandler(Buffer.from(message));
@@ -317,7 +315,7 @@ describe('WsAdapter', () => {
           type: 'command',
           command: 'test',
           userId: 'user123',
-          args: []
+          args: [],
         });
 
         await messageHandler(Buffer.from(message));
@@ -335,16 +333,14 @@ describe('WsAdapter', () => {
 
         await messageHandler(Buffer.from(message));
 
-        expect(mockLogger.warn).toHaveBeenCalledWith(
-          expect.stringContaining('non-JSON')
-        );
+        expect(mockLogger.warn).toHaveBeenCalledWith(expect.stringContaining('non-JSON'));
         expect(mockCommandBus.execute).not.toHaveBeenCalled();
       });
 
       it('should ignore non-command messages', async () => {
         const message = JSON.stringify({
           type: 'ping',
-          data: 'test'
+          data: 'test',
         });
 
         await messageHandler(Buffer.from(message));
@@ -367,7 +363,7 @@ describe('WsAdapter', () => {
         const message = JSON.stringify({
           type: 'command',
           command: 'test',
-          args: []
+          args: [],
         });
 
         await messageHandler(Buffer.from(message));
@@ -380,7 +376,7 @@ describe('WsAdapter', () => {
         const message = JSON.stringify({
           type: 'command',
           command: 'test',
-          userId: 'user123'
+          userId: 'user123',
         });
 
         await messageHandler(Buffer.from(message));
@@ -394,7 +390,7 @@ describe('WsAdapter', () => {
           type: 'command',
           command: 'test',
           userId: 'user123',
-          args: []
+          args: [],
         });
 
         await messageHandler(Buffer.from(message));
@@ -410,13 +406,13 @@ describe('WsAdapter', () => {
           type: 'command',
           command: 'cmd1',
           userId: 'user1',
-          args: []
+          args: [],
         });
         const msg2 = JSON.stringify({
           type: 'command',
           command: 'cmd2',
           userId: 'user2',
-          args: []
+          args: [],
         });
 
         await messageHandler(Buffer.from(msg1));
@@ -431,19 +427,16 @@ describe('WsAdapter', () => {
           type: 'command',
           command: 'cmd1',
           userId: 'user1',
-          args: []
+          args: [],
         });
         const msg2 = JSON.stringify({
           type: 'command',
           command: 'cmd2',
           userId: 'user2',
-          args: []
+          args: [],
         });
 
-        await Promise.all([
-          messageHandler(Buffer.from(msg1)),
-          messageHandler(Buffer.from(msg2))
-        ]);
+        await Promise.all([messageHandler(Buffer.from(msg1)), messageHandler(Buffer.from(msg2))]);
 
         expect(mockCommandBus.execute).toHaveBeenCalledTimes(2);
       });

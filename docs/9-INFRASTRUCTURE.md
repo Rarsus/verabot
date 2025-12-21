@@ -9,6 +9,7 @@ Details about database, job queue, WebSocket, and HTTP infrastructure.
 ### Schema
 
 **Tables:**
+
 - `allowed_commands` - Allowed commands
 - `command_roles` - Role permissions
 - `command_channels` - Channel permissions
@@ -27,9 +28,7 @@ Details about database, job queue, WebSocket, and HTTP infrastructure.
 
 ```javascript
 const db = require('./db');
-const user = db.prepare(
-  'SELECT * FROM users WHERE id = ?'
-).get(userId);
+const user = db.prepare('SELECT * FROM users WHERE id = ?').get(userId);
 ```
 
 ---
@@ -45,13 +44,17 @@ const user = db.prepare(
 ### Enqueueing
 
 ```javascript
-await queue.enqueue('heavywork', {
-  data: 'important'
-}, {
-  priority: 5,
-  delay: 1000,
-  attempts: 3
-});
+await queue.enqueue(
+  'heavywork',
+  {
+    data: 'important',
+  },
+  {
+    priority: 5,
+    delay: 1000,
+    attempts: 3,
+  }
+);
 ```
 
 ---

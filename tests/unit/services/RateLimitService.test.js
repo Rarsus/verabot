@@ -8,7 +8,7 @@ describe('RateLimitService', () => {
   beforeEach(() => {
     mockRateLimitRepo = {
       getLastUsed: jest.fn(),
-      setLastUsed: jest.fn().mockResolvedValue(undefined)
+      setLastUsed: jest.fn().mockResolvedValue(undefined),
     };
   });
 
@@ -83,7 +83,7 @@ describe('RateLimitService', () => {
   describe('with custom category cooldowns', () => {
     beforeEach(() => {
       service = new RateLimitService(mockRateLimitRepo, 3000, {
-        custom: 5000
+        custom: 5000,
       });
     });
 
@@ -91,9 +91,7 @@ describe('RateLimitService', () => {
       const now = Date.now();
       mockRateLimitRepo.getLastUsed.mockResolvedValue(now - 4000); // 4s ago
 
-      await expect(service.tryConsume({ name: 'cmd' }, 'custom')).rejects.toThrow(
-        RateLimitError
-      );
+      await expect(service.tryConsume({ name: 'cmd' }, 'custom')).rejects.toThrow(RateLimitError);
     });
 
     it('should allow after custom cooldown is met', async () => {
@@ -140,9 +138,7 @@ describe('RateLimitService', () => {
       const now = Date.now();
       mockRateLimitRepo.getLastUsed.mockResolvedValue(now - 999); // 1ms before cooldown
 
-      await expect(service.tryConsume({ name: 'test' }, 'test')).rejects.toThrow(
-        RateLimitError
-      );
+      await expect(service.tryConsume({ name: 'test' }, 'test')).rejects.toThrow(RateLimitError);
     });
   });
 
@@ -154,9 +150,7 @@ describe('RateLimitService', () => {
     it('should propagate repo getLastUsed errors', async () => {
       mockRateLimitRepo.getLastUsed.mockRejectedValue(new Error('DB error'));
 
-      await expect(service.tryConsume({ name: 'test' }, 'messaging')).rejects.toThrow(
-        'DB error'
-      );
+      await expect(service.tryConsume({ name: 'test' }, 'messaging')).rejects.toThrow('DB error');
     });
 
     it('should propagate repo setLastUsed errors', async () => {
@@ -219,9 +213,7 @@ describe('RateLimitService', () => {
       mockRateLimitRepo.getLastUsed.mockResolvedValue(now - 1000); // 1s ago
 
       // unknown category should use defaultCooldownMs of 2000
-      await expect(service.tryConsume({ name: 'cmd' }, 'unknown')).rejects.toThrow(
-        RateLimitError
-      );
+      await expect(service.tryConsume({ name: 'cmd' }, 'unknown')).rejects.toThrow(RateLimitError);
     });
 
     it('should use default cooldown when cooldown is 2000ms', async () => {

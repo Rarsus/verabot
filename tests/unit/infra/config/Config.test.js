@@ -9,7 +9,7 @@ describe('Config', () => {
       DISCORD_TOKEN: 'test-token',
       DISCORD_CLIENT_ID: 'test-id',
       WS_URL: 'ws://localhost:8080',
-      NODE_ENV: 'test'
+      NODE_ENV: 'test',
     };
   });
 

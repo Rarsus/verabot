@@ -13,14 +13,14 @@ describe('Logger', () => {
       info: jest.fn(),
       error: jest.fn(),
       debug: jest.fn(),
-      warn: jest.fn()
+      warn: jest.fn(),
     });
   });
 
   it('should create logger with config', () => {
     mockConfig = {
       NODE_ENV: 'production',
-      LOG_LEVEL: 'info'
+      LOG_LEVEL: 'info',
     };
 
     const logger = createLogger(mockConfig);
@@ -32,7 +32,7 @@ describe('Logger', () => {
     const pino = require('pino');
     mockConfig = {
       NODE_ENV: 'production',
-      LOG_LEVEL: 'debug'
+      LOG_LEVEL: 'debug',
     };
 
     createLogger(mockConfig);
@@ -44,7 +44,7 @@ describe('Logger', () => {
     const pino = require('pino');
     mockConfig = {
       NODE_ENV: 'development',
-      LOG_LEVEL: 'debug'
+      LOG_LEVEL: 'debug',
     };
 
     createLogger(mockConfig);
@@ -58,7 +58,7 @@ describe('Logger', () => {
     const pino = require('pino');
     mockConfig = {
       NODE_ENV: 'production',
-      LOG_LEVEL: 'info'
+      LOG_LEVEL: 'info',
     };
 
     createLogger(mockConfig);

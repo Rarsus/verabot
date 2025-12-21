@@ -44,11 +44,10 @@ class PermissionService {
 
     if (users.length > 0 && userId && !users.includes(userId)) return false;
     if (channels.length > 0 && channelId && !channels.includes(channelId)) return false;
-    if (roles.length > 0 && !userRoles.some(r => roles.includes(r))) return false;
+    if (roles.length > 0 && !userRoles.some((r) => roles.includes(r))) return false;
 
     return true;
   }
 }
 
 module.exports = PermissionService;
-

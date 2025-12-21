@@ -7,7 +7,7 @@ describe('SayHandler', () => {
 
   beforeEach(() => {
     mockMessageService = {
-      broadcast: jest.fn().mockResolvedValue(undefined)
+      broadcast: jest.fn().mockResolvedValue(undefined),
     };
     handler = new SayHandler(mockMessageService);
   });
@@ -53,10 +53,7 @@ describe('SayHandler', () => {
     const result = await handler.handle(command);
 
     expect(result.data.message).toBe('this is a long message');
-    expect(mockMessageService.broadcast).toHaveBeenCalledWith(
-      command,
-      'this is a long message'
-    );
+    expect(mockMessageService.broadcast).toHaveBeenCalledWith(command, 'this is a long message');
   });
 
   it('should propagate broadcast errors', async () => {

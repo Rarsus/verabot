@@ -10,7 +10,7 @@ describe('PermissionService', () => {
       isAllowed: jest.fn(),
       getRoles: jest.fn(),
       getChannels: jest.fn(),
-      getUsers: jest.fn()
+      getUsers: jest.fn(),
     };
     mockCategoryPolicy = jest.fn();
     service = new PermissionService(mockPermissionRepo, mockCategoryPolicy);
@@ -71,7 +71,12 @@ describe('PermissionService', () => {
 
     it('should deny if user lacks required role', async () => {
       mockPermissionRepo.getRoles.mockResolvedValue(['admin', 'mod']);
-      const command = { name: 'restricted', userId: '123', channelId: 'ch1', metadata: { roles: ['user'] } };
+      const command = {
+        name: 'restricted',
+        userId: '123',
+        channelId: 'ch1',
+        metadata: { roles: ['user'] },
+      };
 
       const result = await service.canExecute(command);
 
@@ -80,7 +85,12 @@ describe('PermissionService', () => {
 
     it('should allow if user has one of required roles', async () => {
       mockPermissionRepo.getRoles.mockResolvedValue(['admin', 'mod']);
-      const command = { name: 'restricted', userId: '123', channelId: 'ch1', metadata: { roles: ['user', 'mod'] } };
+      const command = {
+        name: 'restricted',
+        userId: '123',
+        channelId: 'ch1',
+        metadata: { roles: ['user', 'mod'] },
+      };
 
       const result = await service.canExecute(command);
 

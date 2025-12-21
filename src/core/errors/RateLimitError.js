@@ -18,4 +18,3 @@ class RateLimitError extends DomainError {
 }
 
 module.exports = RateLimitError;
-

@@ -222,7 +222,7 @@ Key terms and definitions used throughout VeraBot documentation and codebase.
 
 ## X
 
-**X-* Headers** - Custom HTTP headers prefixed with 'X-'.
+**X-\* Headers** - Custom HTTP headers prefixed with 'X-'.
 
 ---
 

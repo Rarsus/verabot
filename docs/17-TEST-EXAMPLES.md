@@ -23,7 +23,7 @@ describe('HelpHandler', () => {
     const interaction = mockInteraction({
       isCommand: () => true,
       commandName: 'help',
-      reply: mockReply
+      reply: mockReply,
     });
 
     await handler.handle(interaction);
@@ -32,7 +32,7 @@ describe('HelpHandler', () => {
 
   test('should include command list', async () => {
     const interaction = mockInteraction({
-      reply: mockReply
+      reply: mockReply,
     });
 
     await handler.handle(interaction);
@@ -62,14 +62,12 @@ describe('LoggingMiddleware', () => {
     const command = { name: 'test', execute: jest.fn() };
     await middleware.execute(command);
 
-    expect(logger.info).toHaveBeenCalledWith(
-      expect.stringContaining('test')
-    );
+    expect(logger.info).toHaveBeenCalledWith(expect.stringContaining('test'));
   });
 
   test('should log errors', async () => {
     const command = {
-      execute: jest.fn().mockRejectedValue(new Error('Test error'))
+      execute: jest.fn().mockRejectedValue(new Error('Test error')),
     };
 
     await expect(middleware.execute(command)).rejects.toThrow();
@@ -141,9 +139,7 @@ describe('UserRepository', () => {
     const user = { id: '123', name: 'Test' };
     await repo.save(user);
 
-    expect(db.prepare).toHaveBeenCalledWith(
-      expect.stringContaining('INSERT')
-    );
+    expect(db.prepare).toHaveBeenCalledWith(expect.stringContaining('INSERT'));
   });
 
   test('should throw on duplicate', async () => {
@@ -151,8 +147,7 @@ describe('UserRepository', () => {
       throw new Error('UNIQUE constraint failed');
     });
 
-    await expect(repo.save({ id: '123' }))
-      .rejects.toThrow();
+    await expect(repo.save({ id: '123' })).rejects.toThrow();
   });
 });
 ```

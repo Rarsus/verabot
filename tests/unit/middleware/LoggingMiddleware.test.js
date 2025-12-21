@@ -12,23 +12,23 @@ describe('LoggingMiddleware', () => {
       info: jest.fn(),
       error: jest.fn(),
       warn: jest.fn(),
-      debug: jest.fn()
+      debug: jest.fn(),
     };
 
     mockMetrics = {
       commandCounter: {
-        inc: jest.fn()
+        inc: jest.fn(),
       },
       errorCounter: {
-        inc: jest.fn()
-      }
+        inc: jest.fn(),
+      },
     };
 
     middleware = new LoggingMiddleware(mockLogger, mockMetrics);
 
     mockContext = {
       command: { name: 'ping', source: 'test' },
-      category: 'core'
+      category: 'core',
     };
 
     mockNext = jest.fn().mockResolvedValue({ success: true, data: {} });
@@ -64,7 +64,7 @@ describe('LoggingMiddleware', () => {
 
       expect(mockMetrics.commandCounter.inc).toHaveBeenCalledWith({
         command: 'ping',
-        source: 'test'
+        source: 'test',
       });
     });
 
@@ -115,7 +115,7 @@ describe('LoggingMiddleware', () => {
       expect(mockMetrics.errorCounter.inc).toHaveBeenCalledWith({
         command: 'ping',
         source: 'test',
-        code: 'CUSTOM_ERROR'
+        code: 'CUSTOM_ERROR',
       });
     });
 

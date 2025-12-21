@@ -29,4 +29,3 @@ class InfoHandler {
 }
 
 module.exports = InfoHandler;
-

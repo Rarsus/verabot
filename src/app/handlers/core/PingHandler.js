@@ -19,4 +19,3 @@ class PingHandler {
 }
 
 module.exports = PingHandler;
-

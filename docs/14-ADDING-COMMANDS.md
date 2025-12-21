@@ -24,7 +24,7 @@ class MyCommand extends Command {
     super({
       name: 'mycommand',
       description: 'My command description',
-      category: 'core'
+      category: 'core',
     });
   }
 

@@ -23,11 +23,10 @@ class StatsHandler {
       memory: {
         rss: mem.rss,
         heapUsed: mem.heapUsed,
-        heapTotal: mem.heapTotal
-      }
+        heapTotal: mem.heapTotal,
+      },
     });
   }
 }
 
 module.exports = StatsHandler;
-

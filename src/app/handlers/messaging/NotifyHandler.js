@@ -38,4 +38,3 @@ class NotifyHandler {
 }
 
 module.exports = NotifyHandler;
-

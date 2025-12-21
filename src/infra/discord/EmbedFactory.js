@@ -1,9 +1,4 @@
-const {
-  EmbedBuilder,
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle
-} = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 
 /**
  * Factory for creating standardized Discord embeds for various command outputs
@@ -36,9 +31,7 @@ class EmbedFactory {
     const embed = this.base()
       .setTitle(`✅ ${command.name}`)
       .setDescription(
-        result.success
-          ? (result.data?.message || 'Success.')
-          : (result.error?.message || 'Failed.')
+        result.success ? result.data?.message || 'Success.' : result.error?.message || 'Failed.'
       );
 
     if (elapsedSec !== undefined || cooldownSec !== undefined) {
@@ -86,7 +79,7 @@ class EmbedFactory {
       )
       .addFields({
         name: 'Examples',
-        value: meta.examples.map(e => `• \`${e}\``).join('\n') || 'None'
+        value: meta.examples.map((e) => `• \`${e}\``).join('\n') || 'None',
       });
   }
 
@@ -112,10 +105,10 @@ class EmbedFactory {
     }
 
     return embed.addFields(
-      items.map(c => ({
+      items.map((c) => ({
         name: c.name,
         value: c.description,
-        inline: false
+        inline: false,
       }))
     );
   }
@@ -131,7 +124,7 @@ class EmbedFactory {
       .setTitle('🔍 Suggestions')
       .setDescription(
         suggestions.length
-          ? suggestions.map(s => `• \`${s}\``).join('\n')
+          ? suggestions.map((s) => `• \`${s}\``).join('\n')
           : 'No suggestions found.'
       );
   }
@@ -180,15 +173,13 @@ class EmbedFactory {
       .setDescription(
         entries.length
           ? entries
-            .map(
-              e =>
-                `• [${e.timestamp}] ${e.command} by ${e.user} (${e.success ? '✅' : '❌'})`
-            )
-            .join('\n')
+              .map(
+                (e) => `• [${e.timestamp}] ${e.command} by ${e.user} (${e.success ? '✅' : '❌'})`
+              )
+              .join('\n')
           : 'No audit entries.'
       );
   }
 }
 
 module.exports = EmbedFactory;
-

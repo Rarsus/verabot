@@ -23,6 +23,7 @@ Complete guide to using VeraBot - how to interact with the bot and use its featu
 ### What is VeraBot?
 
 VeraBot is a Discord bot that provides:
+
 - **Administrative Tools** - Permission management, channel control
 - **Utilities** - Information, status, help
 - **Communication** - Broadcast messages, notifications
@@ -76,6 +77,7 @@ You'll see a list of available commands.
 **Step 2:** Search for the command
 
 Type command name to filter list:
+
 ```
 /info          → Shows bot information
 /allow         → Allows a command for someone
@@ -85,6 +87,7 @@ Type command name to filter list:
 **Step 3:** Fill in parameters
 
 As you select a command, parameter fields appear:
+
 - **Required parameters** - Must be filled
 - **Optional parameters** - Can be left blank
 
@@ -113,11 +116,13 @@ Press Enter to execute.
 Prefix is `!` by default.
 
 **Format:**
+
 ```
 !command arg1 arg2 arg3
 ```
 
 **Examples:**
+
 ```
 !ping                       # No arguments
 !allow-command ping         # One argument
@@ -126,11 +131,13 @@ Prefix is `!` by default.
 ```
 
 ### Advantages
+
 - Faster for experienced users
 - Can be scripted
 - Works in message editing
 
 ### Disadvantages
+
 - Less user-friendly
 - Requires knowing command names
 - No parameter hints
@@ -140,6 +147,7 @@ Prefix is `!` by default.
 ## Command Categories
 
 ### Core Commands
+
 Essential bot functionality
 
 - `/info` - Bot information and version
@@ -149,6 +157,7 @@ Essential bot functionality
 - `/uptime` - Bot uptime information
 
 ### Admin Commands
+
 Permission management (requires admin role)
 
 - `/allow-command` - Allow a command
@@ -160,6 +169,7 @@ Permission management (requires admin role)
 - `/allowed-commands` - List allowed commands
 
 ### Messaging Commands
+
 Communication tools
 
 - `/say` - Send message
@@ -168,6 +178,7 @@ Communication tools
 - `/reply` - Reply to thread
 
 ### Operations Commands
+
 Operational tasks
 
 - `/deploy` - Deploy to environment
@@ -183,17 +194,18 @@ Operational tasks
 
 Commands have permission requirements:
 
-| Level | Who | How to Get |
-|-------|-----|-----------|
-| Public | Everyone | Default |
-| Role-Based | Specific role | Admin grants |
-| User-Based | Specific user | Admin allows |
+| Level         | Who              | How to Get   |
+| ------------- | ---------------- | ------------ |
+| Public        | Everyone         | Default      |
+| Role-Based    | Specific role    | Admin grants |
+| User-Based    | Specific user    | Admin allows |
 | Channel-Based | Specific channel | Admin allows |
-| Admin | Server admins | Discord role |
+| Admin         | Server admins    | Discord role |
 
 ### Checking Your Permissions
 
 Run `/info` to see:
+
 - Your current role
 - Commands you have access to
 - Your permission level
@@ -207,6 +219,7 @@ Error: You lack permissions for this command
 ```
 
 **Solution:**
+
 1. Ask server admin
 2. Admin runs: `/allow-command <command> @you`
 3. Try again
@@ -214,11 +227,13 @@ Error: You lack permissions for this command
 ### Viewing Audit Trail
 
 Admin only:
+
 ```
 /audit
 ```
 
 Shows:
+
 - Permission changes
 - Who made changes
 - When changes were made
@@ -299,21 +314,25 @@ Examples:
 ### Common Issues
 
 #### "Unknown Command"
+
 - Check command name spelling
 - Use `/help` to find correct name
 - Command might be restricted
 
 #### "Insufficient Permissions"
+
 - Ask admin for permission
 - Check if command requires role
 - See [Permissions & Access](#permissions--access)
 
 #### "Command Timed Out"
+
 - Command is taking too long
 - Try again in a moment
 - Check bot status with `/ping`
 
 #### "Invalid Parameter"
+
 - Check parameter format
 - Required parameters must be filled
 - See specific command help
@@ -325,11 +344,13 @@ Examples:
 ### Bot Not Responding
 
 **Check:**
+
 1. Is bot online? (Green dot on bot profile)
 2. Does bot have permission in channel?
 3. Is channel bot-disabled?
 
 **Solution:**
+
 1. Ask admin to check bot permissions
 2. Try in #general or test channel
 3. Ping bot: `/ping`
@@ -337,24 +358,26 @@ Examples:
 ### Command Not Appearing
 
 **Check:**
+
 1. Is bot updated? (Ask admin)
 2. Do you have permission? (`/info`)
 3. Is command restricted to certain channel?
 
 **Solution:**
+
 1. Wait for bot restart
 2. Request admin permission
 3. Try in different channel
 
 ### Error Messages
 
-| Error | Meaning | Solution |
-|-------|---------|----------|
-| "Unknown command" | Command doesn't exist | Check spelling |
-| "Insufficient permissions" | You can't use this | Request admin access |
-| "Invalid arguments" | Wrong format | Check `/help <command>` |
-| "Command timed out" | Bot took too long | Try again |
-| "Blocked command" | Command disabled | Ask admin |
+| Error                      | Meaning               | Solution                |
+| -------------------------- | --------------------- | ----------------------- |
+| "Unknown command"          | Command doesn't exist | Check spelling          |
+| "Insufficient permissions" | You can't use this    | Request admin access    |
+| "Invalid arguments"        | Wrong format          | Check `/help <command>` |
+| "Command timed out"        | Bot took too long     | Try again               |
+| "Blocked command"          | Command disabled      | Ask admin               |
 
 ---
 
@@ -370,6 +393,7 @@ For external services to trigger bot commands:
 4. Get result in response
 
 **Format:**
+
 ```json
 {
   "command": "ping",
@@ -386,6 +410,7 @@ Check long-running operations:
 ```
 
 Shows:
+
 - Current status (pending/running/completed/failed)
 - Progress
 - Result or error
@@ -419,13 +444,13 @@ Review all permission changes:
 
 ### Keyboard Shortcuts
 
-| Key | Action |
-|-----|--------|
-| `/` | Start command |
-| `@` | Mention user/role |
-| `↑` | Previous command |
-| `Tab` | Autocomplete |
-| `Enter` | Execute |
+| Key     | Action            |
+| ------- | ----------------- |
+| `/`     | Start command     |
+| `@`     | Mention user/role |
+| `↑`     | Previous command  |
+| `Tab`   | Autocomplete      |
+| `Enter` | Execute           |
 
 ---
 

@@ -2,29 +2,29 @@ jest.mock('../../../../src/infra/config/Config', () => ({
   createConfig: () => ({
     DISCORD_TOKEN: 'test-token',
     DISCORD_CLIENT_ID: 'test-client-id',
-    NODE_ENV: 'test'
-  })
+    NODE_ENV: 'test',
+  }),
 }));
 
 jest.mock('../../../../src/infra/logging/Logger', () => ({
   createLogger: () => ({
     info: jest.fn(),
     error: jest.fn(),
-    warn: jest.fn()
-  })
+    warn: jest.fn(),
+  }),
 }));
 
 jest.mock('../../../../src/infra/metrics/Metrics', () => ({
   createMetrics: () => ({
     recordCommand: jest.fn(),
-    recordError: jest.fn()
-  })
+    recordError: jest.fn(),
+  }),
 }));
 
 jest.mock('../../../../src/infra/db/SqliteDb', () => ({
   createDb: () => ({
-    raw: { prepare: jest.fn().mockReturnThis(), run: jest.fn(), all: jest.fn() }
-  })
+    raw: { prepare: jest.fn().mockReturnThis(), run: jest.fn(), all: jest.fn() },
+  }),
 }));
 
 jest.mock('../../../../src/infra/db/Repositories', () => ({
@@ -32,16 +32,16 @@ jest.mock('../../../../src/infra/db/Repositories', () => ({
     commandRepo: {},
     permissionRepo: {},
     auditRepo: {},
-    rateLimitRepo: {}
-  })
+    rateLimitRepo: {},
+  }),
 }));
 
 jest.mock('../../../../src/infra/config/RedisConfig', () => ({
-  loadRedisConfig: () => ({ host: 'localhost', port: 6379 })
+  loadRedisConfig: () => ({ host: 'localhost', port: 6379 }),
 }));
 
 jest.mock('../../../../src/infra/db/RedisFactory', () => ({
-  createRedisConnection: () => ({ connect: jest.fn(), disconnect: jest.fn() })
+  createRedisConnection: () => ({ connect: jest.fn(), disconnect: jest.fn() }),
 }));
 
 jest.mock('../../../../src/infra/queue/JobQueueService', () => {

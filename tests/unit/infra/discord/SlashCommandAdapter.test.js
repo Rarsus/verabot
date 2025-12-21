@@ -13,41 +13,41 @@ describe('SlashCommandAdapter', () => {
 
   beforeEach(() => {
     mockClient = {
-      on: jest.fn()
+      on: jest.fn(),
     };
 
     mockBus = {
-      execute: jest.fn().mockResolvedValue({ success: true, message: 'OK' })
+      execute: jest.fn().mockResolvedValue({ success: true, message: 'OK' }),
     };
 
     mockRegistry = {
       getMeta: jest.fn().mockReturnValue({
         name: 'test',
-        options: []
+        options: [],
       }),
-      listCommands: jest.fn().mockReturnValue([])
+      listCommands: jest.fn().mockReturnValue([]),
     };
 
     mockLogger = {
       info: jest.fn(),
       error: jest.fn(),
-      warn: jest.fn()
+      warn: jest.fn(),
     };
 
     mockHelpService = {
       getCommandHelp: jest.fn().mockReturnValue('Help text'),
       getCommandsByCategory: jest.fn().mockReturnValue([
         { name: 'cmd1', description: 'Cmd 1' },
-        { name: 'cmd2', description: 'Cmd 2' }
+        { name: 'cmd2', description: 'Cmd 2' },
       ]),
       paginate: jest.fn().mockReturnValue({
         items: [
           { name: 'cmd1', description: 'Cmd 1' },
-          { name: 'cmd2', description: 'Cmd 2' }
+          { name: 'cmd2', description: 'Cmd 2' },
         ],
         page: 1,
-        pages: 1
-      })
+        pages: 1,
+      }),
     };
 
     // Mock EmbedFactory methods
@@ -59,7 +59,13 @@ describe('SlashCommandAdapter', () => {
     EmbedFactory.error.mockReturnValue({});
     EmbedFactory.helpPaginationRow.mockReturnValue({});
 
-    adapter = new SlashCommandAdapter(mockClient, mockBus, mockRegistry, mockLogger, mockHelpService);
+    adapter = new SlashCommandAdapter(
+      mockClient,
+      mockBus,
+      mockRegistry,
+      mockLogger,
+      mockHelpService
+    );
   });
 
   describe('Constructor', () => {
@@ -125,16 +131,16 @@ describe('SlashCommandAdapter', () => {
             getUser: jest.fn(),
             getRole: jest.fn(),
             getChannel: jest.fn(),
-            getString: jest.fn()
+            getString: jest.fn(),
           },
           user: { id: 'user123' },
           channelId: 'channel123',
-          reply: jest.fn().mockResolvedValue(undefined)
+          reply: jest.fn().mockResolvedValue(undefined),
         };
 
         mockRegistry.getMeta.mockReturnValue({
           name: 'ping',
-          options: []
+          options: [],
         });
 
         await handler(interaction);
@@ -151,8 +157,8 @@ describe('SlashCommandAdapter', () => {
           isButton: jest.fn().mockReturnValue(false),
           commandName: 'core',
           options: {
-            getSubcommand: jest.fn().mockReturnValue('unknown')
-          }
+            getSubcommand: jest.fn().mockReturnValue('unknown'),
+          },
         };
 
         await handler(interaction);
@@ -173,23 +179,25 @@ describe('SlashCommandAdapter', () => {
             getUser: jest.fn(),
             getRole: jest.fn(),
             getChannel: jest.fn(),
-            getString: jest.fn()
+            getString: jest.fn(),
           },
           user: { id: 'mod123' },
           channelId: 'modchannel',
-          reply: jest.fn().mockResolvedValue(undefined)
+          reply: jest.fn().mockResolvedValue(undefined),
         };
 
         mockRegistry.getMeta.mockReturnValue({
           name: 'ban',
-          options: [{ name: 'duration', type: 'integer' }]
+          options: [{ name: 'duration', type: 'integer' }],
         });
 
         await handler(interaction);
 
-        expect(mockBus.execute).toHaveBeenCalledWith(expect.objectContaining({
-          args: expect.arrayContaining(['7'])
-        }));
+        expect(mockBus.execute).toHaveBeenCalledWith(
+          expect.objectContaining({
+            args: expect.arrayContaining(['7']),
+          })
+        );
       });
 
       it('should parse boolean arguments', async () => {
@@ -205,23 +213,25 @@ describe('SlashCommandAdapter', () => {
             getUser: jest.fn(),
             getRole: jest.fn(),
             getChannel: jest.fn(),
-            getString: jest.fn()
+            getString: jest.fn(),
           },
           user: { id: 'user123' },
           channelId: 'channel123',
-          reply: jest.fn().mockResolvedValue(undefined)
+          reply: jest.fn().mockResolvedValue(undefined),
         };
 
         mockRegistry.getMeta.mockReturnValue({
           name: 'test',
-          options: [{ name: 'verbose', type: 'boolean' }]
+          options: [{ name: 'verbose', type: 'boolean' }],
         });
 
         await handler(interaction);
 
-        expect(mockBus.execute).toHaveBeenCalledWith(expect.objectContaining({
-          args: expect.arrayContaining(['true'])
-        }));
+        expect(mockBus.execute).toHaveBeenCalledWith(
+          expect.objectContaining({
+            args: expect.arrayContaining(['true']),
+          })
+        );
       });
 
       it('should parse user IDs from user objects', async () => {
@@ -237,23 +247,25 @@ describe('SlashCommandAdapter', () => {
             getUser: jest.fn().mockReturnValue({ id: 'target123' }),
             getRole: jest.fn(),
             getChannel: jest.fn(),
-            getString: jest.fn()
+            getString: jest.fn(),
           },
           user: { id: 'mod456' },
           channelId: 'modchannel',
-          reply: jest.fn().mockResolvedValue(undefined)
+          reply: jest.fn().mockResolvedValue(undefined),
         };
 
         mockRegistry.getMeta.mockReturnValue({
           name: 'mute',
-          options: [{ name: 'user', type: 'user' }]
+          options: [{ name: 'user', type: 'user' }],
         });
 
         await handler(interaction);
 
-        expect(mockBus.execute).toHaveBeenCalledWith(expect.objectContaining({
-          args: expect.arrayContaining(['target123'])
-        }));
+        expect(mockBus.execute).toHaveBeenCalledWith(
+          expect.objectContaining({
+            args: expect.arrayContaining(['target123']),
+          })
+        );
       });
 
       it('should parse role IDs', async () => {
@@ -269,23 +281,25 @@ describe('SlashCommandAdapter', () => {
             getUser: jest.fn(),
             getRole: jest.fn().mockReturnValue({ id: 'role789' }),
             getChannel: jest.fn(),
-            getString: jest.fn()
+            getString: jest.fn(),
           },
           user: { id: 'admin123' },
           channelId: 'adminchannel',
-          reply: jest.fn().mockResolvedValue(undefined)
+          reply: jest.fn().mockResolvedValue(undefined),
         };
 
         mockRegistry.getMeta.mockReturnValue({
           name: 'grant',
-          options: [{ name: 'role', type: 'role' }]
+          options: [{ name: 'role', type: 'role' }],
         });
 
         await handler(interaction);
 
-        expect(mockBus.execute).toHaveBeenCalledWith(expect.objectContaining({
-          args: expect.arrayContaining(['role789'])
-        }));
+        expect(mockBus.execute).toHaveBeenCalledWith(
+          expect.objectContaining({
+            args: expect.arrayContaining(['role789']),
+          })
+        );
       });
 
       it('should parse channel IDs', async () => {
@@ -301,23 +315,25 @@ describe('SlashCommandAdapter', () => {
             getUser: jest.fn(),
             getRole: jest.fn(),
             getChannel: jest.fn().mockReturnValue({ id: 'channel999' }),
-            getString: jest.fn()
+            getString: jest.fn(),
           },
           user: { id: 'mod123' },
           channelId: 'modchannel',
-          reply: jest.fn().mockResolvedValue(undefined)
+          reply: jest.fn().mockResolvedValue(undefined),
         };
 
         mockRegistry.getMeta.mockReturnValue({
           name: 'lock',
-          options: [{ name: 'channel', type: 'channel' }]
+          options: [{ name: 'channel', type: 'channel' }],
         });
 
         await handler(interaction);
 
-        expect(mockBus.execute).toHaveBeenCalledWith(expect.objectContaining({
-          args: expect.arrayContaining(['channel999'])
-        }));
+        expect(mockBus.execute).toHaveBeenCalledWith(
+          expect.objectContaining({
+            args: expect.arrayContaining(['channel999']),
+          })
+        );
       });
 
       it('should parse string arguments', async () => {
@@ -333,23 +349,25 @@ describe('SlashCommandAdapter', () => {
             getUser: jest.fn(),
             getRole: jest.fn(),
             getChannel: jest.fn(),
-            getString: jest.fn().mockReturnValue('Violation of TOS')
+            getString: jest.fn().mockReturnValue('Violation of TOS'),
           },
           user: { id: 'mod123' },
           channelId: 'modchannel',
-          reply: jest.fn().mockResolvedValue(undefined)
+          reply: jest.fn().mockResolvedValue(undefined),
         };
 
         mockRegistry.getMeta.mockReturnValue({
           name: 'reason',
-          options: [{ name: 'text', type: 'string' }]
+          options: [{ name: 'text', type: 'string' }],
         });
 
         await handler(interaction);
 
-        expect(mockBus.execute).toHaveBeenCalledWith(expect.objectContaining({
-          args: expect.arrayContaining(['Violation of TOS'])
-        }));
+        expect(mockBus.execute).toHaveBeenCalledWith(
+          expect.objectContaining({
+            args: expect.arrayContaining(['Violation of TOS']),
+          })
+        );
       });
 
       it('should skip null/undefined option values', async () => {
@@ -365,26 +383,28 @@ describe('SlashCommandAdapter', () => {
             getUser: jest.fn(),
             getRole: jest.fn(),
             getChannel: jest.fn(),
-            getString: jest.fn()
+            getString: jest.fn(),
           },
           user: { id: 'user123' },
           channelId: 'channel123',
-          reply: jest.fn().mockResolvedValue(undefined)
+          reply: jest.fn().mockResolvedValue(undefined),
         };
 
         mockRegistry.getMeta.mockReturnValue({
           name: 'test',
           options: [
             { name: 'count', type: 'integer' },
-            { name: 'flag', type: 'boolean' }
-          ]
+            { name: 'flag', type: 'boolean' },
+          ],
         });
 
         await handler(interaction);
 
-        expect(mockBus.execute).toHaveBeenCalledWith(expect.objectContaining({
-          args: []
-        }));
+        expect(mockBus.execute).toHaveBeenCalledWith(
+          expect.objectContaining({
+            args: [],
+          })
+        );
       });
 
       it('should handle null user/role/channel objects', async () => {
@@ -400,11 +420,11 @@ describe('SlashCommandAdapter', () => {
             getUser: jest.fn().mockReturnValue(null),
             getRole: jest.fn().mockReturnValue(null),
             getChannel: jest.fn().mockReturnValue(null),
-            getString: jest.fn()
+            getString: jest.fn(),
           },
           user: { id: 'admin123' },
           channelId: 'adminchannel',
-          reply: jest.fn().mockResolvedValue(undefined)
+          reply: jest.fn().mockResolvedValue(undefined),
         };
 
         mockRegistry.getMeta.mockReturnValue({
@@ -412,15 +432,17 @@ describe('SlashCommandAdapter', () => {
           options: [
             { name: 'user', type: 'user' },
             { name: 'role', type: 'role' },
-            { name: 'channel', type: 'channel' }
-          ]
+            { name: 'channel', type: 'channel' },
+          ],
         });
 
         await handler(interaction);
 
-        expect(mockBus.execute).toHaveBeenCalledWith(expect.objectContaining({
-          args: []
-        }));
+        expect(mockBus.execute).toHaveBeenCalledWith(
+          expect.objectContaining({
+            args: [],
+          })
+        );
       });
     });
 
@@ -432,9 +454,9 @@ describe('SlashCommandAdapter', () => {
           isButton: jest.fn().mockReturnValue(false),
           options: {
             getSubcommand: jest.fn().mockReturnValue('test'),
-            getFocused: jest.fn().mockReturnValue({ value: 'test', name: 'arg' })
+            getFocused: jest.fn().mockReturnValue({ value: 'test', name: 'arg' }),
           },
-          respond: jest.fn().mockResolvedValue(undefined)
+          respond: jest.fn().mockResolvedValue(undefined),
         };
 
         await handler(interaction);
@@ -449,7 +471,7 @@ describe('SlashCommandAdapter', () => {
           isChatInputCommand: jest.fn().mockReturnValue(false),
           isAutocomplete: jest.fn().mockReturnValue(false),
           isButton: jest.fn().mockReturnValue(true),
-          customId: 'help:all:1'
+          customId: 'help:all:1',
         };
 
         // Don't call handler directly since button requires fully mocked helpService
@@ -475,16 +497,16 @@ describe('SlashCommandAdapter', () => {
           getUser: jest.fn(),
           getRole: jest.fn(),
           getChannel: jest.fn(),
-          getString: jest.fn()
+          getString: jest.fn(),
         },
         user: { id: 'user123' },
         channelId: 'channel123',
-        reply: jest.fn().mockResolvedValue(undefined)
+        reply: jest.fn().mockResolvedValue(undefined),
       };
 
       mockRegistry.getMeta.mockReturnValue({
         name: 'test',
-        options: []
+        options: [],
       });
 
       adapter.registerListeners();
@@ -510,16 +532,16 @@ describe('SlashCommandAdapter', () => {
           getUser: jest.fn(),
           getRole: jest.fn(),
           getChannel: jest.fn(),
-          getString: jest.fn()
+          getString: jest.fn(),
         },
         user: { id: 'user123' },
         channelId: 'channel123',
-        reply: jest.fn().mockResolvedValue(undefined)
+        reply: jest.fn().mockResolvedValue(undefined),
       };
 
       mockRegistry.getMeta.mockReturnValue({
         name: 'ping',
-        options: []
+        options: [],
       });
 
       adapter.registerListeners();
@@ -557,17 +579,17 @@ describe('SlashCommandAdapter', () => {
           getUser: jest.fn(),
           getRole: jest.fn(),
           getChannel: jest.fn(),
-          getString: jest.fn()
+          getString: jest.fn(),
         },
         user: { id: 'user123' },
         channelId: 'channel123',
-        reply: jest.fn().mockResolvedValue(undefined)
+        reply: jest.fn().mockResolvedValue(undefined),
       };
 
       mockRegistry.getMeta.mockReturnValue({
         name: 'help',
         options: [],
-        cooldown: { seconds: 5 }
+        cooldown: { seconds: 5 },
       });
 
       mockBus.execute.mockResolvedValue({
@@ -575,8 +597,8 @@ describe('SlashCommandAdapter', () => {
         data: {
           type: 'command',
           name: 'ping',
-          description: 'Ping command'
-        }
+          description: 'Ping command',
+        },
       });
 
       await handler(interaction);
@@ -585,7 +607,7 @@ describe('SlashCommandAdapter', () => {
       expect(interaction.reply).toHaveBeenCalledWith(
         expect.objectContaining({
           embeds: expect.any(Array),
-          components: expect.any(Array)
+          components: expect.any(Array),
         })
       );
     });
@@ -603,16 +625,16 @@ describe('SlashCommandAdapter', () => {
           getUser: jest.fn(),
           getRole: jest.fn(),
           getChannel: jest.fn(),
-          getString: jest.fn()
+          getString: jest.fn(),
         },
         user: { id: 'user123' },
         channelId: 'channel123',
-        reply: jest.fn().mockResolvedValue(undefined)
+        reply: jest.fn().mockResolvedValue(undefined),
       };
 
       mockRegistry.getMeta.mockReturnValue({
         name: 'help',
-        options: []
+        options: [],
       });
 
       mockBus.execute.mockResolvedValue({
@@ -622,20 +644,13 @@ describe('SlashCommandAdapter', () => {
           category: 'admin',
           page: 1,
           pages: 2,
-          items: [
-            { name: 'ban', description: 'Ban user' }
-          ]
-        }
+          items: [{ name: 'ban', description: 'Ban user' }],
+        },
       });
 
       await handler(interaction);
 
-      expect(EmbedFactory.commandList).toHaveBeenCalledWith(
-        'admin',
-        1,
-        2,
-        expect.any(Array)
-      );
+      expect(EmbedFactory.commandList).toHaveBeenCalledWith('admin', 1, 2, expect.any(Array));
       expect(EmbedFactory.helpPaginationRow).toHaveBeenCalledWith(
         'admin',
         expect.objectContaining({ category: 'admin' })
@@ -656,16 +671,16 @@ describe('SlashCommandAdapter', () => {
           getUser: jest.fn(),
           getRole: jest.fn(),
           getChannel: jest.fn(),
-          getString: jest.fn()
+          getString: jest.fn(),
         },
         user: { id: 'user123' },
         channelId: 'channel123',
-        reply: jest.fn().mockResolvedValue(undefined)
+        reply: jest.fn().mockResolvedValue(undefined),
       };
 
       mockRegistry.getMeta.mockReturnValue({
         name: 'help',
-        options: []
+        options: [],
       });
 
       mockBus.execute.mockResolvedValue({
@@ -675,8 +690,8 @@ describe('SlashCommandAdapter', () => {
           category: null,
           page: 1,
           pages: 1,
-          items: []
-        }
+          items: [],
+        },
       });
 
       await handler(interaction);
@@ -706,16 +721,16 @@ describe('SlashCommandAdapter', () => {
           getUser: jest.fn(),
           getRole: jest.fn(),
           getChannel: jest.fn(),
-          getString: jest.fn()
+          getString: jest.fn(),
         },
         user: { id: 'user123' },
         channelId: 'channel123',
-        reply: jest.fn().mockResolvedValue(undefined)
+        reply: jest.fn().mockResolvedValue(undefined),
       };
 
       mockRegistry.getMeta.mockReturnValue({
         name: 'allowed',
-        options: []
+        options: [],
       });
 
       mockBus.execute.mockResolvedValue({
@@ -726,9 +741,9 @@ describe('SlashCommandAdapter', () => {
           pages: 3,
           items: [
             { name: 'ban', description: 'Ban user' },
-            { name: 'kick', description: 'Kick user' }
-          ]
-        }
+            { name: 'kick', description: 'Kick user' },
+          ],
+        },
       });
 
       await handler(interaction);
@@ -737,9 +752,7 @@ describe('SlashCommandAdapter', () => {
         'admin',
         1,
         3,
-        expect.arrayContaining([
-          expect.objectContaining({ name: 'ban' })
-        ])
+        expect.arrayContaining([expect.objectContaining({ name: 'ban' })])
       );
       expect(EmbedFactory.helpPaginationRow).toHaveBeenCalled();
       expect(interaction.reply).toHaveBeenCalled();
@@ -767,27 +780,25 @@ describe('SlashCommandAdapter', () => {
           getUser: jest.fn(),
           getRole: jest.fn(),
           getChannel: jest.fn(),
-          getString: jest.fn()
+          getString: jest.fn(),
         },
         user: { id: 'user123' },
         channelId: 'channel123',
-        reply: jest.fn().mockResolvedValue(undefined)
+        reply: jest.fn().mockResolvedValue(undefined),
       };
 
       mockRegistry.getMeta.mockReturnValue({
         name: 'audit',
-        options: []
+        options: [],
       });
 
-      const auditEntries = [
-        { timestamp: Date.now(), action: 'ban', user: 'user456' }
-      ];
+      const auditEntries = [{ timestamp: Date.now(), action: 'ban', user: 'user456' }];
 
       mockBus.execute.mockResolvedValue({
         success: true,
         data: {
-          entries: auditEntries
-        }
+          entries: auditEntries,
+        },
       });
 
       await handler(interaction);
@@ -795,7 +806,7 @@ describe('SlashCommandAdapter', () => {
       expect(EmbedFactory.audit).toHaveBeenCalledWith(auditEntries);
       expect(interaction.reply).toHaveBeenCalledWith(
         expect.objectContaining({
-          embeds: expect.any(Array)
+          embeds: expect.any(Array),
         })
       );
     });
@@ -822,22 +833,22 @@ describe('SlashCommandAdapter', () => {
           getUser: jest.fn(),
           getRole: jest.fn(),
           getChannel: jest.fn(),
-          getString: jest.fn().mockReturnValue('Violation')
+          getString: jest.fn().mockReturnValue('Violation'),
         },
         user: { id: 'mod123' },
         channelId: 'modchannel',
-        reply: jest.fn().mockResolvedValue(undefined)
+        reply: jest.fn().mockResolvedValue(undefined),
       };
 
       mockRegistry.getMeta.mockReturnValue({
         name: 'ban',
         options: [{ name: 'reason', type: 'string' }],
-        cooldown: { seconds: 30 }
+        cooldown: { seconds: 30 },
       });
 
       mockBus.execute.mockResolvedValue({
         success: true,
-        data: { userId: 'user456', action: 'banned' }
+        data: { userId: 'user456', action: 'banned' },
       });
 
       await handler(interaction);
@@ -847,7 +858,7 @@ describe('SlashCommandAdapter', () => {
         expect.any(Object),
         expect.objectContaining({
           cooldownSec: 30,
-          elapsedSec: expect.any(Number)
+          elapsedSec: expect.any(Number),
         })
       );
     });
@@ -865,21 +876,21 @@ describe('SlashCommandAdapter', () => {
           getUser: jest.fn(),
           getRole: jest.fn(),
           getChannel: jest.fn(),
-          getString: jest.fn()
+          getString: jest.fn(),
         },
         user: { id: 'user123' },
         channelId: 'channel123',
-        reply: jest.fn().mockResolvedValue(undefined)
+        reply: jest.fn().mockResolvedValue(undefined),
       };
 
       mockRegistry.getMeta.mockReturnValue({
         name: 'ping',
-        options: []
+        options: [],
       });
 
       mockBus.execute.mockResolvedValue({
         success: true,
-        data: { pong: true }
+        data: { pong: true },
       });
 
       await handler(interaction);
@@ -889,7 +900,7 @@ describe('SlashCommandAdapter', () => {
         expect.any(Object),
         expect.objectContaining({
           cooldownSec: null,
-          elapsedSec: expect.any(Number)
+          elapsedSec: expect.any(Number),
         })
       );
     });
@@ -916,23 +927,23 @@ describe('SlashCommandAdapter', () => {
           getUser: jest.fn(),
           getRole: jest.fn(),
           getChannel: jest.fn(),
-          getString: jest.fn()
+          getString: jest.fn(),
         },
         user: { id: 'user123' },
         channelId: 'channel123',
         member: {
           roles: {
             cache: {
-              map: jest.fn().mockReturnValue(['role1', 'role2', 'role3'])
-            }
-          }
+              map: jest.fn().mockReturnValue(['role1', 'role2', 'role3']),
+            },
+          },
         },
-        reply: jest.fn().mockResolvedValue(undefined)
+        reply: jest.fn().mockResolvedValue(undefined),
       };
 
       mockRegistry.getMeta.mockReturnValue({
         name: 'test',
-        options: []
+        options: [],
       });
 
       await handler(interaction);
@@ -954,16 +965,16 @@ describe('SlashCommandAdapter', () => {
           getUser: jest.fn(),
           getRole: jest.fn(),
           getChannel: jest.fn(),
-          getString: jest.fn()
+          getString: jest.fn(),
         },
         user: { id: 'user123' },
         channelId: 'channel123',
-        reply: jest.fn().mockResolvedValue(undefined)
+        reply: jest.fn().mockResolvedValue(undefined),
       };
 
       mockRegistry.getMeta.mockReturnValue({
         name: 'test',
-        options: []
+        options: [],
       });
 
       await handler(interaction);
@@ -985,17 +996,17 @@ describe('SlashCommandAdapter', () => {
           getUser: jest.fn(),
           getRole: jest.fn(),
           getChannel: jest.fn(),
-          getString: jest.fn()
+          getString: jest.fn(),
         },
         user: { id: 'user123' },
         channelId: 'channel123',
         member: null,
-        reply: jest.fn().mockResolvedValue(undefined)
+        reply: jest.fn().mockResolvedValue(undefined),
       };
 
       mockRegistry.getMeta.mockReturnValue({
         name: 'test',
-        options: []
+        options: [],
       });
 
       await handler(interaction);
@@ -1022,22 +1033,20 @@ describe('SlashCommandAdapter', () => {
           getSubcommand: jest.fn().mockReturnValue('deploy'),
           getFocused: jest.fn().mockReturnValue({
             name: 'target',
-            value: 'st'
-          })
+            value: 'st',
+          }),
         },
-        respond: jest.fn().mockResolvedValue(undefined)
+        respond: jest.fn().mockResolvedValue(undefined),
       };
 
       mockRegistry.getMeta.mockReturnValue({
         name: 'deploy',
-        options: []
+        options: [],
       });
 
       await handler(interaction);
 
-      expect(interaction.respond).toHaveBeenCalledWith([
-        { name: 'staging', value: 'staging' }
-      ]);
+      expect(interaction.respond).toHaveBeenCalledWith([{ name: 'staging', value: 'staging' }]);
     });
 
     it('should filter deploy targets by prefix', async () => {
@@ -1049,23 +1058,21 @@ describe('SlashCommandAdapter', () => {
           getSubcommand: jest.fn().mockReturnValue('deploy'),
           getFocused: jest.fn().mockReturnValue({
             name: 'target',
-            value: 'p'
-          })
+            value: 'p',
+          }),
         },
-        respond: jest.fn().mockResolvedValue(undefined)
+        respond: jest.fn().mockResolvedValue(undefined),
       };
 
       mockRegistry.getMeta.mockReturnValue({
         name: 'deploy',
-        options: []
+        options: [],
       });
 
       await handler(interaction);
 
       expect(interaction.respond).toHaveBeenCalledWith(
-        expect.arrayContaining([
-          { name: 'production', value: 'production' }
-        ])
+        expect.arrayContaining([{ name: 'production', value: 'production' }])
       );
     });
 
@@ -1078,15 +1085,15 @@ describe('SlashCommandAdapter', () => {
           getSubcommand: jest.fn().mockReturnValue('deploy'),
           getFocused: jest.fn().mockReturnValue({
             name: 'target',
-            value: ''
-          })
+            value: '',
+          }),
         },
-        respond: jest.fn().mockResolvedValue(undefined)
+        respond: jest.fn().mockResolvedValue(undefined),
       };
 
       mockRegistry.getMeta.mockReturnValue({
         name: 'deploy',
-        options: []
+        options: [],
       });
 
       await handler(interaction);
@@ -1104,21 +1111,21 @@ describe('SlashCommandAdapter', () => {
           getSubcommand: jest.fn().mockReturnValue('help'),
           getFocused: jest.fn().mockReturnValue({
             name: 'command',
-            value: 'b'
-          })
+            value: 'b',
+          }),
         },
-        respond: jest.fn().mockResolvedValue(undefined)
+        respond: jest.fn().mockResolvedValue(undefined),
       };
 
       mockRegistry.getMeta.mockReturnValue({
         name: 'help',
-        options: []
+        options: [],
       });
 
       mockRegistry.listCommands.mockReturnValue([
         { name: 'ban', description: 'Ban user' },
         { name: 'broadcast', description: 'Broadcast message' },
-        { name: 'ping', description: 'Ping' }
+        { name: 'ping', description: 'Ping' },
       ]);
 
       await handler(interaction);
@@ -1126,7 +1133,7 @@ describe('SlashCommandAdapter', () => {
       expect(interaction.respond).toHaveBeenCalledWith(
         expect.arrayContaining([
           expect.objectContaining({ name: 'ban' }),
-          expect.objectContaining({ name: 'broadcast' })
+          expect.objectContaining({ name: 'broadcast' }),
         ])
       );
     });
@@ -1140,21 +1147,21 @@ describe('SlashCommandAdapter', () => {
           getSubcommand: jest.fn().mockReturnValue('help'),
           getFocused: jest.fn().mockReturnValue({
             name: 'command',
-            value: ''
-          })
+            value: '',
+          }),
         },
-        respond: jest.fn().mockResolvedValue(undefined)
+        respond: jest.fn().mockResolvedValue(undefined),
       };
 
       mockRegistry.getMeta.mockReturnValue({
         name: 'help',
-        options: []
+        options: [],
       });
 
       mockRegistry.listCommands.mockReturnValue(
         Array.from({ length: 20 }, (_, i) => ({
           name: `cmd${i}`,
-          description: `Command ${i}`
+          description: `Command ${i}`,
         }))
       );
 
@@ -1173,15 +1180,15 @@ describe('SlashCommandAdapter', () => {
           getSubcommand: jest.fn().mockReturnValue('unknown'),
           getFocused: jest.fn().mockReturnValue({
             name: 'unknown_field',
-            value: 'test'
-          })
+            value: 'test',
+          }),
         },
-        respond: jest.fn().mockResolvedValue(undefined)
+        respond: jest.fn().mockResolvedValue(undefined),
       };
 
       mockRegistry.getMeta.mockReturnValue({
         name: 'unknown',
-        options: []
+        options: [],
       });
 
       await handler(interaction);
@@ -1204,37 +1211,26 @@ describe('SlashCommandAdapter', () => {
         isAutocomplete: jest.fn().mockReturnValue(false),
         isButton: jest.fn().mockReturnValue(true),
         customId: 'help:admin:2',
-        update: jest.fn().mockResolvedValue(undefined)
+        update: jest.fn().mockResolvedValue(undefined),
       };
 
       mockHelpService.getCommandsByCategory.mockReturnValue([
         { name: 'ban', description: 'Ban user' },
-        { name: 'kick', description: 'Kick user' }
+        { name: 'kick', description: 'Kick user' },
       ]);
 
       mockHelpService.paginate.mockReturnValue({
         items: [{ name: 'ban', description: 'Ban user' }],
         page: 2,
-        pages: 2
+        pages: 2,
       });
 
       await handler(interaction);
 
       expect(mockHelpService.getCommandsByCategory).toHaveBeenCalledWith('admin');
-      expect(mockHelpService.paginate).toHaveBeenCalledWith(
-        expect.any(Array),
-        2
-      );
-      expect(EmbedFactory.commandList).toHaveBeenCalledWith(
-        'admin',
-        2,
-        2,
-        expect.any(Array)
-      );
-      expect(EmbedFactory.helpPaginationRow).toHaveBeenCalledWith(
-        'admin',
-        expect.any(Object)
-      );
+      expect(mockHelpService.paginate).toHaveBeenCalledWith(expect.any(Array), 2);
+      expect(EmbedFactory.commandList).toHaveBeenCalledWith('admin', 2, 2, expect.any(Array));
+      expect(EmbedFactory.helpPaginationRow).toHaveBeenCalledWith('admin', expect.any(Object));
       expect(interaction.update).toHaveBeenCalled();
     });
 
@@ -1244,21 +1240,21 @@ describe('SlashCommandAdapter', () => {
         isAutocomplete: jest.fn().mockReturnValue(false),
         isButton: jest.fn().mockReturnValue(true),
         customId: 'help:all:1',
-        update: jest.fn().mockResolvedValue(undefined)
+        update: jest.fn().mockResolvedValue(undefined),
       };
 
       mockHelpService.getCommandsByCategory.mockReturnValue([
         { name: 'cmd1', description: 'Cmd 1' },
-        { name: 'cmd2', description: 'Cmd 2' }
+        { name: 'cmd2', description: 'Cmd 2' },
       ]);
 
       mockHelpService.paginate.mockReturnValue({
         items: [
           { name: 'cmd1', description: 'Cmd 1' },
-          { name: 'cmd2', description: 'Cmd 2' }
+          { name: 'cmd2', description: 'Cmd 2' },
         ],
         page: 1,
-        pages: 1
+        pages: 1,
       });
 
       await handler(interaction);
@@ -1273,14 +1269,14 @@ describe('SlashCommandAdapter', () => {
         isAutocomplete: jest.fn().mockReturnValue(false),
         isButton: jest.fn().mockReturnValue(true),
         customId: 'help:admin:notanumber',
-        update: jest.fn().mockResolvedValue(undefined)
+        update: jest.fn().mockResolvedValue(undefined),
       };
 
       mockHelpService.getCommandsByCategory.mockReturnValue([]);
       mockHelpService.paginate.mockReturnValue({
         items: [],
         page: 1,
-        pages: 1
+        pages: 1,
       });
 
       await handler(interaction);
@@ -1293,7 +1289,7 @@ describe('SlashCommandAdapter', () => {
         isChatInputCommand: jest.fn().mockReturnValue(false),
         isAutocomplete: jest.fn().mockReturnValue(false),
         isButton: jest.fn().mockReturnValue(true),
-        customId: 'other:action:param'
+        customId: 'other:action:param',
       };
 
       await handler(interaction);
@@ -1308,8 +1304,8 @@ describe('SlashCommandAdapter', () => {
         data: {
           type: 'command',
           name: 'ban',
-          description: 'Ban a user'
-        }
+          description: 'Ban a user',
+        },
       };
 
       adapter.renderHelp(result);
@@ -1324,41 +1320,34 @@ describe('SlashCommandAdapter', () => {
           category: 'admin',
           page: 1,
           pages: 2,
-          items: [{ name: 'ban' }]
-        }
+          items: [{ name: 'ban' }],
+        },
       };
 
       adapter.renderHelp(result);
 
-      expect(EmbedFactory.commandList).toHaveBeenCalledWith(
-        'admin',
-        1,
-        2,
-        [{ name: 'ban' }]
-      );
+      expect(EmbedFactory.commandList).toHaveBeenCalledWith('admin', 1, 2, [{ name: 'ban' }]);
     });
 
     it('should render autocomplete embed for autocomplete type', () => {
       const result = {
         data: {
           autocomplete: {
-            suggestions: ['item1', 'item2']
-          }
-        }
+            suggestions: ['item1', 'item2'],
+          },
+        },
       };
 
       adapter.renderHelp(result);
 
-      expect(EmbedFactory.autocomplete).toHaveBeenCalledWith(
-        result.data.autocomplete
-      );
+      expect(EmbedFactory.autocomplete).toHaveBeenCalledWith(result.data.autocomplete);
     });
 
     it('should render default embed for unknown type', () => {
       const result = {
         data: {
-          type: 'unknown'
-        }
+          type: 'unknown',
+        },
       };
 
       adapter.renderHelp(result);
@@ -1370,17 +1359,14 @@ describe('SlashCommandAdapter', () => {
       const result = {
         data: {
           autocomplete: {
-            suggestions: ['item1']
-          }
-        }
+            suggestions: ['item1'],
+          },
+        },
       };
 
       adapter.renderHelp(result);
 
-      expect(EmbedFactory.autocomplete).toHaveBeenCalledWith(
-        result.data.autocomplete
-      );
+      expect(EmbedFactory.autocomplete).toHaveBeenCalledWith(result.data.autocomplete);
     });
   });
 });
-

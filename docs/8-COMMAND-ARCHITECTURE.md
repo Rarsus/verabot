@@ -90,13 +90,13 @@ class MyMiddleware {
   async handle(command, next) {
     // Before
     console.log('Command:', command.name);
-    
+
     // Execute next middleware/handler
     const result = await next();
-    
+
     // After
     console.log('Result:', result);
-    
+
     return result;
   }
 }
@@ -171,9 +171,7 @@ MyHandler.metadata = {
   name: 'my-command',
   description: 'What it does',
   aliases: ['alias1', 'alias2'],
-  args: [
-    { name: 'arg1', required: true, description: '...' }
-  ]
+  args: [{ name: 'arg1', required: true, description: '...' }],
 };
 
 module.exports = MyHandler;

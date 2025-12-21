@@ -31,4 +31,3 @@ class DenyHandler {
 }
 
 module.exports = DenyHandler;
-

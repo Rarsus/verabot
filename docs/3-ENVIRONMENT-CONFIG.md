@@ -9,6 +9,7 @@ Detailed explanation of all environment variables and configuration options.
 ### Discord Configuration
 
 #### DISCORD_TOKEN (Required)
+
 Bot authentication token from Discord
 
 ```env
@@ -16,6 +17,7 @@ DISCORD_TOKEN=MTA...
 ```
 
 **How to get:**
+
 1. Go to [Discord Developer Portal](https://discord.com/developers/applications)
 2. Select your application
 3. Go to "Bot" section
@@ -24,6 +26,7 @@ DISCORD_TOKEN=MTA...
 **Security:** Keep this secret! Never commit to git.
 
 #### CLIENT_ID (Required)
+
 Discord application ID
 
 ```env
@@ -31,6 +34,7 @@ CLIENT_ID=1234567890
 ```
 
 **How to get:**
+
 1. Go to [Discord Developer Portal](https://discord.com/developers/applications)
 2. Select your application
 3. Go to "General Information"
@@ -39,6 +43,7 @@ CLIENT_ID=1234567890
 ### Redis Configuration
 
 #### REDIS_HOST (Default: localhost)
+
 Redis server hostname or IP address
 
 ```env
@@ -48,6 +53,7 @@ REDIS_HOST=127.0.0.1
 ```
 
 #### REDIS_PORT (Default: 6379)
+
 Redis server port
 
 ```env
@@ -56,6 +62,7 @@ REDIS_PORT=6380
 ```
 
 #### REDIS_PASSWORD (Optional)
+
 Redis authentication password
 
 ```env
@@ -67,6 +74,7 @@ Leave blank if no password required.
 ### Application Configuration
 
 #### NODE_ENV (Default: development)
+
 Execution environment
 
 ```env
@@ -76,11 +84,13 @@ NODE_ENV=test          # Testing mode
 ```
 
 Effects:
+
 - **development:** Detailed logging, auto-reload, no optimizations
 - **production:** Minimal logging, full optimizations, error tracking
 - **test:** Special test configuration
 
 #### LOG_LEVEL (Default: info)
+
 Logging verbosity level
 
 ```env
@@ -91,11 +101,13 @@ LOG_LEVEL=error      # Errors only
 ```
 
 Usage:
+
 ```
 debug > info > warn > error
 ```
 
 #### GUILD_ID (Optional)
+
 Discord guild ID for faster command registration
 
 ```env
@@ -105,6 +117,7 @@ GUILD_ID=1234567890
 Speeds up slash command registration in development. Without this, registration takes ~1 hour.
 
 **How to get:**
+
 1. Enable Developer Mode in Discord
 2. Right-click server name
 3. Select "Copy Server ID"
@@ -153,6 +166,7 @@ GUILD_ID=your_test_guild_id
 ```
 
 Use for:
+
 - Local development
 - Testing features
 - Debugging issues
@@ -166,6 +180,7 @@ LOG_LEVEL=warn
 ```
 
 Use for:
+
 - Live servers
 - Public bots
 - Production workloads
@@ -206,6 +221,7 @@ Alternative to `.env`, can use `.env.json`:
 **Error:** `DISCORD_TOKEN not found in environment`
 
 **Solution:**
+
 1. Create `.env` file in project root
 2. Add: `DISCORD_TOKEN=your_token_here`
 3. Restart bot
@@ -215,6 +231,7 @@ Alternative to `.env`, can use `.env.json`:
 **Error:** `Cannot connect to Redis at localhost:6379`
 
 **Solution:**
+
 1. Ensure Redis is running: `redis-server`
 2. Check REDIS_HOST and REDIS_PORT
 3. Verify network connectivity
@@ -225,6 +242,7 @@ Alternative to `.env`, can use `.env.json`:
 **Error:** Still seeing debug logs on info level
 
 **Solution:**
+
 1. Save `.env` file
 2. Restart bot completely
 3. Verify LOG_LEVEL in `.env`

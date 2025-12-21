@@ -19,4 +19,3 @@ class UptimeHandler {
 }
 
 module.exports = UptimeHandler;
-

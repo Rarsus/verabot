@@ -59,7 +59,7 @@ function createDb(config, logger) {
   return {
     raw: db,
     isConnected: () => true,
-    close: async () => db.close()
+    close: async () => db.close(),
   };
 }
 

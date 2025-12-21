@@ -24,7 +24,7 @@ class HelpService {
    */
   listCategories() {
     const commands = this.registry.listCommands();
-    return [...new Set(commands.map(c => c.category))];
+    return [...new Set(commands.map((c) => c.category))];
   }
 
   /**
@@ -33,9 +33,7 @@ class HelpService {
    * @returns {Array<Object>} Commands in the category
    */
   getCommandsByCategory(category) {
-    return this.registry
-      .listCommands()
-      .filter(c => !category || c.category === category);
+    return this.registry.listCommands().filter((c) => !category || c.category === category);
   }
 
   /**
@@ -58,7 +56,7 @@ class HelpService {
       page: safePage,
       pages,
       total,
-      items: commands.slice(start, end)
+      items: commands.slice(start, end),
     };
   }
 
@@ -70,9 +68,9 @@ class HelpService {
   autocomplete(prefix) {
     const commands = this.registry.listCommands();
     return commands
-      .filter(c => c.name.startsWith(prefix.toLowerCase()))
+      .filter((c) => c.name.startsWith(prefix.toLowerCase()))
       .slice(0, 10)
-      .map(c => c.name);
+      .map((c) => c.name);
   }
 
   /**
@@ -86,4 +84,3 @@ class HelpService {
 }
 
 module.exports = HelpService;
-

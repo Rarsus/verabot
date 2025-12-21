@@ -10,12 +10,12 @@ describe('JobStatusHandler', () => {
     mockJob = {
       getState: jest.fn().mockResolvedValue('completed'),
       progress: 100,
-      returnvalue: { result: 'success' }
+      returnvalue: { result: 'success' },
     };
     mockJobQueue = {
       queue: {
-        getJob: jest.fn().mockResolvedValue(mockJob)
-      }
+        getJob: jest.fn().mockResolvedValue(mockJob),
+      },
     };
     handler = new JobStatusHandler(mockJobQueue);
   });

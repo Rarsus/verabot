@@ -12,7 +12,7 @@ const ConfigSchema = z.object({
   WS_URL: z.string().min(1),
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   LOG_LEVEL: z.enum(['debug', 'info', 'warn', 'error']).default('info'),
-  HTTP_PORT: z.string().default('3000')
+  HTTP_PORT: z.string().default('3000'),
 });
 
 /**

@@ -6,14 +6,14 @@ describe('HealthCheck', () => {
   beforeEach(() => {
     mockContainer = {
       db: {
-        isConnected: jest.fn().mockReturnValue(true)
+        isConnected: jest.fn().mockReturnValue(true),
       },
       discordClient: {
-        user: { id: 'bot123' }
+        user: { id: 'bot123' },
       },
       wsClient: {
-        isConnected: jest.fn().mockReturnValue(true)
-      }
+        isConnected: jest.fn().mockReturnValue(true),
+      },
     };
   });
 

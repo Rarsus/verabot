@@ -10,8 +10,8 @@ describe('InfoHandler', () => {
       getStatus: jest.fn().mockResolvedValue({
         uptime: 12345,
         version: '1.0.0',
-        status: 'online'
-      })
+        status: 'online',
+      }),
     };
     handler = new InfoHandler(mockStatusProvider);
   });
@@ -24,7 +24,7 @@ describe('InfoHandler', () => {
       expect(result.data).toEqual({
         uptime: 12345,
         version: '1.0.0',
-        status: 'online'
+        status: 'online',
       });
     });
 

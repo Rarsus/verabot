@@ -66,24 +66,24 @@ class SlashCommandAdapter {
     for (const opt of meta.options) {
       let val;
       switch (opt.type) {
-      case 'integer':
-        val = interaction.options.getInteger(opt.name);
-        break;
-      case 'boolean':
-        val = interaction.options.getBoolean(opt.name);
-        break;
-      case 'user':
-        val = interaction.options.getUser(opt.name)?.id || null;
-        break;
-      case 'role':
-        val = interaction.options.getRole(opt.name)?.id || null;
-        break;
-      case 'channel':
-        val = interaction.options.getChannel(opt.name)?.id || null;
-        break;
-      case 'string':
-      default:
-        val = interaction.options.getString(opt.name);
+        case 'integer':
+          val = interaction.options.getInteger(opt.name);
+          break;
+        case 'boolean':
+          val = interaction.options.getBoolean(opt.name);
+          break;
+        case 'user':
+          val = interaction.options.getUser(opt.name)?.id || null;
+          break;
+        case 'role':
+          val = interaction.options.getRole(opt.name)?.id || null;
+          break;
+        case 'channel':
+          val = interaction.options.getChannel(opt.name)?.id || null;
+          break;
+        case 'string':
+        default:
+          val = interaction.options.getString(opt.name);
       }
       if (val !== null && val !== undefined) args.push(String(val));
     }
@@ -96,8 +96,8 @@ class SlashCommandAdapter {
       args,
       metadata: {
         group,
-        roles: interaction.member?.roles?.cache?.map(r => r.id) || []
-      }
+        roles: interaction.member?.roles?.cache?.map((r) => r.id) || [],
+      },
     });
 
     const startedAt = Date.now();
@@ -127,7 +127,7 @@ class SlashCommandAdapter {
       } else {
         embed = EmbedFactory.commandResult(command, result, {
           cooldownSec,
-          elapsedSec
+          elapsedSec,
         });
       }
 
@@ -155,18 +155,18 @@ class SlashCommandAdapter {
 
     if (sub === 'deploy' && focused.name === 'target') {
       const suggestions = ['staging', 'production', 'canary']
-        .filter(t => t.startsWith(value.toLowerCase()))
+        .filter((t) => t.startsWith(value.toLowerCase()))
         .slice(0, 5)
-        .map(t => ({ name: t, value: t }));
+        .map((t) => ({ name: t, value: t }));
       return interaction.respond(suggestions);
     }
 
     if (sub === 'help' && focused.name === 'command') {
       const suggestions = this.registry
         .listCommands()
-        .filter(c => c.name.startsWith(value.toLowerCase()))
+        .filter((c) => c.name.startsWith(value.toLowerCase()))
         .slice(0, 10)
-        .map(c => ({ name: c.name, value: c.name }));
+        .map((c) => ({ name: c.name, value: c.name }));
       return interaction.respond(suggestions);
     }
 
@@ -214,12 +214,7 @@ class SlashCommandAdapter {
       return EmbedFactory.commandHelp(data);
     }
     if (data.type === 'list') {
-      return EmbedFactory.commandList(
-        data.category,
-        data.page,
-        data.pages,
-        data.items
-      );
+      return EmbedFactory.commandList(data.category, data.page, data.pages, data.items);
     }
     if (data.autocomplete) {
       return EmbedFactory.autocomplete(data.autocomplete);

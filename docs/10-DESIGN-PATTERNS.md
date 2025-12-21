@@ -41,9 +41,9 @@ Abstract data access layer.
 
 ```javascript
 class UserRepository {
-  async getById(id) { }
-  async save(user) { }
-  async delete(id) { }
+  async getById(id) {}
+  async save(user) {}
+  async delete(id) {}
 }
 ```
 
@@ -66,7 +66,7 @@ Business logic separated from persistence.
 
 ```javascript
 class PermissionService {
-  async checkPermission(user, command) { }
+  async checkPermission(user, command) {}
 }
 ```
 

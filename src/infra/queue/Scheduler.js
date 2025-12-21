@@ -32,7 +32,7 @@ class Scheduler {
       { timestamp: Date.now() },
       {
         repeat: { cron: '* * * * *' },
-        removeOnComplete: true
+        removeOnComplete: true,
       }
     );
   }

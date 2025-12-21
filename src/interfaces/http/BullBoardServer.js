@@ -21,7 +21,7 @@ function createBullBoardServer(container) {
 
   createBullBoard({
     queues: [new BullMQAdapter(container.jobQueue.queue)],
-    serverAdapter
+    serverAdapter,
   });
 
   app.use('/admin/queues', serverAdapter.getRouter());

@@ -54,7 +54,7 @@ class WsAdapter {
           userId: payload.userId || null,
           channelId: null,
           args: payload.args || [],
-          metadata: payload.metadata || {}
+          metadata: payload.metadata || {},
         });
 
         try {
@@ -66,7 +66,7 @@ class WsAdapter {
             JSON.stringify({
               type: 'error',
               command: command.name,
-              error: { code: err.code || 'ERROR', message: err.message }
+              error: { code: err.code || 'ERROR', message: err.message },
             })
           );
         }

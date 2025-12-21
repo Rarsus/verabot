@@ -7,7 +7,7 @@ describe('DeployHandler', () => {
 
   beforeEach(() => {
     mockLogger = {
-      info: jest.fn()
+      info: jest.fn(),
     };
     handler = new DeployHandler(mockLogger);
   });

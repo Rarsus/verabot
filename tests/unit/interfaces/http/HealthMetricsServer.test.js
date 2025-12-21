@@ -1,4 +1,6 @@
-const { createHealthMetricsServer } = require('../../../../src/interfaces/http/HealthMetricsServer');
+const {
+  createHealthMetricsServer,
+} = require('../../../../src/interfaces/http/HealthMetricsServer');
 
 describe('HealthMetricsServer', () => {
   let mockLogger;
@@ -8,7 +10,7 @@ describe('HealthMetricsServer', () => {
       info: jest.fn(),
       warn: jest.fn(),
       error: jest.fn(),
-      debug: jest.fn()
+      debug: jest.fn(),
     };
   });
 

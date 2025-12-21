@@ -18,7 +18,7 @@ function createRedisConnection(redisConfig, logger) {
   const client = new Redis({
     host: redisConfig.REDIS_HOST,
     port: Number(redisConfig.REDIS_PORT),
-    password: redisConfig.REDIS_PASSWORD || undefined
+    password: redisConfig.REDIS_PASSWORD || undefined,
   });
 
   client.on('connect', () => logger.info('Redis connected'));

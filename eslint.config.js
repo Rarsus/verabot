@@ -10,8 +10,8 @@ module.exports = [
       '.git/**',
       '.github/**',
       '.vscode/**',
-      'build/**'
-    ]
+      'build/**',
+    ],
   },
   {
     files: ['**/*.js'],
@@ -31,34 +31,37 @@ module.exports = [
         clearInterval: 'readonly',
         setTimeout: 'readonly',
         clearTimeout: 'readonly',
-        console: 'readonly'
-      }
+        console: 'readonly',
+      },
     },
     rules: {
       ...js.configs.recommended.rules,
       'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
       'no-console': 'off',
-      'semi': ['error', 'always'],
-      'quotes': ['error', 'single', { avoidEscape: true }],
-      'indent': ['error', 2],
+      semi: ['error', 'always'],
+      quotes: ['error', 'single', { avoidEscape: true }],
+      indent: ['error', 2],
       'no-trailing-spaces': 'error',
       'eol-last': ['error', 'always'],
-      'comma-dangle': ['error', 'never'],
+      'comma-dangle': ['error', 'always-multiline'],
       'object-curly-spacing': ['error', 'always'],
       'array-bracket-spacing': ['error', 'never'],
       'keyword-spacing': 'error',
-      'space-before-function-paren': ['error', {
-        anonymous: 'always',
-        named: 'never',
-        asyncArrow: 'always'
-      }],
+      'space-before-function-paren': [
+        'error',
+        {
+          anonymous: 'always',
+          named: 'never',
+          asyncArrow: 'always',
+        },
+      ],
       'no-var': 'error',
       'prefer-const': 'warn',
-      'eqeqeq': ['error', 'always'],
+      eqeqeq: ['error', 'always'],
       'no-eval': 'error',
       'no-implied-eval': 'error',
-      'no-new-func': 'error'
-    }
+      'no-new-func': 'error',
+    },
   },
   // Test file overrides
   {
@@ -74,11 +77,11 @@ module.exports = [
         afterEach: 'readonly',
         beforeAll: 'readonly',
         afterAll: 'readonly',
-        jest: 'readonly'
-      }
+        jest: 'readonly',
+      },
     },
     plugins: {
-      jest
+      jest,
     },
     rules: {
       'no-undef': 'off',
@@ -87,8 +90,7 @@ module.exports = [
       'jest/no-disabled-tests': 'warn',
       'jest/no-focused-tests': 'error',
       'jest/no-identical-title': 'error',
-      'jest/valid-expect': 'error'
-    }
-  }
+      'jest/valid-expect': 'error',
+    },
+  },
 ];
-

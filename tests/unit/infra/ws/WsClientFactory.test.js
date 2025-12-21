@@ -14,20 +14,20 @@ describe('WsClientFactory', () => {
     jest.clearAllMocks();
 
     mockConfig = {
-      WS_URL: 'ws://localhost:8080'
+      WS_URL: 'ws://localhost:8080',
     };
 
     mockLogger = {
       info: jest.fn(),
       error: jest.fn(),
-      warn: jest.fn()
+      warn: jest.fn(),
     };
 
     mockWs = {
       on: jest.fn(),
       send: jest.fn(),
       readyState: WebSocket.OPEN,
-      close: jest.fn()
+      close: jest.fn(),
     };
 
     WebSocket.mockImplementation(() => mockWs);
@@ -77,12 +77,12 @@ describe('WsClientFactory', () => {
     });
 
     it('should update after reconnection', () => {
-      const closeHandler = mockWs.on.mock.calls.find(c => c[0] === 'close')?.[1];
+      const closeHandler = mockWs.on.mock.calls.find((c) => c[0] === 'close')?.[1];
       jest.useFakeTimers();
 
       const newWs = {
         on: jest.fn(),
-        readyState: WebSocket.OPEN
+        readyState: WebSocket.OPEN,
       };
 
       WebSocket.mockImplementation(() => newWs);
@@ -123,7 +123,7 @@ describe('WsClientFactory', () => {
     let openHandler;
 
     beforeEach(() => {
-      openHandler = mockWs.on.mock.calls.find(c => c[0] === 'open')?.[1];
+      openHandler = mockWs.on.mock.calls.find((c) => c[0] === 'open')?.[1];
     });
 
     it('should log connection success', () => {
@@ -138,7 +138,7 @@ describe('WsClientFactory', () => {
       expect(mockWs.send).toHaveBeenCalledWith(
         JSON.stringify({
           type: 'hello',
-          client: 'discord-bridge'
+          client: 'discord-bridge',
         })
       );
     });
@@ -155,7 +155,7 @@ describe('WsClientFactory', () => {
     let closeHandler;
 
     beforeEach(() => {
-      closeHandler = mockWs.on.mock.calls.find(c => c[0] === 'close')?.[1];
+      closeHandler = mockWs.on.mock.calls.find((c) => c[0] === 'close')?.[1];
     });
 
     it('should log close event', () => {
@@ -164,7 +164,7 @@ describe('WsClientFactory', () => {
       expect(mockLogger.warn).toHaveBeenCalledWith(
         expect.objectContaining({
           code: 1000,
-          reason: expect.any(String)
+          reason: expect.any(String),
         }),
         expect.stringContaining('reconnecting')
       );
@@ -209,7 +209,7 @@ describe('WsClientFactory', () => {
       expect(mockLogger.warn).toHaveBeenCalledWith(
         expect.objectContaining({
           code: 1006,
-          reason: 'Abnormal closure'
+          reason: 'Abnormal closure',
         }),
         expect.any(String)
       );
@@ -226,27 +226,20 @@ describe('WsClientFactory', () => {
     let errorHandler;
 
     beforeEach(() => {
-      errorHandler = mockWs.on.mock.calls.find(c => c[0] === 'error')?.[1];
+      errorHandler = mockWs.on.mock.calls.find((c) => c[0] === 'error')?.[1];
     });
 
     it('should log error', () => {
       const error = new Error('Connection refused');
       errorHandler(error);
 
-      expect(mockLogger.error).toHaveBeenCalledWith(
-        { err: error },
-        'WebSocket error'
-      );
+      expect(mockLogger.error).toHaveBeenCalledWith({ err: error }, 'WebSocket error');
     });
 
     it('should handle various error types', () => {
-      const errors = [
-        new Error('ECONNREFUSED'),
-        new Error('ENOTFOUND'),
-        new Error('Timeout')
-      ];
+      const errors = [new Error('ECONNREFUSED'), new Error('ENOTFOUND'), new Error('Timeout')];
 
-      errors.forEach(err => {
+      errors.forEach((err) => {
         errorHandler(err);
       });
 
@@ -257,7 +250,7 @@ describe('WsClientFactory', () => {
   describe('Custom Configuration', () => {
     it('should accept custom WebSocket URL', () => {
       const customConfig = {
-        WS_URL: 'wss://secure.example.com'
+        WS_URL: 'wss://secure.example.com',
       };
 
       createWsClient(customConfig, mockLogger);
@@ -267,7 +260,7 @@ describe('WsClientFactory', () => {
 
     it('should handle localhost URL', () => {
       const localConfig = {
-        WS_URL: 'ws://localhost:8080'
+        WS_URL: 'ws://localhost:8080',
       };
 
       createWsClient(localConfig, mockLogger);
@@ -280,7 +273,7 @@ describe('WsClientFactory', () => {
 
     it('should handle remote URLs', () => {
       const remoteConfig = {
-        WS_URL: 'wss://example.com/ws'
+        WS_URL: 'wss://example.com/ws',
       };
 
       createWsClient(remoteConfig, mockLogger);
@@ -312,7 +305,7 @@ describe('WsClientFactory', () => {
     it('should retry connection after failure', () => {
       jest.useFakeTimers();
 
-      const closeHandler = mockWs.on.mock.calls.find(c => c[0] === 'close')?.[1];
+      const closeHandler = mockWs.on.mock.calls.find((c) => c[0] === 'close')?.[1];
 
       closeHandler(1006, Buffer.from('Abnormal closure'));
 
@@ -326,7 +319,7 @@ describe('WsClientFactory', () => {
     it('should use 3 second reconnection delay', () => {
       jest.useFakeTimers();
 
-      const closeHandler = mockWs.on.mock.calls.find(c => c[0] === 'close')?.[1];
+      const closeHandler = mockWs.on.mock.calls.find((c) => c[0] === 'close')?.[1];
 
       closeHandler(1000, Buffer.from('Close'));
       // Advance timers to verify delay
@@ -339,7 +332,7 @@ describe('WsClientFactory', () => {
     it('should handle multiple reconnections', () => {
       jest.useFakeTimers();
 
-      const closeHandler = mockWs.on.mock.calls.find(c => c[0] === 'close')?.[1];
+      const closeHandler = mockWs.on.mock.calls.find((c) => c[0] === 'close')?.[1];
 
       closeHandler(1000, Buffer.from('Close'));
       jest.advanceTimersByTime(3000);
@@ -368,12 +361,12 @@ describe('WsClientFactory', () => {
 
       jest.useFakeTimers();
 
-      const closeHandler = mockWs.on.mock.calls.find(c => c[0] === 'close')?.[1];
+      const closeHandler = mockWs.on.mock.calls.find((c) => c[0] === 'close')?.[1];
       closeHandler(1000, Buffer.from('Close'));
 
       const newWs = {
         on: jest.fn(),
-        readyState: WebSocket.OPEN
+        readyState: WebSocket.OPEN,
       };
 
       WebSocket.mockImplementation(() => newWs);
@@ -394,12 +387,10 @@ describe('WsClientFactory', () => {
     });
 
     it('should log with correct context', () => {
-      const openHandler = mockWs.on.mock.calls.find(c => c[0] === 'open')?.[1];
+      const openHandler = mockWs.on.mock.calls.find((c) => c[0] === 'open')?.[1];
       openHandler();
 
-      expect(mockLogger.info).toHaveBeenCalledWith(
-        expect.stringMatching(/connected|Connected/i)
-      );
+      expect(mockLogger.info).toHaveBeenCalledWith(expect.stringMatching(/connected|Connected/i));
     });
   });
 });

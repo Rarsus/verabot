@@ -1,8 +1,4 @@
-const {
-  REST,
-  Routes,
-  SlashCommandBuilder
-} = require('discord.js');
+const { REST, Routes, SlashCommandBuilder } = require('discord.js');
 
 /**
  * Helper function to apply command options to a slash subcommand
@@ -20,42 +16,42 @@ const {
  */
 function applyOptionsToSubcommand(sub, options = []) {
   for (const opt of options) {
-    const base = builder =>
+    const base = (builder) =>
       builder
         .setName(opt.name)
         .setDescription(opt.description || 'No description')
         .setRequired(!!opt.required);
 
     switch (opt.type) {
-    case 'integer':
-      sub.addIntegerOption(o => {
-        let b = base(o);
-        if (opt.autocomplete) b = b.setAutocomplete(true);
-        if (opt.choices?.length) b = b.addChoices(...opt.choices);
-        return b;
-      });
-      break;
-    case 'boolean':
-      sub.addBooleanOption(o => base(o));
-      break;
-    case 'user':
-      sub.addUserOption(o => base(o));
-      break;
-    case 'role':
-      sub.addRoleOption(o => base(o));
-      break;
-    case 'channel':
-      sub.addChannelOption(o => base(o));
-      break;
-    case 'string':
-    default:
-      sub.addStringOption(o => {
-        let b = base(o);
-        if (opt.autocomplete) b = b.setAutocomplete(true);
-        if (opt.choices?.length) b = b.addChoices(...opt.choices);
-        return b;
-      });
-      break;
+      case 'integer':
+        sub.addIntegerOption((o) => {
+          let b = base(o);
+          if (opt.autocomplete) b = b.setAutocomplete(true);
+          if (opt.choices?.length) b = b.addChoices(...opt.choices);
+          return b;
+        });
+        break;
+      case 'boolean':
+        sub.addBooleanOption((o) => base(o));
+        break;
+      case 'user':
+        sub.addUserOption((o) => base(o));
+        break;
+      case 'role':
+        sub.addRoleOption((o) => base(o));
+        break;
+      case 'channel':
+        sub.addChannelOption((o) => base(o));
+        break;
+      case 'string':
+      default:
+        sub.addStringOption((o) => {
+          let b = base(o);
+          if (opt.autocomplete) b = b.setAutocomplete(true);
+          if (opt.choices?.length) b = b.addChoices(...opt.choices);
+          return b;
+        });
+        break;
     }
   }
 }
@@ -95,15 +91,11 @@ class SlashCommandRegistrar {
     const slashDefs = [];
 
     for (const [group, commands] of groups.entries()) {
-      const builder = new SlashCommandBuilder()
-        .setName(group)
-        .setDescription(`${group} commands`);
+      const builder = new SlashCommandBuilder().setName(group).setDescription(`${group} commands`);
 
       for (const cmd of commands) {
-        builder.addSubcommand(sub =>
-          sub
-            .setName(cmd.name)
-            .setDescription(cmd.description || 'No description')
+        builder.addSubcommand((sub) =>
+          sub.setName(cmd.name).setDescription(cmd.description || 'No description')
         );
         const subDef = builder.options.at(-1);
         applyOptionsToSubcommand(subDef, cmd.options);
@@ -116,10 +108,7 @@ class SlashCommandRegistrar {
 
     this.logger.info('Registering global slash commands…');
 
-    await rest.put(
-      Routes.applicationCommands(this.config.DISCORD_CLIENT_ID),
-      { body: slashDefs }
-    );
+    await rest.put(Routes.applicationCommands(this.config.DISCORD_CLIENT_ID), { body: slashDefs });
 
     this.logger.info('Slash commands registered.');
   }

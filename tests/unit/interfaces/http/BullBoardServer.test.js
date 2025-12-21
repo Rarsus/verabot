@@ -9,15 +9,15 @@ describe('BullBoardServer', () => {
       info: jest.fn(),
       warn: jest.fn(),
       error: jest.fn(),
-      debug: jest.fn()
+      debug: jest.fn(),
     };
 
     mockContainer = {
       jobQueue: {
-        queue: { name: 'test-queue' }
+        queue: { name: 'test-queue' },
       },
       logger: mockLogger,
-      config: { HTTP_PORT: '3000' }
+      config: { HTTP_PORT: '3000' },
     };
   });
 

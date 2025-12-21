@@ -17,16 +17,16 @@ Recommended approach: Focus on the **7 highest-impact files** in Tier 1, which c
 
 ## Coverage Breakdown by Layer
 
-| Layer | Files | Coverage | Status |
-|-------|-------|----------|--------|
-| **Command Handlers** | 20 | 100% | ✓ Complete |
-| **Middleware** | 4 | 100% | ✓ Complete |
-| **Core Services** | 4 | 100% | ✓ Complete |
-| **Core Commands** | 3 | 100% | ✓ Complete |
-| **Core Errors** | 3 | 100% | ✓ Complete |
-| **Health & Logging** | 2 | 100% | ✓ Complete |
-| **Infrastructure** | 18 | 18% | ⚠️ Critical Gap |
-| **Discord Integration** | 5 | 35% | ⚠️ Major Gap |
+| Layer                   | Files | Coverage | Status          |
+| ----------------------- | ----- | -------- | --------------- |
+| **Command Handlers**    | 20    | 100%     | ✓ Complete      |
+| **Middleware**          | 4     | 100%     | ✓ Complete      |
+| **Core Services**       | 4     | 100%     | ✓ Complete      |
+| **Core Commands**       | 3     | 100%     | ✓ Complete      |
+| **Core Errors**         | 3     | 100%     | ✓ Complete      |
+| **Health & Logging**    | 2     | 100%     | ✓ Complete      |
+| **Infrastructure**      | 18    | 18%      | ⚠️ Critical Gap |
+| **Discord Integration** | 5     | 35%      | ⚠️ Major Gap    |
 
 ---
 
@@ -35,6 +35,7 @@ Recommended approach: Focus on the **7 highest-impact files** in Tier 1, which c
 These 10 files have **0% coverage** and represent the largest opportunity for coverage gains.
 
 ### 1. **`infra/db/Repositories.js`** (124 lines)
+
 - **Current Coverage:** 0%
 - **Estimated Gain:** +5-6%
 - **Priority:** CRITICAL (Largest file, core infrastructure)
@@ -46,6 +47,7 @@ These 10 files have **0% coverage** and represent the largest opportunity for co
 - **Impact:** Database access layer, used by all permission/audit operations
 
 ### 2. **`infra/queue/JobQueueService.js`** (50 lines)
+
 - **Current Coverage:** 0%
 - **Estimated Gain:** +2-3%
 - **Priority:** HIGH (Core async job processing)
@@ -58,6 +60,7 @@ These 10 files have **0% coverage** and represent the largest opportunity for co
 - **Impact:** Async operation backbone, used for heavy work and cron jobs
 
 ### 3. **`infra/ws/WsAdapter.js`** (57 lines)
+
 - **Current Coverage:** 0%
 - **Estimated Gain:** +2-3%
 - **Priority:** HIGH (WebSocket communication)
@@ -70,6 +73,7 @@ These 10 files have **0% coverage** and represent the largest opportunity for co
 - **Impact:** WebSocket message handling, alternative command interface
 
 ### 4. **`infra/ws/WsClientFactory.js`** (36 lines)
+
 - **Current Coverage:** 0%
 - **Estimated Gain:** +1-2%
 - **Priority:** MEDIUM (WebSocket client creation)
@@ -82,6 +86,7 @@ These 10 files have **0% coverage** and represent the largest opportunity for co
 - **Impact:** WebSocket client initialization and configuration
 
 ### 5. **`infra/di/container.js`** (63 lines)
+
 - **Current Coverage:** 0%
 - **Estimated Gain:** +2-3%
 - **Priority:** HIGH (Dependency injection)
@@ -94,6 +99,7 @@ These 10 files have **0% coverage** and represent the largest opportunity for co
 - **Impact:** Application bootstrap and service wiring
 
 ### 6. **`interfaces/http/BullBoardServer.js`** (27 lines)
+
 - **Current Coverage:** 0%
 - **Estimated Gain:** +1-2%
 - **Priority:** MEDIUM (Admin UI server)
@@ -106,6 +112,7 @@ These 10 files have **0% coverage** and represent the largest opportunity for co
 - **Impact:** Job queue admin interface
 
 ### 7. **`interfaces/http/HealthMetricsServer.js`** (35 lines)
+
 - **Current Coverage:** 0%
 - **Estimated Gain:** +2%
 - **Priority:** MEDIUM (Health/metrics endpoints)
@@ -118,6 +125,7 @@ These 10 files have **0% coverage** and represent the largest opportunity for co
 - **Impact:** Monitoring and diagnostics endpoints
 
 ### 8. **`infra/config/RedisConfig.js`** (18 lines)
+
 - **Current Coverage:** 0%
 - **Estimated Gain:** +1%
 - **Priority:** LOW (Configuration)
@@ -128,6 +136,7 @@ These 10 files have **0% coverage** and represent the largest opportunity for co
 - **Impact:** Redis configuration initialization
 
 ### 9. **`infra/metrics/Metrics.js`** (21 lines)
+
 - **Current Coverage:** 0%
 - **Estimated Gain:** +1%
 - **Priority:** LOW (Metrics collection)
@@ -139,6 +148,7 @@ These 10 files have **0% coverage** and represent the largest opportunity for co
 - **Impact:** Application metrics and monitoring
 
 ### 10. **`infra/queue/Scheduler.js`** (19 lines)
+
 - **Current Coverage:** 0%
 - **Estimated Gain:** +1%
 - **Priority:** LOW (Job scheduling)
@@ -156,6 +166,7 @@ These 10 files have **0% coverage** and represent the largest opportunity for co
 These files have some tests but need significant expansion.
 
 ### 11. **`infra/discord/SlashCommandRegistrar.js`** (87 lines)
+
 - **Current Coverage:** 11.62%
 - **Estimated Gain:** +3-4%
 - **Priority:** HIGH
@@ -168,6 +179,7 @@ These files have some tests but need significant expansion.
   - Error handling for API failures
 
 ### 12. **`infra/discord/SlashCommandAdapter.js`** (183 lines)
+
 - **Current Coverage:** 47.77%
 - **Estimated Gain:** +1-2%
 - **Priority:** MEDIUM (Already partially tested)
@@ -180,6 +192,7 @@ These files have some tests but need significant expansion.
   - Error scenarios
 
 ### 13. **`infra/discord/EmbedFactory.js`** (111 lines)
+
 - **Current Coverage:** 39.28%
 - **Estimated Gain:** +2-3%
 - **Priority:** MEDIUM
@@ -191,6 +204,7 @@ These files have some tests but need significant expansion.
   - Pagination logic
 
 ### 14. **`infra/discord/DiscordClientFactory.js`** (20 lines)
+
 - **Current Coverage:** 0%
 - **Estimated Gain:** +1%
 - **Priority:** LOW
@@ -205,15 +219,15 @@ These files have some tests but need significant expansion.
 
 Execute in this order to reach 70% coverage efficiently:
 
-| Phase | File | Lines | Current | Estimated | Cumulative |
-|-------|------|-------|---------|-----------|------------|
-| 1️⃣ | **Repositories.js** | 124 | 0% | +5-6% | **52-53%** |
-| 2️⃣ | **JobQueueService.js** | 50 | 0% | +2-3% | **55-56%** |
-| 3️⃣ | **SlashCommandRegistrar.js** | 87 | 11.6% | +3-4% | **58-60%** |
-| 4️⃣ | **WsAdapter.js** | 57 | 0% | +2-3% | **60-63%** |
-| 5️⃣ | **container.js** | 63 | 0% | +2-3% | **63-66%** |
-| 6️⃣ | **WsClientFactory.js** | 36 | 0% | +1-2% | **64-68%** |
-| 7️⃣ | **SlashCommandAdapter.js** | 183 | 47.8% | +1-2% | **66-70%** ✓ |
+| Phase | File                         | Lines | Current | Estimated | Cumulative   |
+| ----- | ---------------------------- | ----- | ------- | --------- | ------------ |
+| 1️⃣    | **Repositories.js**          | 124   | 0%      | +5-6%     | **52-53%**   |
+| 2️⃣    | **JobQueueService.js**       | 50    | 0%      | +2-3%     | **55-56%**   |
+| 3️⃣    | **SlashCommandRegistrar.js** | 87    | 11.6%   | +3-4%     | **58-60%**   |
+| 4️⃣    | **WsAdapter.js**             | 57    | 0%      | +2-3%     | **60-63%**   |
+| 5️⃣    | **container.js**             | 63    | 0%      | +2-3%     | **63-66%**   |
+| 6️⃣    | **WsClientFactory.js**       | 36    | 0%      | +1-2%     | **64-68%**   |
+| 7️⃣    | **SlashCommandAdapter.js**   | 183   | 47.8%   | +1-2%     | **66-70%** ✓ |
 
 **Files 8-14** (HealthMetricsServer, BullBoardServer, etc.) are secondary and can be done after reaching 70% for completeness.
 
@@ -222,6 +236,7 @@ Execute in this order to reach 70% coverage efficiently:
 ## Testing Strategy
 
 ### For Tier 1 Files (0% coverage):
+
 1. **Repositories.js** - Mock SQLite database, test all CRUD operations and error cases
 2. **JobQueueService.js** - Mock BullMQ queue/worker/scheduler, test job lifecycle
 3. **WsAdapter.js** - Mock WebSocket instance and message events
@@ -229,6 +244,7 @@ Execute in this order to reach 70% coverage efficiently:
 5. **SlashCommandRegistrar.js** - Mock Discord client and API responses
 
 ### Testing Patterns:
+
 - Use Jest mocking for external dependencies (Redis, Discord, SQLite)
 - Focus on happy path + error scenarios for each method
 - Aim for 100% line coverage for critical files
@@ -240,6 +256,7 @@ Execute in this order to reach 70% coverage efficiently:
 ## Quick Reference: Uncovered Lines
 
 **By Coverage Percentage (Lowest First):**
+
 - 0% coverage: 10 files (Repositories, JobQueue, WsAdapter, WsFactory, DI, HealthMetrics, BullBoard, RedisConfig, Metrics, Scheduler)
 - 11.6% coverage: SlashCommandRegistrar
 - 35% coverage: Discord integration suite
@@ -251,6 +268,7 @@ Execute in this order to reach 70% coverage efficiently:
 ## Success Criteria
 
 ✅ **Phase 1 Complete when:**
+
 - [ ] All 7 primary files tested
 - [ ] Coverage reaches 70%+ overall
 - [ ] All 351+ tests passing
@@ -268,4 +286,4 @@ Execute in this order to reach 70% coverage efficiently:
 
 ---
 
-*Next Steps: Start with Repositories.js tests, aiming for 100% coverage of all 4 repository factories.*
+_Next Steps: Start with Repositories.js tests, aiming for 100% coverage of all 4 repository factories._

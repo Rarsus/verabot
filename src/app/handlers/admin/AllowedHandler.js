@@ -32,18 +32,16 @@ class AllowedHandler {
     const allowed = await this.repos.commandRepo.listAllowed();
     const meta = this.registry.listCommands();
 
-    const merged = allowed.map(a => {
-      const m = meta.find(x => x.name === a.command);
+    const merged = allowed.map((a) => {
+      const m = meta.find((x) => x.name === a.command);
       return {
         name: a.command,
         category: m?.category || 'unknown',
-        description: m?.description || 'No description'
+        description: m?.description || 'No description',
       };
     });
 
-    const filtered = category
-      ? merged.filter(m => m.category === category)
-      : merged;
+    const filtered = category ? merged.filter((m) => m.category === category) : merged;
 
     const PAGE_SIZE = 5;
     const pages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
@@ -55,7 +53,7 @@ class AllowedHandler {
       category: category || null,
       page: safePage,
       pages,
-      items
+      items,
     });
   }
 }

@@ -8,18 +8,18 @@ describe('Scheduler', () => {
 
   beforeEach(() => {
     mockQueue = {
-      add: jest.fn().mockResolvedValue({ id: 'job-123' })
+      add: jest.fn().mockResolvedValue({ id: 'job-123' }),
     };
 
     mockJobQueue = {
-      queue: mockQueue
+      queue: mockQueue,
     };
 
     mockLogger = {
       info: jest.fn(),
       warn: jest.fn(),
       error: jest.fn(),
-      debug: jest.fn()
+      debug: jest.fn(),
     };
 
     scheduler = new Scheduler(mockJobQueue, mockLogger);
@@ -54,7 +54,7 @@ describe('Scheduler', () => {
       expect(callArgs[2]).toEqual(
         expect.objectContaining({
           repeat: { cron: '* * * * *' },
-          removeOnComplete: true
+          removeOnComplete: true,
         })
       );
     });

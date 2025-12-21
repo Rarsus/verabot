@@ -8,8 +8,8 @@ describe('AllowHandler', () => {
   beforeEach(() => {
     mockRepos = {
       commandRepo: {
-        addAllowed: jest.fn().mockResolvedValue(undefined)
-      }
+        addAllowed: jest.fn().mockResolvedValue(undefined),
+      },
     };
     handler = new AllowHandler(mockRepos);
   });

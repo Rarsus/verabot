@@ -25,7 +25,7 @@ describe('CommandRegistry', () => {
         usage: '/mod ban <user>',
         examples: ['/mod ban spammer'],
         permissions: ['ADMINISTRATOR'],
-        cooldown: 5000
+        cooldown: 5000,
       };
 
       registry.register('ban', mockHandler, options);
@@ -102,7 +102,7 @@ describe('CommandRegistry', () => {
     it('should include all metadata in listed commands', () => {
       registry.register('ping', mockHandler, {
         category: 'admin',
-        description: 'Ping the bot'
+        description: 'Ping the bot',
       });
 
       const commands = registry.listCommands();

@@ -8,8 +8,8 @@ describe('AllowUserHandler', () => {
   beforeEach(() => {
     mockRepos = {
       permissionRepo: {
-        addUser: jest.fn().mockResolvedValue(undefined)
-      }
+        addUser: jest.fn().mockResolvedValue(undefined),
+      },
     };
     handler = new AllowUserHandler(mockRepos);
   });

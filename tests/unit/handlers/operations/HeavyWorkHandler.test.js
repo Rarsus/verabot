@@ -7,7 +7,7 @@ describe('HeavyWorkHandler', () => {
 
   beforeEach(() => {
     mockJobQueue = {
-      enqueue: jest.fn().mockResolvedValue({ id: 'job123' })
+      enqueue: jest.fn().mockResolvedValue({ id: 'job123' }),
     };
 
     handler = new HeavyWorkHandler(mockJobQueue);
@@ -17,7 +17,7 @@ describe('HeavyWorkHandler', () => {
     const command = {
       args: ['analyze'],
       userId: 'user123',
-      source: 'discord'
+      source: 'discord',
     };
 
     const result = await handler.handle(command);
@@ -28,7 +28,7 @@ describe('HeavyWorkHandler', () => {
       expect.objectContaining({
         userId: 'user123',
         source: 'discord',
-        args: ['analyze']
+        args: ['analyze'],
       }),
       expect.any(Object)
     );
@@ -39,7 +39,7 @@ describe('HeavyWorkHandler', () => {
     const command = {
       args: ['process'],
       userId: 'user456',
-      source: 'api'
+      source: 'api',
     };
 
     const result = await handler.handle(command);
@@ -52,7 +52,7 @@ describe('HeavyWorkHandler', () => {
     const command = {
       args: ['work'],
       userId: 'user789',
-      source: 'cli'
+      source: 'cli',
     };
 
     await handler.handle(command);
@@ -62,7 +62,7 @@ describe('HeavyWorkHandler', () => {
       expect.any(Object),
       expect.objectContaining({
         attempts: 5,
-        backoff: expect.objectContaining({ type: 'exponential', delay: 2000 })
+        backoff: expect.objectContaining({ type: 'exponential', delay: 2000 }),
       })
     );
   });
@@ -73,7 +73,7 @@ describe('HeavyWorkHandler', () => {
     const command = {
       args: ['work'],
       userId: 'user123',
-      source: 'discord'
+      source: 'discord',
     };
 
     await expect(handler.handle(command)).rejects.toThrow('Queue error');
@@ -83,7 +83,7 @@ describe('HeavyWorkHandler', () => {
     const command = {
       args: ['analyze', 'param1', 'param2'],
       userId: 'user123',
-      source: 'discord'
+      source: 'discord',
     };
 
     await handler.handle(command);
@@ -91,7 +91,7 @@ describe('HeavyWorkHandler', () => {
     expect(mockJobQueue.enqueue).toHaveBeenCalledWith(
       'heavywork',
       expect.objectContaining({
-        args: ['analyze', 'param1', 'param2']
+        args: ['analyze', 'param1', 'param2'],
       }),
       expect.any(Object)
     );
@@ -101,7 +101,7 @@ describe('HeavyWorkHandler', () => {
     const command = {
       args: ['work'],
       userId: 'user123',
-      source: 'discord'
+      source: 'discord',
     };
 
     await handler.handle(command);
@@ -117,7 +117,7 @@ describe('HeavyWorkHandler', () => {
     const command = {
       args: ['work'],
       userId: 'user123',
-      source: 'discord'
+      source: 'discord',
     };
 
     const result = await handler.handle(command);

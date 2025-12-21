@@ -9,7 +9,7 @@ describe('HelpHandler', () => {
     mockHelpService = {
       getCommandHelp: jest.fn(),
       getCommandsByCategory: jest.fn(),
-      paginate: jest.fn()
+      paginate: jest.fn(),
     };
     handler = new HelpHandler(mockHelpService);
   });
@@ -20,12 +20,12 @@ describe('HelpHandler', () => {
         category: 'core',
         description: 'Ping command',
         usage: '!ping',
-        examples: ['!ping']
+        examples: ['!ping'],
       };
       mockHelpService.getCommandHelp.mockReturnValue(mockMeta);
 
       const result = await handler.handle({
-        args: ['ping']
+        args: ['ping'],
       });
 
       expect(result.success).toBe(true);
@@ -40,12 +40,12 @@ describe('HelpHandler', () => {
         category: 'messaging',
         description: 'Send a message',
         usage: '!say <message>',
-        examples: ['!say hello']
+        examples: ['!say hello'],
       };
       mockHelpService.getCommandHelp.mockReturnValue(mockMeta);
 
       const result = await handler.handle({
-        args: ['say']
+        args: ['say'],
       });
 
       expect(result.data.usage).toBe('!say <message>');
@@ -55,7 +55,7 @@ describe('HelpHandler', () => {
     it('should not call paginate when specific command is found', async () => {
       mockHelpService.getCommandHelp.mockReturnValue({
         category: 'core',
-        description: 'Test'
+        description: 'Test',
       });
 
       await handler.handle({ args: ['ping'] });
@@ -72,7 +72,7 @@ describe('HelpHandler', () => {
         page: 1,
         pages: 1,
         total: 0,
-        items: []
+        items: [],
       });
 
       const result = await handler.handle({ args: [] });
@@ -87,7 +87,7 @@ describe('HelpHandler', () => {
       mockHelpService.getCommandHelp.mockReturnValue(null);
       mockHelpService.getCommandsByCategory.mockReturnValue([
         { name: 'ping', category: 'core' },
-        { name: 'info', category: 'core' }
+        { name: 'info', category: 'core' },
       ]);
       mockHelpService.paginate.mockReturnValue({
         page: 1,
@@ -95,8 +95,8 @@ describe('HelpHandler', () => {
         total: 2,
         items: [
           { name: 'ping', category: 'core' },
-          { name: 'info', category: 'core' }
-        ]
+          { name: 'info', category: 'core' },
+        ],
       });
 
       const result = await handler.handle({ args: ['core'] });
@@ -113,7 +113,7 @@ describe('HelpHandler', () => {
         page: 2,
         pages: 5,
         total: 20,
-        items: []
+        items: [],
       });
 
       const result = await handler.handle({ args: ['2'] });
@@ -129,7 +129,7 @@ describe('HelpHandler', () => {
         page: 2,
         pages: 3,
         total: 10,
-        items: []
+        items: [],
       });
 
       const result = await handler.handle({ args: ['messaging', '2'] });
@@ -146,7 +146,7 @@ describe('HelpHandler', () => {
         page: 1,
         pages: 1,
         total: 0,
-        items: []
+        items: [],
       });
 
       await handler.handle({ args: [] });
@@ -163,7 +163,7 @@ describe('HelpHandler', () => {
         page: 1,
         pages: 1,
         total: 0,
-        items: []
+        items: [],
       });
 
       const result = await handler.handle({ args: [undefined, undefined] });

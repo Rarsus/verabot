@@ -77,6 +77,7 @@ npm start
 ### Can I run multiple bot instances?
 
 Yes! They'll share the same Redis and SQLite database. Make sure:
+
 - Same DISCORD_TOKEN
 - Same CLIENT_ID
 - Different instances can run in parallel
@@ -89,6 +90,7 @@ Yes! They'll share the same Redis and SQLite database. Make sure:
 ### How do I use slash commands?
 
 Type `/` in Discord and select the command:
+
 1. Type `/`
 2. Search for command (e.g., `ping`)
 3. Fill in parameters
@@ -97,6 +99,7 @@ Type `/` in Discord and select the command:
 ### How do I use prefix commands?
 
 Type `!` followed by command name:
+
 ```
 !ping
 !allow-command admin
@@ -106,10 +109,12 @@ Type `!` followed by command name:
 ### How do I see all available commands?
 
 In Discord:
+
 - Type `/help` for slash command list
 - Type `!help` for prefix command list
 
 In terminal (if running bot):
+
 - Check logs during startup
 - Lists all registered commands
 
@@ -133,6 +138,7 @@ See detailed guide at [Adding Commands](./14-ADDING-COMMANDS.md).
 ### What is the permission system?
 
 VeraBot uses role-based, channel-based, and user-based permissions. Admins can:
+
 - Allow commands for specific roles
 - Allow commands in specific channels
 - Allow commands for specific users
@@ -147,6 +153,7 @@ VeraBot uses role-based, channel-based, and user-based permissions. Admins can:
 ```
 
 Or with prefix commands:
+
 ```
 !allow-command deploy @user
 ```
@@ -176,10 +183,12 @@ Shows all permission grants and denials.
 ### Bot not responding
 
 **Check:**
+
 1. Is bot online? (Green dot in Discord)
 2. Run `/ping` to test
 
 **Solution:**
+
 1. Restart bot: `npm start`
 2. Check logs: `LOG_LEVEL=debug npm start`
 3. Verify bot has channel permissions
@@ -187,11 +196,13 @@ Shows all permission grants and denials.
 ### Command not appearing
 
 **Check:**
+
 1. Is bot updated?
 2. Do you have permission?
 3. Try different channel
 
 **Solution:**
+
 1. Restart bot
 2. Refresh Discord (`Ctrl+R`)
 3. Wait 5-10 seconds for registration
@@ -202,11 +213,13 @@ Shows all permission grants and denials.
 **Error:** "Cannot connect to Redis"
 
 **Check:**
+
 1. Is Redis running?
 2. Correct host/port?
 3. Network connectivity?
 
 **Solution:**
+
 ```bash
 redis-server              # Start Redis
 # or
@@ -224,6 +237,7 @@ docker run -d -p 6379:6379 redis  # Docker
 ### Tests failing
 
 **Solution:**
+
 ```bash
 npm install                 # Reinstall dependencies
 npm test                    # Run again
@@ -302,6 +316,7 @@ npm run test:integration   # Only integration tests
 ### Can it handle high load?
 
 Yes! Features for scaling:
+
 - Job queue offloads work
 - Redis caching
 - SQLite with indexes
@@ -322,6 +337,7 @@ Yes! Features for scaling:
 ### Is my Discord token safe?
 
 Only if you:
+
 - Never commit it to git
 - Use `.env` file with `DISCORD_TOKEN`
 - Keep `.env` in `.gitignore`
@@ -331,6 +347,7 @@ Only if you:
 ### Are commands permission-checked?
 
 Yes! Every command goes through:
+
 1. Permission middleware - Checks access
 2. Rate limit middleware - Prevents abuse
 3. Audit middleware - Logs all actions
@@ -338,6 +355,7 @@ Yes! Every command goes through:
 ### Can I restrict commands to certain channels?
 
 Yes! Per-command channel restrictions:
+
 ```
 /allow-channel deploy #ops-channel
 ```
@@ -345,6 +363,7 @@ Yes! Per-command channel restrictions:
 ### Is the database encrypted?
 
 SQLite doesn't support encryption natively. For production:
+
 - Use disk-level encryption
 - Run on secure servers
 - Restrict database file access
@@ -359,6 +378,7 @@ SQLite doesn't support encryption natively. For production:
 See [Deployment Guide](./18-DEPLOYMENT.md).
 
 Quick version:
+
 1. Set `NODE_ENV=production`
 2. Set `LOG_LEVEL=warn`
 3. Use external Redis and database if possible
@@ -368,6 +388,7 @@ Quick version:
 ### Can I use Docker?
 
 Yes! Dockerfile included:
+
 ```bash
 docker build -t verabot .
 docker run -e DISCORD_TOKEN=xxx -e CLIENT_ID=xxx verabot
@@ -398,6 +419,7 @@ docker run -e DISCORD_TOKEN=xxx -e CLIENT_ID=xxx verabot
 Yes! VeraBot itself is free and open source.
 
 Potential costs:
+
 - **Discord:** Free (for bot)
 - **Server hosting:** Varies ($5-50+/month)
 - **Redis hosting:** Free-$20+/month
@@ -423,6 +445,7 @@ Potential costs:
 ### Professional Support
 
 For commercial support, consulting, or custom features:
+
 - Contact repository maintainers
 - Check repository for contact info
 
@@ -440,6 +463,7 @@ For commercial support, consulting, or custom features:
 ## More Questions?
 
 Check:
+
 1. [Glossary](./21-GLOSSARY.md) - Key terms
 2. [Resources](./23-RESOURCES.md) - External links
 3. [Troubleshooting](./20-TROUBLESHOOTING.md) - Common issues

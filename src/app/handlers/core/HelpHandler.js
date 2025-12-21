@@ -43,20 +43,19 @@ class HelpHandler {
           category: meta.category,
           description: meta.description,
           usage: meta.usage,
-          examples: meta.examples
+          examples: meta.examples,
         });
       }
     }
 
-    const category = categoryOrCommand && isNaN(categoryOrCommand)
-      ? categoryOrCommand
-      : null;
+    const category = categoryOrCommand && isNaN(categoryOrCommand) ? categoryOrCommand : null;
 
-    const page = categoryOrCommand && !isNaN(categoryOrCommand)
-      ? Number(categoryOrCommand)
-      : pageRaw
-        ? Number(pageRaw)
-        : 1;
+    const page =
+      categoryOrCommand && !isNaN(categoryOrCommand)
+        ? Number(categoryOrCommand)
+        : pageRaw
+          ? Number(pageRaw)
+          : 1;
 
     const commands = this.helpService.getCommandsByCategory(category);
     const paginated = this.helpService.paginate(commands, page);
@@ -64,10 +63,9 @@ class HelpHandler {
     return CommandResult.ok({
       type: 'list',
       category,
-      ...paginated
+      ...paginated,
     });
   }
 }
 
 module.exports = HelpHandler;
-

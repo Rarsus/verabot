@@ -55,7 +55,7 @@ class CommandRegistry {
       examples: options.examples || [],
       options: options.options || [],
       permissions: options.permissions || null,
-      cooldown: options.cooldown || null
+      cooldown: options.cooldown || null,
     };
     this.handlers.set(name, entry);
   }
@@ -85,7 +85,7 @@ class CommandRegistry {
   listCommands() {
     return Array.from(this.handlers.entries()).map(([name, meta]) => ({
       name,
-      ...meta
+      ...meta,
     }));
   }
 
@@ -105,4 +105,3 @@ class CommandRegistry {
 }
 
 module.exports = CommandRegistry;
-

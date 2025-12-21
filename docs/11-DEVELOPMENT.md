@@ -165,6 +165,7 @@ git checkout -b test/add-handler-tests
 ### 3. Make Changes
 
 Edit files in `src/`:
+
 ```bash
 # Example: Add new handler
 code src/app/handlers/core/MyNewHandler.js
@@ -173,6 +174,7 @@ code src/app/handlers/core/MyNewHandler.js
 ### 4. Write Tests
 
 Add tests in `tests/unit/`:
+
 ```bash
 code tests/unit/app/handlers/core/MyNewHandler.test.js
 ```
@@ -195,6 +197,7 @@ git commit -m "feat: add new handler for X"
 ### 7. Create Pull Request
 
 Push and create PR on GitHub:
+
 ```bash
 git push origin feature/add-new-command
 ```
@@ -210,6 +213,7 @@ npm start
 ```
 
 Expected output:
+
 ```
 [INFO] Bot connected as @VeraBot#0001
 [INFO] Listening to 45 commands
@@ -224,6 +228,7 @@ LOG_LEVEL=debug npm start
 ```
 
 Shows all operations:
+
 ```
 [DEBUG] Processing command: ping
 [DEBUG] Permission check: user has admin
@@ -241,11 +246,13 @@ Auto-reruns tests on file changes.
 ### Monitor Job Queue
 
 Open in browser:
+
 ```
 http://localhost:3002/admin/queues
 ```
 
 Shows:
+
 - Queued jobs
 - Running jobs
 - Completed jobs
@@ -258,6 +265,7 @@ curl http://localhost:3000/health
 ```
 
 Returns:
+
 ```json
 {
   "status": "healthy",
@@ -315,6 +323,7 @@ console.log('Debug info:', variable);
 ### Inspect Variables
 
 In VS Code debugger:
+
 1. Set breakpoint (click line number)
 2. Run debugger (F5)
 3. Inspect variables in debug panel
@@ -329,6 +338,7 @@ In VS Code debugger:
 See [Adding Commands](./14-ADDING-COMMANDS.md) for step-by-step guide.
 
 Quick version:
+
 ```bash
 # 1. Create handler
 code src/app/handlers/core/MyCommandHandler.js
@@ -449,26 +459,26 @@ npm run test:integration
 
 ## Resource Files
 
-| File | Purpose |
-|------|---------|
-| `package.json` | Dependencies and scripts |
-| `jest.config.js` | Jest configuration |
-| `.env` | Environment variables (not in git) |
-| `.env.example` | Example env file |
-| `database.db` | SQLite database (generated) |
-| `PHASE_1_COVERAGE_GAP.md` | Testing roadmap |
+| File                      | Purpose                            |
+| ------------------------- | ---------------------------------- |
+| `package.json`            | Dependencies and scripts           |
+| `jest.config.js`          | Jest configuration                 |
+| `.env`                    | Environment variables (not in git) |
+| `.env.example`            | Example env file                   |
+| `database.db`             | SQLite database (generated)        |
+| `PHASE_1_COVERAGE_GAP.md` | Testing roadmap                    |
 
 ---
 
 ## Key Files to Know
 
-| File | Purpose | When to Edit |
-|------|---------|--------------|
-| `src/index.js` | Bot startup | Adding new services |
-| `src/core/commands/CommandRegistry.js` | Command registration | Adding commands |
-| `src/app/bus/CommandBus.js` | Command execution | Changing flow |
-| `src/infra/db/Repositories.js` | Database queries | Adding DB operations |
-| `tests/` | Test files | When writing tests |
+| File                                   | Purpose              | When to Edit         |
+| -------------------------------------- | -------------------- | -------------------- |
+| `src/index.js`                         | Bot startup          | Adding new services  |
+| `src/core/commands/CommandRegistry.js` | Command registration | Adding commands      |
+| `src/app/bus/CommandBus.js`            | Command execution    | Changing flow        |
+| `src/infra/db/Repositories.js`         | Database queries     | Adding DB operations |
+| `tests/`                               | Test files           | When writing tests   |
 
 ---
 

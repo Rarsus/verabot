@@ -8,12 +8,12 @@ describe('NotifyHandler', () => {
 
   beforeEach(() => {
     mockUser = {
-      send: jest.fn().mockResolvedValue(undefined)
+      send: jest.fn().mockResolvedValue(undefined),
     };
     mockDiscordClient = {
       users: {
-        fetch: jest.fn().mockResolvedValue(mockUser)
-      }
+        fetch: jest.fn().mockResolvedValue(mockUser),
+      },
     };
     handler = new NotifyHandler(mockDiscordClient);
   });

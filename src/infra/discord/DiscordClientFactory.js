@@ -15,9 +15,9 @@ function createDiscordClient(config, logger) {
     intents: [
       GatewayIntentBits.Guilds,
       GatewayIntentBits.GuildMessages,
-      GatewayIntentBits.MessageContent
+      GatewayIntentBits.MessageContent,
     ],
-    partials: [Partials.Channel]
+    partials: [Partials.Channel],
   });
 
   client.once('ready', () => {
@@ -28,4 +28,3 @@ function createDiscordClient(config, logger) {
 }
 
 module.exports = { createDiscordClient };
-

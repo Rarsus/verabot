@@ -54,6 +54,7 @@ tests/
 ## Current Test Coverage
 
 ### Fully Tested (100%)
+
 - PingHandler
 - InfoHandler
 - CommandService
@@ -61,9 +62,11 @@ tests/
 - LoggingMiddleware
 
 ### Partially Tested
+
 - CommandRegistry (84%)
 
 ### Not Yet Tested
+
 - HelpHandler
 - StatsHandler
 - UptimeHandler
@@ -111,14 +114,14 @@ describe('MyClass', () => {
 
 ```javascript
 const {
-  createMockLogger,           // Logger with info, debug, warn, error
-  createMockCommandResult,    // Command execution result
-  createMockMiddleware,       // Middleware handler
-  createMockRegistry,         // Command registry
-  createMockPermissionService,// Permission checking
+  createMockLogger, // Logger with info, debug, warn, error
+  createMockCommandResult, // Command execution result
+  createMockMiddleware, // Middleware handler
+  createMockRegistry, // Command registry
+  createMockPermissionService, // Permission checking
   createMockRateLimitService, // Rate limiting
-  createMockCommandService,   // Command execution
-  createMockHelpService       // Help documentation
+  createMockCommandService, // Command execution
+  createMockHelpService, // Help documentation
 } = require('../../fixtures/mocks');
 ```
 
@@ -127,6 +130,7 @@ const {
 ## Test Statistics
 
 **Current Status:**
+
 - Tests: 48 / 48 passing ✅
 - Coverage: 12.62% overall (improving)
 - Test Suites: 8 / 8 passing ✅
@@ -156,21 +160,25 @@ const {
 ## Next Tests to Add
 
 ### Priority 1: Complete Handlers
+
 - HelpHandler
 - StatsHandler
 - UptimeHandler
 
 ### Priority 2: Add Admin Handlers
+
 - AllowHandler
 - AllowChannelHandler
 - AllowRoleHandler
 - AllowUserHandler
 
 ### Priority 3: Add Services
+
 - HelpService
 - RateLimitService
 
 ### Priority 4: Add Remaining Middleware
+
 - PermissionMiddleware
 - AuditMiddleware
 - RateLimitMiddleware
@@ -180,24 +188,30 @@ const {
 ## Troubleshooting
 
 ### Test Fails with "Cannot find module"
+
 Check the relative path from test file to source file:
+
 - 3 `../` to go from `tests/unit/TYPE/` to `src/TYPE/`
 - Example: `tests/unit/services/` → `../../../src/core/services/`
 
 ### Mock Not Working
+
 Ensure mock is created before test:
+
 ```javascript
 beforeEach(() => {
-  mockLogger = createMockLogger();  // Must be inside beforeEach
+  mockLogger = createMockLogger(); // Must be inside beforeEach
 });
 ```
 
 ### Coverage Not Improving
+
 - Check if test actually exercises the code
 - Use `console.log` to debug test execution
 - Run `npm run test:coverage` to see uncovered lines
 
 ### Tests Running Slowly
+
 - Check for unmocked async operations
 - Look for real network calls or file I/O
 - Ensure all mocks are synchronous
@@ -218,6 +232,7 @@ beforeEach(() => {
 ## CI/CD Integration
 
 These tests will eventually run:
+
 - On every commit (pre-commit hook)
 - On every push (GitHub Actions)
 - On pull requests (status check)

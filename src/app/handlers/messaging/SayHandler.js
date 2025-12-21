@@ -30,4 +30,3 @@ class SayHandler {
 }
 
 module.exports = SayHandler;
-
