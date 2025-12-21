@@ -4,6 +4,20 @@ const {
   SlashCommandBuilder
 } = require('discord.js');
 
+/**
+ * Helper function to apply command options to a slash subcommand
+ * Converts generic option definitions into Discord.js option builders
+ * @param {Subcommand} sub - Discord.js subcommand object
+ * @param {Array<Object>} options - Array of option definitions
+ * @param {string} options[].name - Option name
+ * @param {string} options[].type - Option type (string, integer, boolean, user, role, channel)
+ * @param {string} options[].description - Option description
+ * @param {boolean} options[].required - Whether option is required
+ * @param {boolean} options[].autocomplete - Whether option supports autocomplete
+ * @param {Array<Object>} options[].choices - Predefined choices for option
+ * @returns {void}
+ * @private
+ */
 function applyOptionsToSubcommand(sub, options = []) {
   for (const opt of options) {
     const base = builder =>
@@ -46,13 +60,36 @@ function applyOptionsToSubcommand(sub, options = []) {
   }
 }
 
+/**
+ * Registrar for Discord slash commands
+ * Converts command registry into Discord.js slash command definitions and registers with Discord API
+ * @class SlashCommandRegistrar
+ * @example
+ * const registrar = new SlashCommandRegistrar(config, registry, logger);
+ * await registrar.registerCommands();
+ */
 class SlashCommandRegistrar {
+  /**
+   * Create a new SlashCommandRegistrar instance
+   * @param {Object} config - Application configuration with DISCORD_TOKEN and DISCORD_CLIENT_ID
+   * @param {CommandRegistry} registry - Command registry with command metadata
+   * @param {Object} logger - Logger instance
+   */
   constructor(config, registry, logger) {
+    /** @type {Object} */
     this.config = config;
+    /** @type {CommandRegistry} */
     this.registry = registry;
+    /** @type {Object} */
     this.logger = logger;
   }
 
+  /**
+   * Register all commands from registry as Discord slash commands
+   * Converts command registry into slash command definitions and registers globally
+   * @returns {Promise<void>}
+   * @throws {Error} If Discord API registration fails
+   */
   async registerCommands() {
     const groups = this.registry.listByGroup();
     const slashDefs = [];

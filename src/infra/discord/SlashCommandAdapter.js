@@ -1,15 +1,40 @@
 const Command = require('../../core/commands/Command');
 const EmbedFactory = require('./EmbedFactory');
 
+/**
+ * Adapter for handling Discord.js slash command interactions
+ * Converts Discord interactions into Command objects and executes them through the bus
+ * @class SlashCommandAdapter
+ * @example
+ * const adapter = new SlashCommandAdapter(client, bus, registry, logger, helpService);
+ * adapter.registerListeners();
+ */
 class SlashCommandAdapter {
+  /**
+   * Create a new SlashCommandAdapter instance
+   * @param {Client} client - Discord.js client instance
+   * @param {CommandBus} bus - Command bus for execution
+   * @param {CommandRegistry} registry - Command registry for metadata
+   * @param {Object} logger - Logger instance
+   * @param {HelpService} helpService - Help service for documentation
+   */
   constructor(client, bus, registry, logger, helpService) {
+    /** @type {Client} */
     this.client = client;
+    /** @type {CommandBus} */
     this.bus = bus;
+    /** @type {CommandRegistry} */
     this.registry = registry;
+    /** @type {Object} */
     this.logger = logger;
+    /** @type {HelpService} */
     this.helpService = helpService;
   }
 
+  /**
+   * Register Discord interaction listeners
+   * Sets up handlers for chat input, autocomplete, and button interactions
+   */
   registerListeners() {
     this.client.on('interactionCreate', async (interaction) => {
       if (interaction.isChatInputCommand()) {
@@ -26,6 +51,11 @@ class SlashCommandAdapter {
     });
   }
 
+  /**
+   * Handle slash command (chat input) interactions
+   * @param {ChatInputCommandInteraction} interaction - Discord interaction object
+   * @returns {Promise<void>}
+   */
   async handleChatInput(interaction) {
     const group = interaction.commandName;
     const sub = interaction.options.getSubcommand();
@@ -109,6 +139,12 @@ class SlashCommandAdapter {
     }
   }
 
+  /**
+   * Handle autocomplete interactions for slash command options
+   * Provides suggestions for command and deployment target selection
+   * @param {AutocompleteInteraction} interaction - Discord autocomplete interaction
+   * @returns {Promise<void>}
+   */
   async handleAutocomplete(interaction) {
     const sub = interaction.options.getSubcommand();
     const meta = this.registry.getMeta(sub);
@@ -137,6 +173,12 @@ class SlashCommandAdapter {
     return interaction.respond([]);
   }
 
+  /**
+   * Handle button click interactions for pagination
+   * Updates the help embed with the requested page
+   * @param {ButtonInteraction} interaction - Discord button interaction
+   * @returns {Promise<void>}
+   */
   async handleButton(interaction) {
     const customId = interaction.customId;
     if (!customId.startsWith('help:')) return;
@@ -159,6 +201,13 @@ class SlashCommandAdapter {
     return interaction.update({ embeds: [embed], components: [row] });
   }
 
+  /**
+   * Render help command result as Discord embed
+   * Handles different help response types: command-specific, category list, or autocomplete suggestions
+   * @param {CommandResult} result - Result from help command execution
+   * @returns {MessageEmbed} Formatted embed ready for Discord reply
+   * @private
+   */
   renderHelp(result) {
     const data = result.data;
     if (data.type === 'command') {
