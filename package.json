@@ -1,0 +1,28 @@
+{
+  "name": "ws-discord-enterprise",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@bull-board/api": "^5.21.4",
+    "@bull-board/express": "^5.21.4",
+    "better-sqlite3": "^11.0.0",
+    "bullmq": "^5.9.0",
+    "discord.js": "^14.16.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2",
+    "ioredis": "^5.4.1",
+    "pino": "^9.0.0",
+    "pino-pretty": "^11.0.0",
+    "prom-client": "^15.0.0",
+    "ws": "^8.18.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
