@@ -1,4 +1,7 @@
+const path = require('path');
+
 module.exports = {
+  rootDir: path.resolve(__dirname, '..'),
   testEnvironment: 'node',
   verbose: true,
   collectCoverage: true,
