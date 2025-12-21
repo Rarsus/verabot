@@ -1,4 +1,8 @@
+const path = require('path');
+
 module.exports = {
+  // Config file is in .config/ subdirectory, so rootDir must point to project root
+  rootDir: path.resolve(__dirname, '..'),
   testEnvironment: 'node',
   verbose: true,
   collectCoverage: true,

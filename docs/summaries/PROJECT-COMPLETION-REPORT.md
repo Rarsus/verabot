@@ -207,30 +207,30 @@ npm test -- --watch
 
 | Deliverable         | Format   | Location                                                      | Status |
 | ------------------- | -------- | ------------------------------------------------------------- | ------ |
-| Installation Guide  | Markdown | [1-GETTING-STARTED.md](./docs/1-GETTING-STARTED.md)           | ✅     |
-| Quick Start         | Markdown | [2-QUICK-START.md](./docs/2-QUICK-START.md)                   | ✅     |
-| Configuration       | Markdown | [3-ENVIRONMENT-CONFIG.md](./docs/3-ENVIRONMENT-CONFIG.md)     | ✅     |
-| User Manual         | Markdown | [4-USER-MANUAL.md](./docs/4-USER-MANUAL.md)                   | ✅     |
-| Command Catalog     | Markdown | [5-COMMAND-REFERENCE.md](./docs/5-COMMAND-REFERENCE.md)       | ✅     |
-| Permissions         | Markdown | [6-PERMISSIONS.md](./docs/6-PERMISSIONS.md)                   | ✅     |
-| Architecture        | Markdown | [7-ARCHITECTURE.md](./docs/7-ARCHITECTURE.md)                 | ✅     |
-| Command Patterns    | Markdown | [8-COMMAND-ARCHITECTURE.md](./docs/8-COMMAND-ARCHITECTURE.md) | ✅     |
-| Infrastructure      | Markdown | [9-INFRASTRUCTURE.md](./docs/9-INFRASTRUCTURE.md)             | ✅     |
-| Design Patterns     | Markdown | [10-DESIGN-PATTERNS.md](./docs/10-DESIGN-PATTERNS.md)         | ✅     |
-| Developer Setup     | Markdown | [11-DEVELOPMENT.md](./docs/11-DEVELOPMENT.md)                 | ✅     |
-| Best Practices      | Markdown | [12-BEST-PRACTICES.md](./docs/12-BEST-PRACTICES.md)           | ✅     |
-| API Reference       | Markdown | [13-API-REFERENCE.md](./docs/13-API-REFERENCE.md)             | ✅     |
-| Adding Commands     | Markdown | [14-ADDING-COMMANDS.md](./docs/14-ADDING-COMMANDS.md)         | ✅     |
-| Testing Guide       | Markdown | [15-TESTING.md](./docs/15-TESTING.md)                         | ✅     |
-| Coverage Strategy   | Markdown | [16-COVERAGE-STRATEGY.md](./docs/16-COVERAGE-STRATEGY.md)     | ✅     |
-| Test Examples       | Markdown | [17-TEST-EXAMPLES.md](./docs/17-TEST-EXAMPLES.md)             | ✅     |
-| Deployment          | Markdown | [18-DEPLOYMENT.md](./docs/18-DEPLOYMENT.md)                   | ✅     |
-| Monitoring          | Markdown | [19-MONITORING.md](./docs/19-MONITORING.md)                   | ✅     |
-| Troubleshooting     | Markdown | [20-TROUBLESHOOTING.md](./docs/20-TROUBLESHOOTING.md)         | ✅     |
-| Glossary            | Markdown | [21-GLOSSARY.md](./docs/21-GLOSSARY.md)                       | ✅     |
-| FAQ                 | Markdown | [22-FAQ.md](./docs/22-FAQ.md)                                 | ✅     |
-| Resources           | Markdown | [23-RESOURCES.md](./docs/23-RESOURCES.md)                     | ✅     |
-| Documentation Index | Markdown | [docs/README.md](./docs/README.md)                            | ✅     |
+| Installation Guide  | Markdown | [1-GETTING-STARTED.md](../1-GETTING-STARTED.md)           | ✅     |
+| Quick Start         | Markdown | [2-QUICK-START.md](../2-QUICK-START.md)                   | ✅     |
+| Configuration       | Markdown | [3-ENVIRONMENT-CONFIG.md](../3-ENVIRONMENT-CONFIG.md)     | ✅     |
+| User Manual         | Markdown | [4-USER-MANUAL.md](../4-USER-MANUAL.md)                   | ✅     |
+| Command Catalog     | Markdown | [5-COMMAND-REFERENCE.md](../5-COMMAND-REFERENCE.md)       | ✅     |
+| Permissions         | Markdown | [6-PERMISSIONS.md](../6-PERMISSIONS.md)                   | ✅     |
+| Architecture        | Markdown | [7-ARCHITECTURE.md](../7-ARCHITECTURE.md)                 | ✅     |
+| Command Patterns    | Markdown | [8-COMMAND-ARCHITECTURE.md](../8-COMMAND-ARCHITECTURE.md) | ✅     |
+| Infrastructure      | Markdown | [9-INFRASTRUCTURE.md](../9-INFRASTRUCTURE.md)             | ✅     |
+| Design Patterns     | Markdown | [10-DESIGN-PATTERNS.md](../10-DESIGN-PATTERNS.md)         | ✅     |
+| Developer Setup     | Markdown | [11-DEVELOPMENT.md](../11-DEVELOPMENT.md)                 | ✅     |
+| Best Practices      | Markdown | [12-BEST-PRACTICES.md](../12-BEST-PRACTICES.md)           | ✅     |
+| API Reference       | Markdown | [13-API-REFERENCE.md](../13-API-REFERENCE.md)             | ✅     |
+| Adding Commands     | Markdown | [14-ADDING-COMMANDS.md](../14-ADDING-COMMANDS.md)         | ✅     |
+| Testing Guide       | Markdown | [15-TESTING.md](../15-TESTING.md)                         | ✅     |
+| Coverage Strategy   | Markdown | [16-COVERAGE-STRATEGY.md](../16-COVERAGE-STRATEGY.md)     | ✅     |
+| Test Examples       | Markdown | [17-TEST-EXAMPLES.md](../17-TEST-EXAMPLES.md)             | ✅     |
+| Deployment          | Markdown | [18-DEPLOYMENT.md](../18-DEPLOYMENT.md)                   | ✅     |
+| Monitoring          | Markdown | [19-MONITORING.md](../19-MONITORING.md)                   | ✅     |
+| Troubleshooting     | Markdown | [20-TROUBLESHOOTING.md](../20-TROUBLESHOOTING.md)         | ✅     |
+| Glossary            | Markdown | [21-GLOSSARY.md](../21-GLOSSARY.md)                       | ✅     |
+| FAQ                 | Markdown | [22-FAQ.md](../22-FAQ.md)                                 | ✅     |
+| Resources           | Markdown | [23-RESOURCES.md](../23-RESOURCES.md)                     | ✅     |
+| Documentation Index | Markdown | [docs/README.md](../README.md)                            | ✅     |
 
 ### Analysis Deliverables
 
@@ -298,7 +298,7 @@ npm test -- --watch
 
 ### For Documentation
 
-1. **Start:** Visit [docs/README.md](./docs/README.md)
+1. **Start:** Visit [docs/README.md](../README.md)
 2. **Navigate:** Use category links and quick links
 3. **Search:** Use provided table of contents in each document
 4. **Reference:** Use glossary for term definitions
@@ -308,7 +308,7 @@ npm test -- --watch
 
 1. **Understand:** Read [PHASE_1_COVERAGE_GAP.md](./PHASE_1_COVERAGE_GAP.md)
 2. **Plan:** Use recommended 7-file build order
-3. **Implement:** Follow patterns in [17-TEST-EXAMPLES.md](./docs/17-TEST-EXAMPLES.md)
+3. **Implement:** Follow patterns in [17-TEST-EXAMPLES.md](../17-TEST-EXAMPLES.md)
 4. **Verify:** Run `npm test -- --coverage`
 5. **Target:** Aim for 70% coverage (Phase 1)
 
@@ -378,7 +378,7 @@ npm test -- --watch
 
 1. **Create Phase 1 Tests** (159+ tests)
    - Follow recommended 7-file build order
-   - Use patterns from [17-TEST-EXAMPLES.md](./docs/17-TEST-EXAMPLES.md)
+   - Use patterns from [17-TEST-EXAMPLES.md](../17-TEST-EXAMPLES.md)
    - Target 70% coverage
 
 2. **Documentation Review**
@@ -468,6 +468,6 @@ The codebase is now thoroughly documented, and the path to 70% code coverage is 
 For questions or to start Phase 1 testing, refer to:
 
 - [PHASE_1_COVERAGE_GAP.md](./PHASE_1_COVERAGE_GAP.md) - Detailed build plan
-- [docs/16-COVERAGE-STRATEGY.md](./docs/16-COVERAGE-STRATEGY.md) - Coverage roadmap
-- [docs/17-TEST-EXAMPLES.md](./docs/17-TEST-EXAMPLES.md) - Real test patterns
-- [docs/15-TESTING.md](./docs/15-TESTING.md) - Testing guide
+- [docs/16-COVERAGE-STRATEGY.md](../16-COVERAGE-STRATEGY.md) - Coverage roadmap
+- [docs/17-TEST-EXAMPLES.md](../17-TEST-EXAMPLES.md) - Real test patterns
+- [docs/15-TESTING.md](../15-TESTING.md) - Testing guide

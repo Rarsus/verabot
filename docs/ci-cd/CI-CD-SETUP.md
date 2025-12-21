@@ -184,7 +184,7 @@ git push origin v1.0.0
 
 ## Documentation
 
-Full workflow documentation: [.github/WORKFLOWS.md](.github/WORKFLOWS.md)
+Full workflow documentation: [.github/WORKFLOWS.md](../../.github/WORKFLOWS.md)
 
 ## Questions?
 
@@ -192,4 +192,4 @@ Refer to:
 
 - [GitHub Actions Documentation](https://docs.github.com/actions)
 - [Workflow syntax reference](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions)
-- [.github/WORKFLOWS.md](.github/WORKFLOWS.md)
+- [.github/WORKFLOWS.md](../../.github/WORKFLOWS.md)

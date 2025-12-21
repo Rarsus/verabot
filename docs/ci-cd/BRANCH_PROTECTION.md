@@ -338,8 +338,8 @@ After configuring branch protection rules:
 
 ## 🔗 Related Documentation
 
-- [GITFLOW.md](./GITFLOW.md) - Branching strategy and workflow
-- [CONTRIBUTING.md](./CONTRIBUTING.md) - Developer contribution guide
+- [GITFLOW.md](../guidelines/GITFLOW.md) - Branching strategy and workflow
+- [CONTRIBUTING.md](../guidelines/CONTRIBUTING.md) - Developer contribution guide
 - [.github/CODEOWNERS](.github/CODEOWNERS) - Code ownership
 - [GitHub Docs - Branch Protection](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches)
 

@@ -11,7 +11,7 @@
 
 ### 1. ✅ Core Gitflow Documentation
 
-- **File:** [GITFLOW.md](GITFLOW.md)
+- **File:** [GITFLOW.md](../guidelines/GITFLOW.md)
 - **Status:** Complete (400+ lines)
 - **Coverage:**
   - Branch naming conventions (main, develop, feature/_, bugfix/_, release/_, hotfix/_)
@@ -23,7 +23,7 @@
 
 ### 2. ✅ Developer Contribution Guidelines
 
-- **File:** [CONTRIBUTING.md](CONTRIBUTING.md)
+- **File:** [CONTRIBUTING.md](../guidelines/CONTRIBUTING.md)
 - **Status:** Complete (350+ lines)
 - **Coverage:**
   - How to contribute (reporting bugs, suggesting features, submitting PRs)
@@ -36,7 +36,7 @@
 
 ### 3. ✅ GitHub Branch Protection Configuration
 
-- **File:** [BRANCH_PROTECTION.md](BRANCH_PROTECTION.md)
+- **File:** [BRANCH_PROTECTION.md](../ci-cd/BRANCH_PROTECTION.md)
 - **Status:** Complete (280+ lines)
 - **Coverage:**
   - Main branch protection rules
@@ -49,7 +49,7 @@
 
 ### 4. ✅ Pull Request Template
 
-- **File:** [.github/pull_request_template.md](.github/pull_request_template.md)
+- **File:** [.github/pull_request_template.md](../../.github/pull_request_template.md)
 - **Status:** Complete
 - **Features:**
   - Description section with guidance
@@ -62,7 +62,7 @@
 
 ### 5. ✅ Code Ownership Rules
 
-- **File:** [.github/CODEOWNERS](.github/CODEOWNERS)
+- **File:** [.github/CODEOWNERS](../../.github/CODEOWNERS)
 - **Status:** Complete
 - **Features:**
   - Automatic reviewer assignment
@@ -85,14 +85,14 @@
   - Examples and use cases
   - Alternative approaches
 
-- **Template Configuration:** [.github/ISSUE_TEMPLATE/config.yml](.github/ISSUE_TEMPLATE/config.yml)
+- **Template Configuration:** [.github/ISSUE_TEMPLATE/config.yml](../../.github/ISSUE_TEMPLATE/config.yml)
   - Links to documentation
   - Discussion forum setup
   - Security reporting guidelines
 
 ### 7. ✅ Enhanced GitHub Workflows
 
-#### CI Pipeline ([.github/workflows/ci.yml](.github/workflows/ci.yml))
+#### CI Pipeline ([.github/workflows/ci.yml](../../.github/workflows/ci.yml))
 
 **Status:** Enhanced with strict quality validation
 
@@ -225,7 +225,7 @@ These manual steps must be completed in GitHub repository settings:
 
 ### For Contributors
 
-1. Read [CONTRIBUTING.md](CONTRIBUTING.md) for setup and guidelines
+1. Read [CONTRIBUTING.md](../guidelines/CONTRIBUTING.md) for setup and guidelines
 2. Create feature branches: `feature/your-feature-name`
 3. Follow conventional commits: `type(scope): message`
 4. Submit PR with detailed description
@@ -234,7 +234,7 @@ These manual steps must be completed in GitHub repository settings:
 
 ### For Maintainers
 
-1. Review [GITFLOW.md](GITFLOW.md) for complete workflow
+1. Review [GITFLOW.md](../guidelines/GITFLOW.md) for complete workflow
 2. Monitor CI/CD checks in PR quality gate
 3. Use branch protection rules (set up in GitHub)
 4. Follow release procedures for major versions
@@ -372,10 +372,10 @@ All quality gates passing:
 
 Refer to the appropriate documentation file:
 
-- **How to contribute?** → [CONTRIBUTING.md](CONTRIBUTING.md)
-- **Git workflow details?** → [GITFLOW.md](GITFLOW.md)
-- **Branch protection rules?** → [BRANCH_PROTECTION.md](BRANCH_PROTECTION.md)
-- **PR expectations?** → [.github/pull_request_template.md](.github/pull_request_template.md)
+- **How to contribute?** → [CONTRIBUTING.md](../guidelines/CONTRIBUTING.md)
+- **Git workflow details?** → [GITFLOW.md](../guidelines/GITFLOW.md)
+- **Branch protection rules?** → [BRANCH_PROTECTION.md](../ci-cd/BRANCH_PROTECTION.md)
+- **PR expectations?** → [.github/pull_request_template.md](../../.github/pull_request_template.md)
 
 ---
 

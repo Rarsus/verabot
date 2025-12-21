@@ -5,21 +5,21 @@
   "type": "commonjs",
   "scripts": {
     "start": "node src/index.js",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
-    "test:unit": "jest tests/unit",
-    "test:integration": "jest tests/integration",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
+    "test": "jest --config .config/jest.config.js",
+    "test:watch": "jest --config .config/jest.config.js --watch",
+    "test:coverage": "jest --config .config/jest.config.js --coverage",
+    "test:unit": "jest --config .config/jest.config.js tests/unit",
+    "test:integration": "jest --config .config/jest.config.js tests/integration",
+    "lint": "eslint --config .config/eslint.config.js .",
+    "lint:fix": "eslint --config .config/eslint.config.js . --fix",
+    "format": "prettier --config .config/.prettierrc --ignore-path .config/.prettierignore --write .",
+    "format:check": "prettier --config .config/.prettierrc --ignore-path .config/.prettierignore --check .",
     "prepare": "husky install"
   },
   "lint-staged": {
     "*.js": [
-      "eslint --fix",
-      "eslint"
+      "eslint --config .config/eslint.config.js --fix",
+      "eslint --config .config/eslint.config.js"
     ]
   },
   "dependencies": {
