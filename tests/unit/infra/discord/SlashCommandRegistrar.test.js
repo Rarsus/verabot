@@ -437,4 +437,805 @@ describe('SlashCommandRegistrar', () => {
       await expect(registrar.registerCommands()).resolves.not.toThrow();
     });
   });
+
+  describe('Integer Option Handling', () => {
+    it('should add integer options without autocomplete or choices', async () => {
+      mockRegistry.listByGroup.mockReturnValue(new Map([
+        ['admin', [
+          {
+            name: 'ban',
+            description: 'Ban user',
+            options: [
+              { name: 'duration', type: 'integer', required: true }
+            ]
+          }
+        ]]
+      ]));
+
+      const mockBuilder = {
+        setName: jest.fn().mockReturnThis(),
+        setDescription: jest.fn().mockReturnThis(),
+        addSubcommand: jest.fn().mockImplementation(function(fn) {
+          const sub = {
+            setName: jest.fn().mockReturnThis(),
+            setDescription: jest.fn().mockReturnThis(),
+            addIntegerOption: jest.fn().mockImplementation(optFn => {
+              optFn({
+                setName: jest.fn().mockReturnThis(),
+                setDescription: jest.fn().mockReturnThis(),
+                setRequired: jest.fn().mockReturnThis()
+              });
+              return sub;
+            }),
+            addBooleanOption: jest.fn().mockReturnThis(),
+            addStringOption: jest.fn().mockReturnThis(),
+            addUserOption: jest.fn().mockReturnThis(),
+            addRoleOption: jest.fn().mockReturnThis(),
+            addChannelOption: jest.fn().mockReturnThis()
+          };
+          fn(sub);
+          mockBuilder.options.push(sub);
+          return mockBuilder;
+        }),
+        options: [],
+        toJSON: jest.fn().mockReturnValue({})
+      };
+
+      SlashCommandBuilder.mockImplementation(() => mockBuilder);
+
+      await registrar.registerCommands();
+
+      expect(mockBuilder.addSubcommand).toHaveBeenCalled();
+    });
+
+    it('should add integer options with autocomplete', async () => {
+      mockRegistry.listByGroup.mockReturnValue(new Map([
+        ['admin', [
+          {
+            name: 'cmd',
+            description: 'Command',
+            options: [
+              { name: 'count', type: 'integer', autocomplete: true }
+            ]
+          }
+        ]]
+      ]));
+
+      const mockOptionBuilder = {
+        setName: jest.fn().mockReturnThis(),
+        setDescription: jest.fn().mockReturnThis(),
+        setRequired: jest.fn().mockReturnThis(),
+        setAutocomplete: jest.fn().mockReturnThis()
+      };
+
+      const mockBuilder = {
+        setName: jest.fn().mockReturnThis(),
+        setDescription: jest.fn().mockReturnThis(),
+        addSubcommand: jest.fn().mockImplementation(function(fn) {
+          const sub = {
+            setName: jest.fn().mockReturnThis(),
+            setDescription: jest.fn().mockReturnThis(),
+            addIntegerOption: jest.fn().mockImplementation(optFn => {
+              optFn(mockOptionBuilder);
+              return sub;
+            }),
+            addBooleanOption: jest.fn().mockReturnThis(),
+            addStringOption: jest.fn().mockReturnThis(),
+            addUserOption: jest.fn().mockReturnThis(),
+            addRoleOption: jest.fn().mockReturnThis(),
+            addChannelOption: jest.fn().mockReturnThis()
+          };
+          fn(sub);
+          mockBuilder.options.push(sub);
+          return mockBuilder;
+        }),
+        options: [],
+        toJSON: jest.fn().mockReturnValue({})
+      };
+
+      SlashCommandBuilder.mockImplementation(() => mockBuilder);
+
+      await registrar.registerCommands();
+
+      expect(mockOptionBuilder.setAutocomplete).toHaveBeenCalledWith(true);
+    });
+
+    it('should add integer options with choices', async () => {
+      mockRegistry.listByGroup.mockReturnValue(new Map([
+        ['admin', [
+          {
+            name: 'cmd',
+            description: 'Command',
+            options: [
+              {
+                name: 'level',
+                type: 'integer',
+                choices: [
+                  { name: 'low', value: 1 },
+                  { name: 'high', value: 5 }
+                ]
+              }
+            ]
+          }
+        ]]
+      ]));
+
+      const mockOptionBuilder = {
+        setName: jest.fn().mockReturnThis(),
+        setDescription: jest.fn().mockReturnThis(),
+        setRequired: jest.fn().mockReturnThis(),
+        addChoices: jest.fn().mockReturnThis()
+      };
+
+      const mockBuilder = {
+        setName: jest.fn().mockReturnThis(),
+        setDescription: jest.fn().mockReturnThis(),
+        addSubcommand: jest.fn().mockImplementation(function(fn) {
+          const sub = {
+            setName: jest.fn().mockReturnThis(),
+            setDescription: jest.fn().mockReturnThis(),
+            addIntegerOption: jest.fn().mockImplementation(optFn => {
+              optFn(mockOptionBuilder);
+              return sub;
+            }),
+            addBooleanOption: jest.fn().mockReturnThis(),
+            addStringOption: jest.fn().mockReturnThis(),
+            addUserOption: jest.fn().mockReturnThis(),
+            addRoleOption: jest.fn().mockReturnThis(),
+            addChannelOption: jest.fn().mockReturnThis()
+          };
+          fn(sub);
+          mockBuilder.options.push(sub);
+          return mockBuilder;
+        }),
+        options: [],
+        toJSON: jest.fn().mockReturnValue({})
+      };
+
+      SlashCommandBuilder.mockImplementation(() => mockBuilder);
+
+      await registrar.registerCommands();
+
+      expect(mockOptionBuilder.addChoices).toHaveBeenCalled();
+    });
+  });
+
+  describe('String Option Handling', () => {
+    it('should add string options without autocomplete or choices', async () => {
+      mockRegistry.listByGroup.mockReturnValue(new Map([
+        ['admin', [
+          {
+            name: 'cmd',
+            description: 'Command',
+            options: [
+              { name: 'reason', type: 'string' }
+            ]
+          }
+        ]]
+      ]));
+
+      const mockOptionBuilder = {
+        setName: jest.fn().mockReturnThis(),
+        setDescription: jest.fn().mockReturnThis(),
+        setRequired: jest.fn().mockReturnThis()
+      };
+
+      const mockBuilder = {
+        setName: jest.fn().mockReturnThis(),
+        setDescription: jest.fn().mockReturnThis(),
+        addSubcommand: jest.fn().mockImplementation(function(fn) {
+          const sub = {
+            setName: jest.fn().mockReturnThis(),
+            setDescription: jest.fn().mockReturnThis(),
+            addStringOption: jest.fn().mockImplementation(optFn => {
+              optFn(mockOptionBuilder);
+              return sub;
+            }),
+            addIntegerOption: jest.fn().mockReturnThis(),
+            addBooleanOption: jest.fn().mockReturnThis(),
+            addUserOption: jest.fn().mockReturnThis(),
+            addRoleOption: jest.fn().mockReturnThis(),
+            addChannelOption: jest.fn().mockReturnThis()
+          };
+          fn(sub);
+          mockBuilder.options.push(sub);
+          return mockBuilder;
+        }),
+        options: [],
+        toJSON: jest.fn().mockReturnValue({})
+      };
+
+      SlashCommandBuilder.mockImplementation(() => mockBuilder);
+
+      await registrar.registerCommands();
+
+      expect(mockBuilder.addSubcommand).toHaveBeenCalled();
+    });
+
+    it('should add string options with autocomplete', async () => {
+      mockRegistry.listByGroup.mockReturnValue(new Map([
+        ['core', [
+          {
+            name: 'search',
+            description: 'Search',
+            options: [
+              { name: 'query', type: 'string', autocomplete: true }
+            ]
+          }
+        ]]
+      ]));
+
+      const mockOptionBuilder = {
+        setName: jest.fn().mockReturnThis(),
+        setDescription: jest.fn().mockReturnThis(),
+        setRequired: jest.fn().mockReturnThis(),
+        setAutocomplete: jest.fn().mockReturnThis()
+      };
+
+      const mockBuilder = {
+        setName: jest.fn().mockReturnThis(),
+        setDescription: jest.fn().mockReturnThis(),
+        addSubcommand: jest.fn().mockImplementation(function(fn) {
+          const sub = {
+            setName: jest.fn().mockReturnThis(),
+            setDescription: jest.fn().mockReturnThis(),
+            addStringOption: jest.fn().mockImplementation(optFn => {
+              optFn(mockOptionBuilder);
+              return sub;
+            }),
+            addIntegerOption: jest.fn().mockReturnThis(),
+            addBooleanOption: jest.fn().mockReturnThis(),
+            addUserOption: jest.fn().mockReturnThis(),
+            addRoleOption: jest.fn().mockReturnThis(),
+            addChannelOption: jest.fn().mockReturnThis()
+          };
+          fn(sub);
+          mockBuilder.options.push(sub);
+          return mockBuilder;
+        }),
+        options: [],
+        toJSON: jest.fn().mockReturnValue({})
+      };
+
+      SlashCommandBuilder.mockImplementation(() => mockBuilder);
+
+      await registrar.registerCommands();
+
+      expect(mockOptionBuilder.setAutocomplete).toHaveBeenCalledWith(true);
+    });
+
+    it('should add string options with choices', async () => {
+      mockRegistry.listByGroup.mockReturnValue(new Map([
+        ['core', [
+          {
+            name: 'deploy',
+            description: 'Deploy',
+            options: [
+              {
+                name: 'target',
+                type: 'string',
+                choices: [
+                  { name: 'staging', value: 'staging' },
+                  { name: 'production', value: 'production' }
+                ]
+              }
+            ]
+          }
+        ]]
+      ]));
+
+      const mockOptionBuilder = {
+        setName: jest.fn().mockReturnThis(),
+        setDescription: jest.fn().mockReturnThis(),
+        setRequired: jest.fn().mockReturnThis(),
+        addChoices: jest.fn().mockReturnThis()
+      };
+
+      const mockBuilder = {
+        setName: jest.fn().mockReturnThis(),
+        setDescription: jest.fn().mockReturnThis(),
+        addSubcommand: jest.fn().mockImplementation(function(fn) {
+          const sub = {
+            setName: jest.fn().mockReturnThis(),
+            setDescription: jest.fn().mockReturnThis(),
+            addStringOption: jest.fn().mockImplementation(optFn => {
+              optFn(mockOptionBuilder);
+              return sub;
+            }),
+            addIntegerOption: jest.fn().mockReturnThis(),
+            addBooleanOption: jest.fn().mockReturnThis(),
+            addUserOption: jest.fn().mockReturnThis(),
+            addRoleOption: jest.fn().mockReturnThis(),
+            addChannelOption: jest.fn().mockReturnThis()
+          };
+          fn(sub);
+          mockBuilder.options.push(sub);
+          return mockBuilder;
+        }),
+        options: [],
+        toJSON: jest.fn().mockReturnValue({})
+      };
+
+      SlashCommandBuilder.mockImplementation(() => mockBuilder);
+
+      await registrar.registerCommands();
+
+      expect(mockOptionBuilder.addChoices).toHaveBeenCalled();
+    });
+  });
+
+  describe('Boolean Option Handling', () => {
+    it('should add boolean options', async () => {
+      mockRegistry.listByGroup.mockReturnValue(new Map([
+        ['core', [
+          {
+            name: 'cmd',
+            description: 'Command',
+            options: [
+              { name: 'verbose', type: 'boolean', required: true }
+            ]
+          }
+        ]]
+      ]));
+
+      const mockOptionBuilder = {
+        setName: jest.fn().mockReturnThis(),
+        setDescription: jest.fn().mockReturnThis(),
+        setRequired: jest.fn().mockReturnThis()
+      };
+
+      const mockBuilder = {
+        setName: jest.fn().mockReturnThis(),
+        setDescription: jest.fn().mockReturnThis(),
+        addSubcommand: jest.fn().mockImplementation(function(fn) {
+          const sub = {
+            setName: jest.fn().mockReturnThis(),
+            setDescription: jest.fn().mockReturnThis(),
+            addBooleanOption: jest.fn().mockImplementation(optFn => {
+              optFn(mockOptionBuilder);
+              return sub;
+            }),
+            addIntegerOption: jest.fn().mockReturnThis(),
+            addStringOption: jest.fn().mockReturnThis(),
+            addUserOption: jest.fn().mockReturnThis(),
+            addRoleOption: jest.fn().mockReturnThis(),
+            addChannelOption: jest.fn().mockReturnThis()
+          };
+          fn(sub);
+          mockBuilder.options.push(sub);
+          return mockBuilder;
+        }),
+        options: [],
+        toJSON: jest.fn().mockReturnValue({})
+      };
+
+      SlashCommandBuilder.mockImplementation(() => mockBuilder);
+
+      await registrar.registerCommands();
+
+      expect(mockOptionBuilder.setRequired).toHaveBeenCalledWith(true);
+    });
+  });
+
+  describe('User/Role/Channel Option Handling', () => {
+    it('should add user options', async () => {
+      mockRegistry.listByGroup.mockReturnValue(new Map([
+        ['admin', [
+          {
+            name: 'ban',
+            description: 'Ban',
+            options: [
+              { name: 'user', type: 'user', required: true }
+            ]
+          }
+        ]]
+      ]));
+
+      const mockOptionBuilder = {
+        setName: jest.fn().mockReturnThis(),
+        setDescription: jest.fn().mockReturnThis(),
+        setRequired: jest.fn().mockReturnThis()
+      };
+
+      const mockBuilder = {
+        setName: jest.fn().mockReturnThis(),
+        setDescription: jest.fn().mockReturnThis(),
+        addSubcommand: jest.fn().mockImplementation(function(fn) {
+          const sub = {
+            setName: jest.fn().mockReturnThis(),
+            setDescription: jest.fn().mockReturnThis(),
+            addUserOption: jest.fn().mockImplementation(optFn => {
+              optFn(mockOptionBuilder);
+              return sub;
+            }),
+            addIntegerOption: jest.fn().mockReturnThis(),
+            addStringOption: jest.fn().mockReturnThis(),
+            addBooleanOption: jest.fn().mockReturnThis(),
+            addRoleOption: jest.fn().mockReturnThis(),
+            addChannelOption: jest.fn().mockReturnThis()
+          };
+          fn(sub);
+          mockBuilder.options.push(sub);
+          return mockBuilder;
+        }),
+        options: [],
+        toJSON: jest.fn().mockReturnValue({})
+      };
+
+      SlashCommandBuilder.mockImplementation(() => mockBuilder);
+
+      await registrar.registerCommands();
+
+      expect(mockOptionBuilder.setRequired).toHaveBeenCalledWith(true);
+    });
+
+    it('should add role options', async () => {
+      mockRegistry.listByGroup.mockReturnValue(new Map([
+        ['admin', [
+          {
+            name: 'grant',
+            description: 'Grant',
+            options: [
+              { name: 'role', type: 'role', required: false }
+            ]
+          }
+        ]]
+      ]));
+
+      const mockOptionBuilder = {
+        setName: jest.fn().mockReturnThis(),
+        setDescription: jest.fn().mockReturnThis(),
+        setRequired: jest.fn().mockReturnThis()
+      };
+
+      const mockBuilder = {
+        setName: jest.fn().mockReturnThis(),
+        setDescription: jest.fn().mockReturnThis(),
+        addSubcommand: jest.fn().mockImplementation(function(fn) {
+          const sub = {
+            setName: jest.fn().mockReturnThis(),
+            setDescription: jest.fn().mockReturnThis(),
+            addRoleOption: jest.fn().mockImplementation(optFn => {
+              optFn(mockOptionBuilder);
+              return sub;
+            }),
+            addIntegerOption: jest.fn().mockReturnThis(),
+            addStringOption: jest.fn().mockReturnThis(),
+            addBooleanOption: jest.fn().mockReturnThis(),
+            addUserOption: jest.fn().mockReturnThis(),
+            addChannelOption: jest.fn().mockReturnThis()
+          };
+          fn(sub);
+          mockBuilder.options.push(sub);
+          return mockBuilder;
+        }),
+        options: [],
+        toJSON: jest.fn().mockReturnValue({})
+      };
+
+      SlashCommandBuilder.mockImplementation(() => mockBuilder);
+
+      await registrar.registerCommands();
+
+      expect(mockOptionBuilder.setRequired).toHaveBeenCalledWith(false);
+    });
+
+    it('should add channel options', async () => {
+      mockRegistry.listByGroup.mockReturnValue(new Map([
+        ['admin', [
+          {
+            name: 'lock',
+            description: 'Lock',
+            options: [
+              { name: 'channel', type: 'channel' }
+            ]
+          }
+        ]]
+      ]));
+
+      const mockOptionBuilder = {
+        setName: jest.fn().mockReturnThis(),
+        setDescription: jest.fn().mockReturnThis(),
+        setRequired: jest.fn().mockReturnThis()
+      };
+
+      const mockBuilder = {
+        setName: jest.fn().mockReturnThis(),
+        setDescription: jest.fn().mockReturnThis(),
+        addSubcommand: jest.fn().mockImplementation(function(fn) {
+          const sub = {
+            setName: jest.fn().mockReturnThis(),
+            setDescription: jest.fn().mockReturnThis(),
+            addChannelOption: jest.fn().mockImplementation(optFn => {
+              optFn(mockOptionBuilder);
+              return sub;
+            }),
+            addIntegerOption: jest.fn().mockReturnThis(),
+            addStringOption: jest.fn().mockReturnThis(),
+            addBooleanOption: jest.fn().mockReturnThis(),
+            addUserOption: jest.fn().mockReturnThis(),
+            addRoleOption: jest.fn().mockReturnThis()
+          };
+          fn(sub);
+          mockBuilder.options.push(sub);
+          return mockBuilder;
+        }),
+        options: [],
+        toJSON: jest.fn().mockReturnValue({})
+      };
+
+      SlashCommandBuilder.mockImplementation(() => mockBuilder);
+
+      await registrar.registerCommands();
+
+      expect(mockBuilder.addSubcommand).toHaveBeenCalled();
+    });
+  });
+
+  describe('Option Default Behavior', () => {
+    it('should use default description for options without description', async () => {
+      mockRegistry.listByGroup.mockReturnValue(new Map([
+        ['core', [
+          {
+            name: 'cmd',
+            description: 'Command',
+            options: [
+              { name: 'arg' } // No description, no type
+            ]
+          }
+        ]]
+      ]));
+
+      const mockOptionBuilder = {
+        setName: jest.fn().mockReturnThis(),
+        setDescription: jest.fn().mockReturnThis(),
+        setRequired: jest.fn().mockReturnThis()
+      };
+
+      const mockBuilder = {
+        setName: jest.fn().mockReturnThis(),
+        setDescription: jest.fn().mockReturnThis(),
+        addSubcommand: jest.fn().mockImplementation(function(fn) {
+          const sub = {
+            setName: jest.fn().mockReturnThis(),
+            setDescription: jest.fn().mockReturnThis(),
+            addStringOption: jest.fn().mockImplementation(optFn => {
+              optFn(mockOptionBuilder);
+              return sub;
+            }),
+            addIntegerOption: jest.fn().mockReturnThis(),
+            addBooleanOption: jest.fn().mockReturnThis(),
+            addUserOption: jest.fn().mockReturnThis(),
+            addRoleOption: jest.fn().mockReturnThis(),
+            addChannelOption: jest.fn().mockReturnThis()
+          };
+          fn(sub);
+          mockBuilder.options.push(sub);
+          return mockBuilder;
+        }),
+        options: [],
+        toJSON: jest.fn().mockReturnValue({})
+      };
+
+      SlashCommandBuilder.mockImplementation(() => mockBuilder);
+
+      await registrar.registerCommands();
+
+      expect(mockOptionBuilder.setDescription).toHaveBeenCalledWith('No description');
+    });
+
+    it('should mark options as not required by default', async () => {
+      mockRegistry.listByGroup.mockReturnValue(new Map([
+        ['core', [
+          {
+            name: 'cmd',
+            description: 'Command',
+            options: [
+              { name: 'optional', type: 'string' } // No required field
+            ]
+          }
+        ]]
+      ]));
+
+      const mockOptionBuilder = {
+        setName: jest.fn().mockReturnThis(),
+        setDescription: jest.fn().mockReturnThis(),
+        setRequired: jest.fn().mockReturnThis()
+      };
+
+      const mockBuilder = {
+        setName: jest.fn().mockReturnThis(),
+        setDescription: jest.fn().mockReturnThis(),
+        addSubcommand: jest.fn().mockImplementation(function(fn) {
+          const sub = {
+            setName: jest.fn().mockReturnThis(),
+            setDescription: jest.fn().mockReturnThis(),
+            addStringOption: jest.fn().mockImplementation(optFn => {
+              optFn(mockOptionBuilder);
+              return sub;
+            }),
+            addIntegerOption: jest.fn().mockReturnThis(),
+            addBooleanOption: jest.fn().mockReturnThis(),
+            addUserOption: jest.fn().mockReturnThis(),
+            addRoleOption: jest.fn().mockReturnThis(),
+            addChannelOption: jest.fn().mockReturnThis()
+          };
+          fn(sub);
+          mockBuilder.options.push(sub);
+          return mockBuilder;
+        }),
+        options: [],
+        toJSON: jest.fn().mockReturnValue({})
+      };
+
+      SlashCommandBuilder.mockImplementation(() => mockBuilder);
+
+      await registrar.registerCommands();
+
+      expect(mockOptionBuilder.setRequired).toHaveBeenCalledWith(false);
+    });
+
+    it('should handle empty options array', async () => {
+      mockRegistry.listByGroup.mockReturnValue(new Map([
+        ['core', [
+          {
+            name: 'simple',
+            description: 'Simple command',
+            options: []
+          }
+        ]]
+      ]));
+
+      const mockBuilder = {
+        setName: jest.fn().mockReturnThis(),
+        setDescription: jest.fn().mockReturnThis(),
+        addSubcommand: jest.fn().mockReturnThis(),
+        options: [],
+        toJSON: jest.fn().mockReturnValue({})
+      };
+
+      SlashCommandBuilder.mockImplementation(() => mockBuilder);
+
+      await registrar.registerCommands();
+
+      expect(mockRest.put).toHaveBeenCalled();
+    });
+  });
+
+  describe('Complex Multi-Option Scenarios', () => {
+    it('should handle commands with multiple different option types', async () => {
+      mockRegistry.listByGroup.mockReturnValue(new Map([
+        ['admin', [
+          {
+            name: 'complex',
+            description: 'Complex command',
+            options: [
+              { name: 'user', type: 'user', required: true },
+              { name: 'duration', type: 'integer', required: false },
+              { name: 'reason', type: 'string' },
+              { name: 'permanent', type: 'boolean' }
+            ]
+          }
+        ]]
+      ]));
+
+      const mockBuilder = {
+        setName: jest.fn().mockReturnThis(),
+        setDescription: jest.fn().mockReturnThis(),
+        addSubcommand: jest.fn().mockImplementation(function(fn) {
+          const sub = {
+            setName: jest.fn().mockReturnThis(),
+            setDescription: jest.fn().mockReturnThis(),
+            addUserOption: jest.fn().mockImplementation(optFn => {
+              optFn({
+                setName: jest.fn().mockReturnThis(),
+                setDescription: jest.fn().mockReturnThis(),
+                setRequired: jest.fn().mockReturnThis()
+              });
+              return sub;
+            }),
+            addIntegerOption: jest.fn().mockImplementation(optFn => {
+              optFn({
+                setName: jest.fn().mockReturnThis(),
+                setDescription: jest.fn().mockReturnThis(),
+                setRequired: jest.fn().mockReturnThis()
+              });
+              return sub;
+            }),
+            addStringOption: jest.fn().mockImplementation(optFn => {
+              optFn({
+                setName: jest.fn().mockReturnThis(),
+                setDescription: jest.fn().mockReturnThis(),
+                setRequired: jest.fn().mockReturnThis()
+              });
+              return sub;
+            }),
+            addBooleanOption: jest.fn().mockImplementation(optFn => {
+              optFn({
+                setName: jest.fn().mockReturnThis(),
+                setDescription: jest.fn().mockReturnThis(),
+                setRequired: jest.fn().mockReturnThis()
+              });
+              return sub;
+            }),
+            addRoleOption: jest.fn().mockReturnThis(),
+            addChannelOption: jest.fn().mockReturnThis()
+          };
+          fn(sub);
+          mockBuilder.options.push(sub);
+          return mockBuilder;
+        }),
+        options: [],
+        toJSON: jest.fn().mockReturnValue({})
+      };
+
+      SlashCommandBuilder.mockImplementation(() => mockBuilder);
+
+      await registrar.registerCommands();
+
+      expect(mockBuilder.addSubcommand).toHaveBeenCalled();
+    });
+
+    it('should handle integer with both autocomplete and choices', async () => {
+      mockRegistry.listByGroup.mockReturnValue(new Map([
+        ['admin', [
+          {
+            name: 'tiered',
+            description: 'Tiered command',
+            options: [
+              {
+                name: 'level',
+                type: 'integer',
+                autocomplete: true,
+                choices: [
+                  { name: 'Level 1', value: 1 },
+                  { name: 'Level 2', value: 2 }
+                ]
+              }
+            ]
+          }
+        ]]
+      ]));
+
+      const mockOptionBuilder = {
+        setName: jest.fn().mockReturnThis(),
+        setDescription: jest.fn().mockReturnThis(),
+        setRequired: jest.fn().mockReturnThis(),
+        setAutocomplete: jest.fn().mockReturnThis(),
+        addChoices: jest.fn().mockReturnThis()
+      };
+
+      const mockBuilder = {
+        setName: jest.fn().mockReturnThis(),
+        setDescription: jest.fn().mockReturnThis(),
+        addSubcommand: jest.fn().mockImplementation(function(fn) {
+          const sub = {
+            setName: jest.fn().mockReturnThis(),
+            setDescription: jest.fn().mockReturnThis(),
+            addIntegerOption: jest.fn().mockImplementation(optFn => {
+              optFn(mockOptionBuilder);
+              return sub;
+            }),
+            addBooleanOption: jest.fn().mockReturnThis(),
+            addStringOption: jest.fn().mockReturnThis(),
+            addUserOption: jest.fn().mockReturnThis(),
+            addRoleOption: jest.fn().mockReturnThis(),
+            addChannelOption: jest.fn().mockReturnThis()
+          };
+          fn(sub);
+          mockBuilder.options.push(sub);
+          return mockBuilder;
+        }),
+        options: [],
+        toJSON: jest.fn().mockReturnValue({})
+      };
+
+      SlashCommandBuilder.mockImplementation(() => mockBuilder);
+
+      await registrar.registerCommands();
+
+      expect(mockOptionBuilder.setAutocomplete).toHaveBeenCalledWith(true);
+      expect(mockOptionBuilder.addChoices).toHaveBeenCalled();
+    });
+  });
 });
