@@ -133,7 +133,7 @@ describe('Command', () => {
     expect(command.metadata).toEqual({});
   });
 
-  it('should set userId to null if not provided', () => {
+  it('should keep userId as null when explicitly set', () => {
     const command = new Command({
       name: 'test',
       source: 'discord',

@@ -177,11 +177,7 @@ describe('HelpHandler', () => {
         throw new Error('Service error');
       });
 
-      try {
-        await handler.handle({ args: [] });
-      } catch (err) {
-        expect(err).toBeInstanceOf(Error);
-      }
+      await expect(handler.handle({ args: [] })).rejects.toBeInstanceOf(Error);
     });
   });
 });

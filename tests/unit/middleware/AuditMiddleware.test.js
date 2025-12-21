@@ -101,11 +101,7 @@ describe('AuditMiddleware', () => {
       const error = new Error('Handler error');
       mockNext.mockRejectedValue(error);
 
-      try {
-        await middleware.handle(mockContext, mockNext);
-      } catch (err) {
-        expect(err).toEqual(error);
-      }
+      await expect(middleware.handle(mockContext, mockNext)).rejects.toEqual(error);
 
       // Audit log should not be called if handler throws
       expect(mockAuditRepo.log).not.toHaveBeenCalled();

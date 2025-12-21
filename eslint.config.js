@@ -1,4 +1,5 @@
 const js = require('@eslint/js');
+const jest = require('eslint-plugin-jest');
 
 module.exports = [
   {
@@ -76,9 +77,17 @@ module.exports = [
         jest: 'readonly'
       }
     },
+    plugins: {
+      jest
+    },
     rules: {
       'no-undef': 'off',
-      'no-unused-vars': 'off'
+      'no-unused-vars': 'off',
+      ...jest.configs.recommended.rules,
+      'jest/no-disabled-tests': 'warn',
+      'jest/no-focused-tests': 'error',
+      'jest/no-identical-title': 'error',
+      'jest/valid-expect': 'error'
     }
   }
 ];

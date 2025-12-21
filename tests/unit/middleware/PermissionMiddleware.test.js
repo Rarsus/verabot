@@ -89,11 +89,8 @@ describe('PermissionMiddleware', () => {
         return Promise.resolve({ success: true });
       });
 
-      try {
-        await middleware.handle(mockContext, mockNext);
-      } catch (_err) {
-        expect(nextCalled).toBe(false);
-      }
+      await expect(middleware.handle(mockContext, mockNext)).rejects.toThrow();
+      expect(nextCalled).toBe(false);
     });
   });
 
