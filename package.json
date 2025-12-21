@@ -1,5 +1,5 @@
 {
-  "name": "ws-discord-enterprise",
+  "name": "verabot",
   "version": "1.0.0",
   "main": "src/index.js",
   "type": "commonjs",
