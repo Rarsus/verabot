@@ -29,6 +29,12 @@ const AllowChannelHandler = require('../app/handlers/admin/AllowChannelHandler')
 const AllowedHandler = require('../app/handlers/admin/AllowedHandler');
 const AuditHandler = require('../app/handlers/admin/AuditHandler');
 
+/**
+ * Create message broadcast service for Discord channel messaging
+ * @param {Discord.Client} discordClient - Discord.js client instance
+ * @returns {Object} Message service with broadcast method
+ * @private
+ */
 function createMessageService(discordClient) {
   return {
     async broadcast(command, text) {
@@ -40,6 +46,12 @@ function createMessageService(discordClient) {
   };
 }
 
+/**
+ * Create status provider for system health checks
+ * @param {Object} container - Dependency injection container
+ * @returns {Object} Status provider with getStatus method
+ * @private
+ */
 function createStatusProvider(container) {
   return {
     async getStatus() {
@@ -53,6 +65,23 @@ function createStatusProvider(container) {
   };
 }
 
+/**
+ * Bootstrap application by registering all command handlers and middleware
+ * Initializes command registry with all core, messaging, operations, and admin commands
+ * Sets up middleware pipeline with logging, permission, rate limit, and audit middleware
+ * @param {Object} container - Dependency injection container with config, services, db, etc.
+ * @returns {Object} Bootstrap result with registry, pipeline, bus, and services
+ * @returns {CommandRegistry} returns.registry - Command registry with all handlers registered
+ * @returns {MiddlewarePipeline} returns.pipeline - Middleware pipeline with all middleware
+ * @returns {CommandBus} returns.bus - Command bus for executing commands
+ * @returns {Object} returns.messageService - Message broadcasting service
+ * @returns {Object} returns.statusProvider - System status provider for health checks
+ * @example
+ * const result = bootstrap(container);
+ * const { registry, pipeline, bus } = result;
+ * const command = new Command({ name: 'ping', source: 'discord', args: [] });
+ * const result = await bus.execute(command);
+ */
 function bootstrap(container) {
   const registry = new CommandRegistry();
   const messageService = createMessageService(container.discordClient);

@@ -1,5 +1,19 @@
 const Database = require('better-sqlite3');
 
+/**
+ * Create and initialize SQLite database connection
+ * Sets up schema with tables for allowed commands, permissions, audit log, and rate limiting
+ * @param {Object} config - Application configuration (not directly used but available for future expansion)
+ * @param {Object} logger - Logger instance for logging initialization
+ * @returns {Object} Database wrapper object
+ * @returns {Database} returns.raw - Raw better-sqlite3 database instance for queries
+ * @returns {Function} returns.isConnected - Function returning connection status (always true for SQLite)
+ * @returns {Function} returns.close - Async function to close database connection
+ * @example
+ * const db = createDb(config, logger);
+ * const commands = db.raw.prepare('SELECT * FROM allowed_commands').all();
+ * await db.close();
+ */
 function createDb(config, logger) {
   const db = new Database('commands.db');
 
