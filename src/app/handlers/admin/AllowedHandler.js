@@ -1,11 +1,30 @@
 const CommandResult = require('../../../core/commands/CommandResult');
 
+/**
+ * Handler for allowed command - lists all allowed commands with pagination
+ * @class AllowedHandler
+ * @example
+ * const handler = new AllowedHandler(repos, registry);
+ * const result = await handler.handle(command);
+ */
 class AllowedHandler {
+  /**
+   * Create a new AllowedHandler instance
+   * @param {Object} repos - Repository container with commandRepo
+   * @param {CommandRegistry} registry - Command registry for metadata
+   */
   constructor(repos, registry) {
+    /** @type {Object} */
     this.repos = repos;
+    /** @type {CommandRegistry} */
     this.registry = registry;
   }
 
+  /**
+   * Handle allowed command execution
+   * @param {Command} command - Command with args [category, page]
+   * @returns {Promise<CommandResult>} Paginated list of allowed commands
+   */
   async handle(command) {
     const [category, pageRaw] = command.args;
     const page = Number(pageRaw) || 1;
