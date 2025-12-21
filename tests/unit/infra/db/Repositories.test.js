@@ -204,7 +204,7 @@ describe('Repositories Factory', () => {
       it('should accept custom limit', async () => {
         mockAll.mockReturnValue([]);
         await repo().listAudit(100);
-        expect(mockRun).toHaveBeenCalledWith(100);
+        expect(mockAll).toHaveBeenCalledWith(100);
       });
     });
   });
