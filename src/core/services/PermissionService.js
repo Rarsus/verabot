@@ -1,9 +1,29 @@
+/**
+ * Service for checking command execution permissions
+ * @class PermissionService
+ * @example
+ * const service = new PermissionService(permissionRepo, categoryPolicy);
+ * const allowed = await service.canExecute(command, 'admin');
+ */
 class PermissionService {
+  /**
+   * Create a new PermissionService instance
+   * @param {Object} permissionRepo - Permission repository for data access
+   * @param {Function} [categoryPolicy=null] - Optional policy function for category-level checks
+   */
   constructor(permissionRepo, categoryPolicy = null) {
+    /** @type {Object} */
     this.permissionRepo = permissionRepo;
+    /** @type {Function|null} */
     this.categoryPolicy = categoryPolicy;
   }
 
+  /**
+   * Check if a command can be executed with given permissions
+   * @param {Command} command - The command to check
+   * @param {string} [category='core'] - The command category
+   * @returns {Promise<boolean>} Whether execution is allowed
+   */
   async canExecute(command, category = 'core') {
     if (this.categoryPolicy) {
       const decision = await this.categoryPolicy(category, command);
@@ -31,3 +51,4 @@ class PermissionService {
 }
 
 module.exports = PermissionService;
+
