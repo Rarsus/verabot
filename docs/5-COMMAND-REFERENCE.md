@@ -10,6 +10,7 @@ Complete catalog of all VeraBot commands with descriptions and usage examples.
 - [Admin Commands](#admin-commands) - Permission & administration
 - [Messaging Commands](#messaging-commands) - Communication tools
 - [Operations Commands](#operations-commands) - Deployment & jobs
+- [Quote Commands](#quote-commands) - Quote management
 
 ---
 
@@ -494,6 +495,148 @@ http://localhost:3002/admin/queues
 2. **Admin** - allow-_, deny-_, audit, allowed-commands
 3. **Communication** - say, broadcast, notify
 4. **Operations** - deploy, job-status, heavy-work
+
+---
+
+## Quote Commands
+
+Manage and retrieve quotes stored in the database.
+
+### `/quote addquote`
+
+**Description:** Add a new quote to the database
+
+**Usage:**
+
+```
+/quote addquote text:<quote> [author:<name>]
+```
+
+**Parameters:**
+
+- `text` (required) - The quote text to add
+- `author` (optional) - The author of the quote (defaults to "Anonymous")
+
+**Examples:**
+
+```
+/quote addquote text:"To be or not to be" author:"Shakespeare"
+/quote addquote text:"Hello World"
+```
+
+**Permissions:** Public (default cooldown: 5 seconds)
+
+---
+
+### `/quote quote`
+
+**Description:** Get a specific quote by its ID
+
+**Usage:**
+
+```
+/quote quote id:<number>
+```
+
+**Parameters:**
+
+- `id` (required) - The ID of the quote to retrieve
+
+**Examples:**
+
+```
+/quote quote id:1
+/quote quote id:42
+```
+
+**Response:**
+
+```
+> To be or not to be
+— Shakespeare
+```
+
+**Permissions:** Public (default cooldown: 2 seconds)
+
+---
+
+### `/quote randomquote`
+
+**Description:** Get a random quote from the database
+
+**Usage:**
+
+```
+/quote randomquote
+```
+
+**Examples:**
+
+```
+/quote randomquote
+```
+
+**Response:**
+
+```
+> To be or not to be
+— Shakespeare
+```
+
+**Permissions:** Public (default cooldown: 3 seconds)
+
+---
+
+### `/quote listquotes`
+
+**Description:** List all quotes in the database
+
+**Usage:**
+
+```
+/quote listquotes
+```
+
+**Examples:**
+
+```
+/quote listquotes
+```
+
+**Response:**
+
+Returns a list of all quotes with their IDs, text, and authors.
+
+**Permissions:** Public (default cooldown: 5 seconds)
+
+---
+
+### `/quote searchquotes`
+
+**Description:** Search quotes by text or author
+
+**Usage:**
+
+```
+/quote searchquotes query:<search>
+```
+
+**Parameters:**
+
+- `query` (required) - The search term to find in quote text or author names
+
+**Examples:**
+
+```
+/quote searchquotes query:"wisdom"
+/quote searchquotes query:"Einstein"
+```
+
+**Response:**
+
+Returns all quotes matching the search query.
+
+**Permissions:** Public (default cooldown: 3 seconds)
 
 ---
 
