@@ -5,6 +5,7 @@ VeraBot is a production-grade Discord bot with enterprise architecture emphasizi
 ## Project Overview
 
 **Key Features:**
+
 - Discord slash commands and prefix commands
 - Advanced permission system (roles, channels, users)
 - Command allowance list for feature gating
@@ -18,12 +19,14 @@ VeraBot is a production-grade Discord bot with enterprise architecture emphasizi
 ## Technology Stack
 
 **Core:**
+
 - **Runtime:** Node.js 18+
 - **Language:** JavaScript (ES2021)
 - **Discord API:** Discord.js v14.16.0
 - **Database:** SQLite (better-sqlite3)
 
 **Infrastructure:**
+
 - **Job Queue:** BullMQ v5.9.0 + Redis
 - **Logging:** Pino v10.0.0
 - **Metrics:** Prometheus (prom-client)
@@ -32,6 +35,7 @@ VeraBot is a production-grade Discord bot with enterprise architecture emphasizi
 - **HTTP:** Express v5.0.0
 
 **Development:**
+
 - **Testing:** Jest v30.0.0
 - **Linting:** ESLint v9.39.2
 - **Code Quality:** Pre-commit hooks (Husky)
@@ -59,13 +63,14 @@ VeraBot is a production-grade Discord bot with enterprise architecture emphasizi
 
 **1. Command Bus Pattern**
 All commands execute through a centralized bus that routes to handlers:
+
 ```javascript
 // Command object encapsulates execution context
 const command = new Command({
-  name: 'ping',
-  source: 'discord',
-  userId: '123456',
-  channelId: '789012'
+  name: "ping",
+  source: "discord",
+  userId: "123456",
+  channelId: "789012",
 });
 
 // Bus executes through middleware pipeline then handler
@@ -74,6 +79,7 @@ const result = await commandBus.execute(command);
 
 **2. Middleware Pipeline**
 Middlewares process commands sequentially before reaching handlers:
+
 - `LoggingMiddleware` - Request/response logging
 - `PermissionMiddleware` - Access control validation
 - `AuditMiddleware` - Record permission changes
@@ -81,6 +87,7 @@ Middlewares process commands sequentially before reaching handlers:
 
 **3. Dependency Injection Container**
 All services initialized in `src/infra/di/container.js`:
+
 ```javascript
 const container = createContainer();
 const { config, logger, services, db, repositories } = container;
@@ -88,6 +95,7 @@ const { config, logger, services, db, repositories } = container;
 
 **4. Handler Pattern**
 Each command has a dedicated handler extending business logic:
+
 ```javascript
 class MyHandler {
   async handle(command) {
@@ -194,8 +202,9 @@ Format response & send to Discord
 ### Creating a New Command Handler
 
 1. **Create handler** in `src/app/handlers/{category}/MyHandler.js`:
+
 ```javascript
-const CommandResult = require('../../../core/commands/CommandResult');
+const CommandResult = require("../../../core/commands/CommandResult");
 
 class MyHandler {
   constructor(services) {
@@ -208,7 +217,7 @@ class MyHandler {
       const result = await this.services.commandService.doSomething();
       return CommandResult.ok(result);
     } catch (err) {
-      return CommandResult.error('Operation failed');
+      return CommandResult.error("Operation failed");
     }
   }
 }
@@ -217,11 +226,12 @@ module.exports = MyHandler;
 ```
 
 2. **Register in container** - Add to `src/infra/di/container.js`:
+
 ```javascript
-const MyHandler = require('../../app/handlers/category/MyHandler');
+const MyHandler = require("../../app/handlers/category/MyHandler");
 // ...
 const myHandler = new MyHandler(services);
-registry.register('mycommand', myHandler);
+registry.register("mycommand", myHandler);
 ```
 
 3. **Register with Discord** - Handler auto-registers via adapter.
@@ -231,6 +241,7 @@ registry.register('mycommand', myHandler);
 ### Common Tasks
 
 **Add a new service:**
+
 ```javascript
 // src/core/services/MyService.js
 class MyService {
@@ -247,15 +258,17 @@ module.exports = MyService;
 ```
 
 **Add a repository:**
+
 ```javascript
 // src/infra/db/Repositories.js - extend existing
 const myRepository = {
-  getAll: () => db.prepare('SELECT * FROM my_table').all(),
-  insert: (data) => db.prepare('INSERT INTO my_table VALUES (?)').run(data)
+  getAll: () => db.prepare("SELECT * FROM my_table").all(),
+  insert: (data) => db.prepare("INSERT INTO my_table VALUES (?)").run(data),
 };
 ```
 
 **Add middleware:**
+
 ```javascript
 // src/app/middleware/MyMiddleware.js
 class MyMiddleware {
@@ -271,6 +284,7 @@ class MyMiddleware {
 ## Code Quality Standards
 
 ### ESLint Configuration
+
 - Located in `src/interfaces/eslint.config.js`
 - Enforces strict rules: no console, var declarations, unused variables
 - **MUST pass before commit**
@@ -290,6 +304,7 @@ npm run format:check            # Check formatting
 ```
 
 **Testing Requirements:**
+
 - All new handlers need unit tests
 - Integration tests for command flows
 - Mock services using `jest-mock-extended`
@@ -310,15 +325,16 @@ npm run format:check            # Check formatting
 ### Error Handling
 
 Commands return `CommandResult` with status:
+
 ```javascript
 // Success
 CommandResult.ok({ data });
 
 // Error
-CommandResult.error('User-friendly message');
+CommandResult.error("User-friendly message");
 
 // Unauthorized
-CommandResult.unauthorized('Permission denied');
+CommandResult.unauthorized("Permission denied");
 ```
 
 **Never throw in handlers** - catch and return CommandResult.
@@ -326,16 +342,18 @@ CommandResult.unauthorized('Permission denied');
 ### Logging
 
 Use injected logger (Pino):
+
 ```javascript
 // In handler or service with logger injected
-logger.info({ command: 'ping' }, 'Executing ping');
-logger.error({ err, userId }, 'Permission check failed');
-logger.debug({ context }, 'Processing command');
+logger.info({ command: "ping" }, "Executing ping");
+logger.error({ err, userId }, "Permission check failed");
+logger.debug({ context }, "Processing command");
 ```
 
 ### Middleware Access
 
 Middleware receives context object:
+
 ```javascript
 async handle(context, next) {
   const { command } = context;
@@ -347,10 +365,11 @@ async handle(context, next) {
 ### Rate Limiting
 
 Redis-backed rate limiting via middleware:
+
 ```javascript
 // src/app/middleware/RateLimitMiddleware.js configures limits by command category
 const rateLimits = {
-  core: 0,        // unlimited
+  core: 0, // unlimited
   messaging: 3000, // 3 seconds
   operations: 10000, // 10 seconds
 };
@@ -359,6 +378,7 @@ const rateLimits = {
 ## Environment Configuration
 
 Create `.env` from `.env.example`:
+
 ```env
 # Discord
 DISCORD_TOKEN=your_bot_token
@@ -381,19 +401,24 @@ LOG_LEVEL=info
 ## Infrastructure Components
 
 ### Job Queue (BullMQ)
+
 For background work:
+
 ```javascript
 const { jobQueue } = container;
-await jobQueue.add('processReport', { userId });
+await jobQueue.add("processReport", { userId });
 ```
 
 ### Health Checks
+
 Endpoint at `:3000/health` returns system status.
 
 ### Metrics
+
 Prometheus metrics at `:3001/metrics` - tracks commands, errors, latency.
 
 ### WebSocket Support
+
 Alternative to HTTP for command execution - see `src/infra/ws/WsAdapter.js`.
 
 ## Performance Guidelines
@@ -415,16 +440,17 @@ Alternative to HTTP for command execution - see `src/infra/ws/WsAdapter.js`.
 ## Testing Examples
 
 **Unit test handler:**
+
 ```javascript
-describe('MyHandler', () => {
+describe("MyHandler", () => {
   let handler, serviceMock;
-  
+
   beforeEach(() => {
     serviceMock = mock();
     handler = new MyHandler({ commandService: serviceMock });
   });
 
-  it('should handle ping command', async () => {
+  it("should handle ping command", async () => {
     const result = await handler.handle({});
     expect(result.isOk).toBe(true);
   });
@@ -442,16 +468,19 @@ describe('MyHandler', () => {
 ## Troubleshooting
 
 **Commands not executing?**
+
 - Check command registration in `src/infra/di/container.js`
 - Verify handler is properly instantiated
 - Check middleware isn't blocking (permission issues)
 
 **Tests failing?**
+
 - Run `npm run test:coverage` to identify coverage gaps
 - Check mocks match service interfaces
 - Verify DI container setup in test fixtures
 
 **Performance issues?**
+
 - Use `/metrics` endpoint to find slow commands
 - Check database query performance
 - Profile with Node.js inspector
