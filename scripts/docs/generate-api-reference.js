@@ -121,7 +121,7 @@ function parseJsDocBlock(jsDocBlock, codeLine, filePath) {
 
   // Extract name from code
   let name = '';
-  let type = 'function';
+  let type;
 
   if (codeLine.includes('class ')) {
     const classMatch = codeLine.match(/class\s+(\w+)/);
