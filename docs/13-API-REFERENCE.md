@@ -139,8 +139,8 @@ Load and validate Redis configuration from environment variables
 
 **Parameters:**
 
-| Name | Type | Description |
-|------|------|-------------|
+| Name  | Type     | Description                  |
+| ----- | -------- | ---------------------------- |
 | `env` | `Object` | Environment variables object |
 
 **Returns:**
@@ -159,13 +159,13 @@ Create a Redis connection instance with event listeners
 
 **Parameters:**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `redisConfig` | `Object` | Redis configuration |
-| `redisConfig` | `string` | .REDIS_HOST - Redis server hostname |
-| `redisConfig` | `string|number` | .REDIS_PORT - Redis server port |
-| `redisConfig` | `string|undefined` | .REDIS_PASSWORD - Redis password (optional) |
-| `logger` | `Object` | Logger instance for connection/error events |
+| Name          | Type     | Description                                 |
+| ------------- | -------- | ------------------------------------------- | ------------------------------------------- |
+| `redisConfig` | `Object` | Redis configuration                         |
+| `redisConfig` | `string` | .REDIS_HOST - Redis server hostname         |
+| `redisConfig` | `string  | number`                                     | .REDIS_PORT - Redis server port             |
+| `redisConfig` | `string  | undefined`                                  | .REDIS_PASSWORD - Redis password (optional) |
+| `logger`      | `Object` | Logger instance for connection/error events |
 
 **Returns:**
 
@@ -181,8 +181,8 @@ Create command repository for managing allowed commands
 
 **Parameters:**
 
-| Name | Type | Description |
-|------|------|-------------|
+| Name | Type     | Description                           |
+| ---- | -------- | ------------------------------------- |
 | `db` | `Object` | Database instance with raw connection |
 
 **Returns:**
@@ -199,8 +199,8 @@ Create permission repository for managing command permissions
 
 **Parameters:**
 
-| Name | Type | Description |
-|------|------|-------------|
+| Name | Type     | Description                           |
+| ---- | -------- | ------------------------------------- |
 | `db` | `Object` | Database instance with raw connection |
 
 **Returns:**
@@ -217,8 +217,8 @@ Create audit repository for logging command execution
 
 **Parameters:**
 
-| Name | Type | Description |
-|------|------|-------------|
+| Name | Type     | Description                           |
+| ---- | -------- | ------------------------------------- |
 | `db` | `Object` | Database instance with raw connection |
 
 **Returns:**
@@ -235,8 +235,8 @@ Create rate limit repository for tracking command usage
 
 **Parameters:**
 
-| Name | Type | Description |
-|------|------|-------------|
+| Name | Type     | Description                           |
+| ---- | -------- | ------------------------------------- |
 | `db` | `Object` | Database instance with raw connection |
 
 **Returns:**
@@ -253,8 +253,8 @@ Create quote repository for managing quotes
 
 **Parameters:**
 
-| Name | Type | Description |
-|------|------|-------------|
+| Name | Type     | Description                           |
+| ---- | -------- | ------------------------------------- |
 | `db` | `Object` | Database instance with raw connection |
 
 **Returns:**
@@ -271,10 +271,10 @@ Create all repository instances
 
 **Parameters:**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `db` | `Object` | Database instance |
-| `logger` | `Object` | Logger instance |
+| Name     | Type     | Description       |
+| -------- | -------- | ----------------- |
+| `db`     | `Object` | Database instance |
+| `logger` | `Object` | Logger instance   |
 
 **Returns:**
 
@@ -290,10 +290,10 @@ Create and initialize SQLite database connection
 
 **Parameters:**
 
-| Name | Type | Description |
-|------|------|-------------|
+| Name     | Type     | Description                                                                      |
+| -------- | -------- | -------------------------------------------------------------------------------- |
 | `config` | `Object` | Application configuration (not directly used but available for future expansion) |
-| `logger` | `Object` | Logger instance for logging initialization |
+| `logger` | `Object` | Logger instance for logging initialization                                       |
 
 **Returns:**
 
@@ -311,11 +311,11 @@ Factory function to create a Discord.js client with proper configuration
 
 **Parameters:**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `config` | `Object` | Bot configuration |
+| Name     | Type     | Description                |
+| -------- | -------- | -------------------------- |
+| `config` | `Object` | Bot configuration          |
 | `config` | `string` | .token - Discord bot token |
-| `logger` | `Object` | Logger instance |
+| `logger` | `Object` | Logger instance            |
 
 **Returns:**
 
@@ -345,21 +345,21 @@ Helper function to apply command options to a slash subcommand
 
 **Parameters:**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `sub` | `Subcommand` | Discord.js subcommand object |
-| `options` | `Array<Object>` | Array of option definitions |
-| `options` | `string` | [].name - Option name |
-| `options` | `string` | [].type - Option type (string, integer, boolean, user, role, channel) |
-| `options` | `string` | [].description - Option description |
-| `options` | `boolean` | [].required - Whether option is required |
-| `options` | `boolean` | [].autocomplete - Whether option supports autocomplete |
-| `options` | `Array<Object>` | [].choices - Predefined choices for option |
+| Name      | Type            | Description                                                           |
+| --------- | --------------- | --------------------------------------------------------------------- |
+| `sub`     | `Subcommand`    | Discord.js subcommand object                                          |
+| `options` | `Array<Object>` | Array of option definitions                                           |
+| `options` | `string`        | [].name - Option name                                                 |
+| `options` | `string`        | [].type - Option type (string, integer, boolean, user, role, channel) |
+| `options` | `string`        | [].description - Option description                                   |
+| `options` | `boolean`       | [].required - Whether option is required                              |
+| `options` | `boolean`       | [].autocomplete - Whether option supports autocomplete                |
+| `options` | `Array<Object>` | [].choices - Predefined choices for option                            |
 
 **Returns:**
 
 - **Type:** `void`
-- **Description:** * @private
+- **Description:** \* @private
 
 ### `SlashCommandRegistrar`
 
@@ -416,11 +416,11 @@ Create a WebSocket client with automatic reconnection
 
 **Parameters:**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `config` | `Object` | Configuration object |
+| Name     | Type     | Description                                                |
+| -------- | -------- | ---------------------------------------------------------- |
+| `config` | `Object` | Configuration object                                       |
 | `config` | `string` | .WS_URL - WebSocket server URL (e.g., ws://localhost:8080) |
-| `logger` | `Object` | Logger instance for connection events |
+| `logger` | `Object` | Logger instance for connection events                      |
 
 **Returns:**
 
