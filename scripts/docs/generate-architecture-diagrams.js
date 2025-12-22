@@ -112,10 +112,6 @@ function scanMiddleware() {
  * Generate system architecture overview diagram
  */
 function generateSystemArchitectureDiagram() {
-  const totalHandlers = Object.values(architecture.components.handlers).reduce(
-    (sum, cat) => sum + cat.count,
-    0,
-  );
 
   return `graph TB
     subgraph Discord["🤖 Discord Bot Framework"]
@@ -344,7 +340,7 @@ ${generateHandlerOrganizationDiagram()}
 `;
 
   // Add detailed handler information
-  for (const [category, data] of Object.entries(architecture.components.handlers)) {
+  for (const [data] of Object.entries(architecture.components.handlers)) {
     markdown += `#### ${data.displayName} (${data.count} handlers)\n\n`;
     markdown += `**Location:** \`${data.path}\`\n\n`;
     markdown += '**Files:**\n';

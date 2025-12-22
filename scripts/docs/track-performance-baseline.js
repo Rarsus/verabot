@@ -24,8 +24,16 @@ const path = require('path');
 const { execSync } = require('child_process');
 
 // Configuration
-const BASELINE_OUTPUT = path.join(process.cwd(), '.metrics', 'PERFORMANCE-BASELINE.json');
-const REPORT_OUTPUT = path.join(process.cwd(), '.metrics', 'PERFORMANCE-REPORT.md');
+const BASELINE_OUTPUT = path.join(
+  process.cwd(),
+  '.metrics',
+  'PERFORMANCE-BASELINE.json',
+);
+const REPORT_OUTPUT = path.join(
+  process.cwd(),
+  '.metrics',
+  'PERFORMANCE-REPORT.md',
+);
 const METRICS_FILE = path.join(process.cwd(), '.metrics', 'latest.json');
 
 // Baseline data structure
@@ -46,8 +54,12 @@ const baseline = {
  */
 function getGitInfo() {
   try {
-    const commit = execSync('git rev-parse --short HEAD', { encoding: 'utf8' }).trim();
-    const branch = execSync('git rev-parse --abbrev-ref HEAD', { encoding: 'utf8' }).trim();
+    const commit = execSync('git rev-parse --short HEAD', {
+      encoding: 'utf8',
+    }).trim();
+    const branch = execSync('git rev-parse --abbrev-ref HEAD', {
+      encoding: 'utf8',
+    }).trim();
     const ahead = execSync(
       'git rev-list --left-only --count origin/main...HEAD 2>/dev/null || echo "0"',
       { encoding: 'utf8' },
@@ -59,7 +71,7 @@ function getGitInfo() {
       ahead: parseInt(ahead) || 0,
       timestamp: new Date().toISOString(),
     };
-  } catch  {
+  } catch {
     return {
       commit: 'unknown',
       branch: 'unknown',
@@ -127,7 +139,9 @@ function getCodeMetrics() {
     testFiles: testMetrics.files,
     testCases,
     averageFileSize:
-      srcMetrics.files > 0 ? `${Math.round(srcMetrics.lines / srcMetrics.files)} lines` : 'N/A',
+      srcMetrics.files > 0
+        ? `${Math.round(srcMetrics.lines / srcMetrics.files)} lines`
+        : 'N/A',
   };
 }
 
@@ -225,7 +239,8 @@ function compareWithPrevious() {
         current: baseline.code.sourceFiles,
         change: diff,
         percentage: `${((diff / previous.code.sourceFiles) * 100).toFixed(2)}%`,
-        status: diff > 0 ? '📈 Growth' : diff < 0 ? '📉 Reduction' : '➡️ No change',
+        status:
+          diff > 0 ? '📈 Growth' : diff < 0 ? '📉 Reduction' : '➡️ No change',
       };
     }
 
@@ -419,13 +434,17 @@ function main() {
     console.log('   ✅ Git information collected');
 
     baseline.code = getCodeMetrics();
-    console.log(`   ✅ Code metrics collected (${baseline.code.sourceFiles} source files)`);
+    console.log(
+      `   ✅ Code metrics collected (${baseline.code.sourceFiles} source files)`,
+    );
 
     baseline.memory = getMemoryMetrics();
     console.log('   ✅ Memory metrics collected');
 
     baseline.coverage = getCoverageMetrics();
-    console.log(`   ✅ Coverage metrics collected (${baseline.coverage.lines}% lines)`);
+    console.log(
+      `   ✅ Coverage metrics collected (${baseline.coverage.lines}% lines)`,
+    );
 
     baseline.quality = getQualityMetrics();
     console.log('   ✅ Quality metrics collected\n');
@@ -448,19 +467,25 @@ function main() {
 
     // Write baseline file
     fs.writeFileSync(BASELINE_OUTPUT, JSON.stringify(baseline, null, 2));
-    console.log(`✅ Baseline data saved to ${path.relative(process.cwd(), BASELINE_OUTPUT)}`);
+    console.log(
+      `✅ Baseline data saved to ${path.relative(process.cwd(), BASELINE_OUTPUT)}`,
+    );
 
     // Generate and write report
     const report = generateMarkdownReport();
     fs.writeFileSync(REPORT_OUTPUT, report);
-    console.log(`✅ Report generated at ${path.relative(process.cwd(), REPORT_OUTPUT)}\n`);
+    console.log(
+      `✅ Report generated at ${path.relative(process.cwd(), REPORT_OUTPUT)}\n`,
+    );
 
     // Summary
     console.log('📊 Performance Baseline Summary:\n');
     console.log(`   Commit:           ${baseline.git.commit}`);
     console.log(`   Branch:           ${baseline.git.branch}`);
     console.log(`   Source Files:     ${baseline.code.sourceFiles}`);
-    console.log(`   Lines of Code:    ${baseline.code.linesOfCode.toLocaleString()}`);
+    console.log(
+      `   Lines of Code:    ${baseline.code.linesOfCode.toLocaleString()}`,
+    );
     console.log(`   Test Cases:       ${baseline.code.testCases}`);
     console.log(`   Code Coverage:    ${baseline.coverage.lines}%`);
     console.log(
