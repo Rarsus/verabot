@@ -95,6 +95,39 @@ While inspired by verabot2.0, the implementation has been adapted to fit verabot
 4. Integrates with verabot's command registry and middleware pipeline
 5. Uses verabot's dependency injection container
 
+## Error Handling Architecture
+
+Quote handlers follow verabot's established error handling patterns:
+
+**No Try-Catch in Handlers**
+
+- Handlers don't wrap service calls in try-catch blocks
+- Errors from services propagate naturally through the middleware pipeline
+- The `LoggingMiddleware` catches and logs errors at the pipeline level
+- This matches the pattern used in most verabot handlers (AllowHandler, AuditHandler, DeployHandler, etc.)
+
+**When to Use Try-Catch**
+
+Try-catch blocks are only used when:
+
+- Interacting with external APIs that may fail in expected ways (e.g., NotifyHandler with Discord API)
+- You need to transform or provide specific error context
+- The error is not a business logic error
+
+**Error Result Pattern**
+
+- Use `CommandResult.fail(new Error(message))` not `CommandResult.fail(string)`
+- Error objects provide consistent error handling across the codebase
+- Services throw Error objects with meaningful messages
+- Handlers validate input and return Error objects for validation failures
+
+**Benefits**
+
+- Simpler, cleaner handler code
+- Consistent error handling across all handlers
+- Errors are logged and tracked automatically by middleware
+- Better error context and stack traces
+
 ## Future Enhancements
 
 Potential improvements:
