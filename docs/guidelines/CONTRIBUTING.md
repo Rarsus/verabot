@@ -286,6 +286,13 @@ By contributing to VeraBot, you agree that your contributions will be licensed u
 - **Security Issue?** Email @Rarsus privately
 - **General Help?** Check existing issues and documentation
 
+## 📚 Related Documentation
+
+- [GitFlow Workflow Guide](./GITFLOW.md) - Detailed branching strategy
+- [Branch Protection Rules](../ci-cd/BRANCH_PROTECTION.md) - GitHub repository protection setup
+- [GitHub Workflows](../../.github/WORKFLOWS.md) - CI/CD pipeline documentation
+- [Testing Guide](../15-TESTING.md) - How to write and run tests
+
 ## 🙏 Thank You!
 
 Your contributions are what make this project great. Thank you for taking the time to contribute!

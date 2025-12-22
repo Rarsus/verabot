@@ -44,6 +44,18 @@ Welcome to the comprehensive documentation for **VeraBot** - an enterprise-grade
 - [Monitoring](./19-MONITORING.md) - Health checks and metrics
 - [Troubleshooting](./20-TROUBLESHOOTING.md) - Common issues and solutions
 
+### **CI/CD & Workflows**
+
+- [GitHub Workflows](../.github/WORKFLOWS.md) - CI/CD pipeline documentation
+- [Branch Protection Rules](./ci-cd/BRANCH_PROTECTION.md) - GitHub branch protection setup
+- [CI/CD Setup](./ci-cd/CI-CD-SETUP.md) - Continuous integration configuration
+
+### **Guidelines**
+
+- [Contributing Guide](./guidelines/CONTRIBUTING.md) - How to contribute to the project
+- [GitFlow Workflow](./guidelines/GITFLOW.md) - Branching strategy and workflow
+- [Security Guide](./guidelines/SECURITY.md) - Security best practices
+
 ### **Reference**
 
 - [Glossary](./21-GLOSSARY.md) - Key terms and definitions
@@ -62,6 +74,8 @@ Welcome to the comprehensive documentation for **VeraBot** - an enterprise-grade
 - **Understand the code?** → Check [System Architecture](./7-ARCHITECTURE.md)
 - **Write tests?** → See [Testing Guide](./15-TESTING.md)
 - **Deploy to production?** → Review [Deployment Guide](./18-DEPLOYMENT.md)
+- **Contribute code?** → Read [Contributing Guide](./guidelines/CONTRIBUTING.md) and [GitFlow Workflow](./guidelines/GITFLOW.md)
+- **Configure CI/CD?** → Check [GitHub Workflows](../.github/WORKFLOWS.md) and [Branch Protection](./ci-cd/BRANCH_PROTECTION.md)
 
 ---
 
@@ -108,6 +122,8 @@ Welcome to the comprehensive documentation for **VeraBot** - an enterprise-grade
 2. Deployment Guide
 3. Monitoring
 4. Troubleshooting
+5. CI/CD Workflows
+6. Branch Protection Rules
 
 ---
 

@@ -198,6 +198,7 @@ npm audit fix
    - Write clear descriptions
    - Ensure all CI checks pass
    - Request reviews before merging
+   - Follow branch protection rules (see [Branch Protection Guide](../docs/ci-cd/BRANCH_PROTECTION.md))
 
 3. **Testing**:
    - Write tests for new features
@@ -209,6 +210,11 @@ npm audit fix
    - Review security advisories
    - Use `npm audit fix` for automatic fixes
    - Test thoroughly after major updates
+
+5. **Branching**:
+   - Follow the [GitFlow workflow](../docs/guidelines/GITFLOW.md)
+   - Create feature branches from `develop`
+   - Merge to `main` only through release branches
 
 ## Monitoring
 
@@ -230,3 +236,10 @@ Potential workflow improvements:
 - [ ] Slack/Discord notifications for failures
 - [ ] Automatic changelog generation
 - [ ] Code coverage badge updates
+
+## Related Documentation
+
+- [Branch Protection Rules](../docs/ci-cd/BRANCH_PROTECTION.md) - Detailed guide on configuring GitHub branch protection
+- [CI/CD Setup Guide](../docs/ci-cd/CI-CD-SETUP.md) - Complete CI/CD configuration instructions
+- [GitFlow Workflow](../docs/guidelines/GITFLOW.md) - Branching strategy and development workflow
+- [Contributing Guide](../docs/guidelines/CONTRIBUTING.md) - How to contribute to the project
