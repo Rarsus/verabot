@@ -26,7 +26,6 @@ const { execSync } = require('child_process');
 // Configuration
 const BASELINE_OUTPUT = path.join(process.cwd(), '.metrics', 'PERFORMANCE-BASELINE.json');
 const REPORT_OUTPUT = path.join(process.cwd(), '.metrics', 'PERFORMANCE-REPORT.md');
-const PACKAGE_JSON = path.join(process.cwd(), 'package.json');
 const METRICS_FILE = path.join(process.cwd(), '.metrics', 'latest.json');
 
 // Baseline data structure
