@@ -181,14 +181,14 @@ function getQualityMetrics() {
   };
 
   try {
-    const lintResult = execSync('npm run lint 2>&1', { encoding: 'utf8', stdio: 'pipe' });
+    execSync('npm run lint 2>&1', { encoding: 'utf8', stdio: 'pipe' });
     quality.eslint = 'passing';
   } catch (error) {
     quality.eslint = 'passing'; // lint exit code is not reliable
   }
 
   try {
-    const prettierResult = execSync('npm run format:check 2>&1', {
+    execSync('npm run format:check 2>&1', {
       encoding: 'utf8',
       stdio: 'pipe',
     });
