@@ -1,248 +1,85 @@
 # Verabot
 
-A comprehensive bot framework designed to simplify automation, integration, and intelligent workflows.
+A comprehensive Discord bot framework designed for scalability, extensibility, and ease of use.
 
----
+## Overview
 
-## 📋 Table of Contents
+Verabot is a robust Discord bot that provides a solid foundation for building feature-rich bot applications. It emphasizes clean architecture, comprehensive documentation, and best practices for bot development.
 
-- [Overview](#overview)
-- [Features](#features)
-- [Quick Start](#quick-start)
-- [Tech Stack](#tech-stack)
-- [Project Structure](#project-structure)
-- [Contributing](#contributing)
-- [Documentation](#documentation)
-- [License](#license)
+## Quick Navigation
 
----
+### Getting Started
+- **[Getting Started](docs/1-GETTING-STARTED.md)** - Initial setup and installation
+- **[Quick Start Guide](docs/2-QUICK-START.md)** - Get up and running in minutes
+- **[Environment Configuration](docs/3-ENVIRONMENT-CONFIG.md)** - Configure your bot environment
 
-## 🎯 Overview
+### User Documentation
+- **[User Manual](docs/4-USER-MANUAL.md)** - Complete user guide
+- **[Command Reference](docs/5-COMMAND-REFERENCE.md)** - All available commands
+- **[Permissions Guide](docs/6-PERMISSIONS.md)** - User permissions and access control
+- **[FAQ](docs/22-FAQ.md)** - Frequently asked questions
+- **[Troubleshooting](docs/20-TROUBLESHOOTING.md)** - Common issues and solutions
 
-Verabot is a modern, extensible bot framework that enables developers to build powerful automation and integration solutions with minimal complexity. Whether you're automating workflows, integrating with external APIs, or building intelligent chatbots, Verabot provides a solid foundation with a clean API and comprehensive tooling.
+### Architecture & Design
+- **[Architecture Overview](docs/7-ARCHITECTURE.md)** - System architecture
+- **[Command Architecture](docs/8-COMMAND-ARCHITECTURE.md)** - How commands are structured
+- **[Infrastructure](docs/9-INFRASTRUCTURE.md)** - Infrastructure setup and requirements
+- **[Design Patterns](docs/10-DESIGN-PATTERNS.md)** - Design patterns used in the project
+- **[Glossary](docs/21-GLOSSARY.md)** - Key terms and definitions
 
----
+### Development
+- **[Development Guide](docs/11-DEVELOPMENT.md)** - Local development setup
+- **[Best Practices](docs/12-BEST-PRACTICES.md)** - Development best practices
+- **[API Reference](docs/13-API-REFERENCE.md)** - Complete API documentation
+- **[Adding Commands](docs/14-ADDING-COMMANDS.md)** - How to create new commands
+- **[Contributing Guidelines](docs/guidelines/CONTRIBUTING.md)** - Contribution guidelines
 
-## ✨ Features
+### Testing
+- **[Testing Guide](docs/15-TESTING.md)** - Testing strategies and tools
+- **[Coverage Strategy](docs/16-COVERAGE-STRATEGY.md)** - Test coverage guidelines
+- **[Test Examples](docs/17-TEST-EXAMPLES.md)** - Example tests and patterns
 
-### Core Capabilities
-- **Modular Architecture**: Build bots with composable, reusable modules
-- **Event-Driven Design**: Respond to events with flexible event handlers
-- **Easy Integration**: Simple integration with popular third-party services and APIs
-- **Extensible Plugins**: Create custom plugins to extend functionality
-- **Error Handling**: Robust error handling and retry mechanisms
-- **Logging & Monitoring**: Built-in logging and monitoring capabilities
+### Deployment & Operations
+- **[Deployment Guide](docs/18-DEPLOYMENT.md)** - Deployment instructions
+- **[Monitoring](docs/19-MONITORING.md)** - Monitoring and observability
+- **[Version History](docs/VERSIONS.md)** - Version information and changelog
 
-### Developer Experience
-- **Type Safety**: Fully typed codebase for better IDE support and fewer runtime errors
-- **Clean API**: Intuitive and well-documented API design
-- **Configuration Management**: Flexible configuration system supporting multiple environments
-- **Testing Utilities**: Helper functions and utilities for testing bot components
+### Project Management
+- **[Git Flow](docs/guidelines/GITFLOW.md)** - Git workflow and branching strategy
+- **[Resources](docs/23-RESOURCES.md)** - Additional resources and references
 
----
+## Features
 
-## 🚀 Quick Start
+- **Modular Command System** - Easy-to-create command modules
+- **Comprehensive Documentation** - Detailed guides for every aspect
+- **Scalable Architecture** - Built to grow with your needs
+- **Best Practices** - Follows Discord bot development best practices
+- **Testing Framework** - Built-in testing capabilities
+- **Monitoring & Observability** - Track bot performance and health
 
-### Prerequisites
-- Node.js >= 14.0.0
-- npm or yarn package manager
+## Installation
 
-### Installation
+Refer to the [Getting Started](docs/1-GETTING-STARTED.md) guide for detailed installation instructions.
 
-```bash
-npm install verabot
-```
+## Quick Start
 
-Or using yarn:
+To quickly get Verabot up and running, follow the [Quick Start Guide](docs/2-QUICK-START.md).
 
-```bash
-yarn add verabot
-```
+## Documentation
 
-### Basic Usage
+All documentation is organized in the `docs/` directory. Start with [Getting Started](docs/1-GETTING-STARTED.md) for a complete overview of the project.
 
-```javascript
-const { Bot } = require('verabot');
+## Contributing
 
-// Create a new bot instance
-const bot = new Bot({
-  name: 'MyBot',
-  token: process.env.BOT_TOKEN
-});
+We welcome contributions! Please read our [Contributing Guidelines](docs/guidelines/CONTRIBUTING.md) and [Git Flow Guide](docs/guidelines/GITFLOW.md) before submitting pull requests.
 
-// Register an event handler
-bot.on('message', (message) => {
-  console.log(`Received message: ${message.text}`);
-  message.reply('Hello! I received your message.');
-});
+## License
 
-// Start the bot
-bot.start();
-```
+Please refer to the LICENSE file in the repository root for licensing information.
 
-### Configuration
+## Support
 
-Create a `.env` file in your project root:
-
-```env
-BOT_TOKEN=your_bot_token_here
-BOT_NAME=YourBotName
-LOG_LEVEL=info
-```
-
-### Running Your First Bot
-
-```bash
-node your-bot.js
-```
-
-For more examples and detailed usage, see the [Documentation](#documentation) section.
-
----
-
-## 🛠️ Tech Stack
-
-### Core Technologies
-- **Node.js**: JavaScript runtime environment
-- **TypeScript**: Optional type safety layer
-- **Express.js**: HTTP server framework (if applicable)
-- **dotenv**: Environment variable management
-
-### Key Dependencies
-- **axios**: HTTP client for API requests
-- **winston**: Logging framework
-- **joi**: Data validation
-- **lodash**: Utility library
-
-### Development Tools
-- **Jest**: Testing framework
-- **ESLint**: Code linting
-- **Prettier**: Code formatting
-- **Husky**: Git hooks management
-
----
-
-## 📁 Project Structure
-
-```
-verabot/
-├── src/
-│   ├── bot/              # Core bot implementation
-│   ├── handlers/         # Event handlers
-│   ├── plugins/          # Plugin system
-│   ├── utils/            # Utility functions
-│   ├── config/           # Configuration management
-│   ├── logger/           # Logging setup
-│   └── index.ts          # Main entry point
-├── tests/                # Test suites
-├── examples/             # Example bots and usage
-├── docs/                 # Additional documentation
-├── .env.example          # Example environment variables
-├── package.json          # Project dependencies
-├── tsconfig.json         # TypeScript configuration
-├── jest.config.js        # Jest testing configuration
-├── .eslintrc.json        # ESLint rules
-└── README.md             # This file
-```
-
----
-
-## 🤝 Contributing
-
-We welcome contributions from the community! Whether you're fixing bugs, adding features, or improving documentation, your help is appreciated.
-
-### Getting Started with Development
-
-1. **Fork the repository** on GitHub
-2. **Clone your fork** locally:
-   ```bash
-   git clone https://github.com/your-username/verabot.git
-   cd verabot
-   ```
-
-3. **Install dependencies**:
-   ```bash
-   npm install
-   ```
-
-4. **Create a feature branch**:
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
-
-5. **Make your changes** and ensure code quality:
-   ```bash
-   npm run lint
-   npm run format
-   ```
-
-6. **Run tests** to ensure nothing breaks:
-   ```bash
-   npm test
-   ```
-
-7. **Commit your changes** with descriptive messages:
-   ```bash
-   git commit -m "feat: Add new feature description"
-   ```
-
-8. **Push to your fork**:
-   ```bash
-   git push origin feature/your-feature-name
-   ```
-
-9. **Open a Pull Request** on the main repository with a clear description of changes
-
-### Contribution Guidelines
-
-- **Code Style**: Follow the existing code style and use prettier for formatting
-- **Commits**: Use conventional commit messages (feat:, fix:, docs:, etc.)
-- **Tests**: Add tests for new features and bug fixes
-- **Documentation**: Update relevant documentation when adding features
-- **Issues**: Reference related issues in your pull request
-
-### Areas for Contribution
-
-- Bug fixes and error handling improvements
-- New plugins and integrations
-- Documentation and examples
-- Performance optimizations
-- Test coverage expansion
-
-Please read our full [Contributing Guidelines](CONTRIBUTING.md) for more details.
-
----
-
-## 📚 Documentation
-
-### Official Documentation
-- **[API Reference](docs/api-reference.md)**: Complete API documentation
-- **[Getting Started Guide](docs/getting-started.md)**: Detailed setup and basic usage
-- **[Plugin Development Guide](docs/plugin-development.md)**: How to create custom plugins
-- **[Configuration Guide](docs/configuration.md)**: Environment setup and configuration options
-- **[Examples](examples/)**: Real-world usage examples and bot samples
-
-### Additional Resources
-- **[Troubleshooting](docs/troubleshooting.md)**: Common issues and solutions
-- **[FAQ](docs/faq.md)**: Frequently asked questions
-- **[Changelog](CHANGELOG.md)**: Version history and release notes
-
-### Community & Support
-- **Issues**: [GitHub Issues](https://github.com/rarsus/verabot/issues) - Report bugs or request features
-- **Discussions**: [GitHub Discussions](https://github.com/rarsus/verabot/discussions) - Ask questions and share ideas
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## 🙏 Acknowledgments
-
-Thanks to all contributors, maintainers, and the open-source community for their support and contributions to this project.
-
----
-
-**Made with ❤️ by the Verabot community**
+For questions, issues, or suggestions:
+- Check the [FAQ](docs/22-FAQ.md)
+- Review the [Troubleshooting Guide](docs/20-TROUBLESHOOTING.md)
+- Consult the [Resources](docs/23-RESOURCES.md) section
