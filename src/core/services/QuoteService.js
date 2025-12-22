@@ -6,6 +6,11 @@
  * const quoteService = new QuoteService(quoteRepo);
  * const quote = await quoteService.getRandomQuote();
  */
+
+// Validation constants
+const MAX_QUOTE_TEXT_LENGTH = 1000;
+const MAX_AUTHOR_LENGTH = 200;
+
 class QuoteService {
   /**
    * Create a new QuoteService instance
@@ -28,11 +33,13 @@ class QuoteService {
     if (!text || text.trim().length === 0) {
       throw new Error('Quote text cannot be empty');
     }
-    if (text.length > 1000) {
-      throw new Error('Quote text is too long (maximum 1000 characters)');
+    if (text.length > MAX_QUOTE_TEXT_LENGTH) {
+      throw new Error(
+        `Quote text is too long (maximum ${MAX_QUOTE_TEXT_LENGTH} characters)`,
+      );
     }
-    if (author && author.length > 200) {
-      throw new Error('Author name is too long (maximum 200 characters)');
+    if (author && author.length > MAX_AUTHOR_LENGTH) {
+      throw new Error(`Author name is too long (maximum ${MAX_AUTHOR_LENGTH} characters)`);
     }
 
     return await this.quoteRepo.add(text.trim(), author.trim(), addedBy);
