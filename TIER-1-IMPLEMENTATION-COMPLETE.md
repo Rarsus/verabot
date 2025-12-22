@@ -127,10 +127,12 @@ Orphaned Files: 0 ✅
 **New documentation commands in package.json:**
 
 ```json
-"docs:sync-versions": "node scripts/docs/sync-versions.js",
-"docs:collect-metrics": "node scripts/docs/collect-metrics.js",
-"docs:validate": "node scripts/docs/validate-docs.js",
-"docs:check": "npm run docs:validate && npm run docs:sync-versions",
+{
+  "docs:sync-versions": "node scripts/docs/sync-versions.js",
+  "docs:collect-metrics": "node scripts/docs/collect-metrics.js",
+  "docs:validate": "node scripts/docs/validate-docs.js",
+  "docs:check": "npm run docs:validate && npm run docs:sync-versions"
+}
 ```
 
 **Usage:**

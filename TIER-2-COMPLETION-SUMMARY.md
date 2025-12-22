@@ -172,11 +172,13 @@ The scripts automatically run on every push and pull request:
 **New Commands:**
 
 ```json
-"docs:generate-changelog": "node scripts/docs/generate-changelog.js"
-"docs:generate-api": "node scripts/docs/generate-api-reference.js"
-"docs:check-drift": "node scripts/docs/check-doc-drift.js"
-"docs:generate": "npm run docs:generate-changelog && npm run docs:generate-api"
-"docs:check": "npm run docs:validate && npm run docs:sync-versions && npm run docs:check-drift"
+{
+  "docs:generate-changelog": "node scripts/docs/generate-changelog.js",
+  "docs:generate-api": "node scripts/docs/generate-api-reference.js",
+  "docs:check-drift": "node scripts/docs/check-doc-drift.js",
+  "docs:generate": "npm run docs:generate-changelog && npm run docs:generate-api",
+  "docs:check": "npm run docs:validate && npm run docs:sync-versions && npm run docs:check-drift"
+}
 ```
 
 ---

@@ -104,6 +104,9 @@ function findCommandFiles() {
     return commands;
   }
 
+  // Base classes and infrastructure files to exclude
+  const excludePatterns = ['Command', 'CommandRegistry', 'CommandResult', 'index'];
+
   function walkDir(dir, category = 'commands') {
     const entries = fs.readdirSync(dir, { withFileTypes: true });
 
@@ -111,11 +114,15 @@ function findCommandFiles() {
       if (entry.isDirectory()) {
         walkDir(path.join(dir, entry.name), entry.name);
       } else if (entry.isFile() && entry.name.endsWith('.js')) {
-        commands.push({
-          name: entry.name.replace('.js', ''),
-          category,
-          file: entry.name,
-        });
+        const baseName = entry.name.replace('.js', '');
+        // Skip base classes and infrastructure files
+        if (!excludePatterns.includes(baseName)) {
+          commands.push({
+            name: baseName,
+            category,
+            file: entry.name,
+          });
+        }
       }
     }
   }
