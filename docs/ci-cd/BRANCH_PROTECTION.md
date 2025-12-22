@@ -340,7 +340,8 @@ After configuring branch protection rules:
 
 - [GITFLOW.md](../guidelines/GITFLOW.md) - Branching strategy and workflow
 - [CONTRIBUTING.md](../guidelines/CONTRIBUTING.md) - Developer contribution guide
-- [.github/CODEOWNERS](.github/CODEOWNERS) - Code ownership
+- [GitHub Workflows](../../.github/WORKFLOWS.md) - CI/CD pipeline and workflows
+- [.github/CODEOWNERS](../../.github/CODEOWNERS) - Code ownership
 - [GitHub Docs - Branch Protection](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches)
 
 ---

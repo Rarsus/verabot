@@ -630,10 +630,15 @@ The following are enforced on `main` and `develop`:
 - ✅ Allow force pushes: No
 - ✅ Allow deletions: No
 
+**For detailed configuration instructions**, see the [Branch Protection Setup Guide](../ci-cd/BRANCH_PROTECTION.md).
+
 ---
 
 ## 📚 Additional Resources
 
+- [Branch Protection Setup Guide](../ci-cd/BRANCH_PROTECTION.md) - Detailed GitHub branch protection configuration
+- [GitHub Workflows Documentation](../../.github/WORKFLOWS.md) - CI/CD pipeline and workflow details
+- [Contributing Guide](./CONTRIBUTING.md) - How to contribute to the project
 - [Conventional Commits](https://www.conventionalcommits.org/)
 - [Semantic Versioning](https://semver.org/)
 - [Git Documentation](https://git-scm.com/doc)
