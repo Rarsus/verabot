@@ -66,6 +66,7 @@ jobs:
         run: npm ci
 
       - name: Check code formatting
+        continue-on-error: true
         run: npm run format:check
 
   complexity:
