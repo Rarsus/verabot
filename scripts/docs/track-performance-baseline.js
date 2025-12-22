@@ -252,7 +252,6 @@ function compareWithPrevious() {
 function generateMarkdownReport() {
   const sourceFiles = baseline.code.sourceFiles;
   const testFiles = baseline.code.testFiles;
-  const totalFiles = sourceFiles + testFiles;
 
   let markdown = `# Performance Baseline Report
 
