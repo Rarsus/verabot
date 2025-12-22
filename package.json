@@ -22,6 +22,9 @@
     "docs:check-drift": "node scripts/docs/check-doc-drift.js",
     "docs:check": "npm run docs:validate && npm run docs:sync-versions && npm run docs:check-drift",
     "docs:generate": "npm run docs:generate-changelog && npm run docs:generate-api",
+    "docs:generate-diagrams": "node scripts/docs/generate-architecture-diagrams.js",
+    "docs:track-performance": "node scripts/docs/track-performance-baseline.js",
+    "docs:tier3-all": "npm run docs:generate-diagrams && npm run docs:track-performance",
     "prepare": "husky install"
   },
   "lint-staged": {

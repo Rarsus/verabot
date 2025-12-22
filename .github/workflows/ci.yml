@@ -186,6 +186,12 @@ jobs:
       - name: Check documentation drift
         run: npm run docs:check-drift || true
 
+      - name: Generate architecture diagrams
+        run: npm run docs:generate-diagrams || true
+
+      - name: Track performance baseline
+        run: npm run docs:track-performance || true
+
       - name: Upload validation reports
         if: always()
         uses: actions/upload-artifact@v4
