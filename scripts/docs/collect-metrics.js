@@ -183,7 +183,7 @@ function runTestsAndCollectMetrics() {
     console.log('🧪 Running tests to collect metrics...');
     execSync('npm test -- --coverage', { stdio: 'pipe' });
     console.log('✅ Tests completed');
-  } catch (error) {
+  } catch {
     console.warn('⚠️  Tests had failures or warnings, but metrics will still be collected');
   }
 }

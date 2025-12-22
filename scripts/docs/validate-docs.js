@@ -16,7 +16,6 @@
 
 const fs = require('fs');
 const path = require('path');
-const { URL } = require('url');
 
 const DOCS_PATH = path.join(__dirname, '../../docs');
 const ROOT_PATH = path.join(__dirname, '../..');
@@ -79,7 +78,7 @@ function getRootMarkdownFiles() {
 /**
  * Extract links from markdown content
  */
-function extractLinks(content, filePath) {
+function extractLinks(content, _filePath) {
   const links = [];
 
   // Match markdown links: [text](url)
