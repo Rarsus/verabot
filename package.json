@@ -14,6 +14,10 @@
     "lint:fix": "eslint --config .config/eslint.config.js . --fix",
     "format": "prettier --config .config/.prettierrc --ignore-path .config/.prettierignore --write .",
     "format:check": "prettier --config .config/.prettierrc --ignore-path .config/.prettierignore --check .",
+    "docs:sync-versions": "node scripts/docs/sync-versions.js",
+    "docs:collect-metrics": "node scripts/docs/collect-metrics.js",
+    "docs:validate": "node scripts/docs/validate-docs.js",
+    "docs:check": "npm run docs:validate && npm run docs:sync-versions",
     "prepare": "husky install"
   },
   "lint-staged": {
