@@ -1,6 +1,6 @@
 # API Reference
 
-**Generated:** 2025-12-22T10:07:58.674Z
+**Generated:** 2025-12-22T10:10:41.184Z
 
 This is an auto-generated API reference. For more details, see the source code JSDoc comments.
 
