@@ -177,12 +177,31 @@ jobs:
       - name: Sync version information
         run: npm run docs:sync-versions
 
+      - name: Generate changelog
+        run: npm run docs:generate-changelog
+
+      - name: Generate API reference
+        run: npm run docs:generate-api
+
+      - name: Check documentation drift
+        run: npm run docs:check-drift || true
+
       - name: Upload validation reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: documentation-reports
           path: .metrics/
+          retention-days: 30
+
+      - name: Upload generated documentation
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: generated-docs
+          path: |
+            CHANGELOG.md
+            docs/13-API-REFERENCE.md
           retention-days: 30
 
   summary:

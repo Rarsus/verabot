@@ -17,7 +17,11 @@
     "docs:sync-versions": "node scripts/docs/sync-versions.js",
     "docs:collect-metrics": "node scripts/docs/collect-metrics.js",
     "docs:validate": "node scripts/docs/validate-docs.js",
-    "docs:check": "npm run docs:validate && npm run docs:sync-versions",
+    "docs:generate-changelog": "node scripts/docs/generate-changelog.js",
+    "docs:generate-api": "node scripts/docs/generate-api-reference.js",
+    "docs:check-drift": "node scripts/docs/check-doc-drift.js",
+    "docs:check": "npm run docs:validate && npm run docs:sync-versions && npm run docs:check-drift",
+    "docs:generate": "npm run docs:generate-changelog && npm run docs:generate-api",
     "prepare": "husky install"
   },
   "lint-staged": {

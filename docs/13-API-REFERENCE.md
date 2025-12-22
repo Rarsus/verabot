@@ -1,89 +1,29 @@
-# 13. API Reference
+# API Reference
 
-Public APIs and interfaces for developers.
+**Generated:** 2025-12-22T10:07:58.674Z
 
----
+This is an auto-generated API reference. For more details, see the source code JSDoc comments.
 
-## Command Interface
+## Table of Contents
 
-```javascript
-class Command {
-  constructor(metadata);
-  async execute(input);
-  getMetadata();
-  getResult();
-}
-```
+- [Core](#core)
+  - [Commands](#commands)
+  - [Services](#services)
+  - [Errors](#errors)
+- [Infrastructure](#infrastructure)
+  - [Configuration](#configuration)
+  - [Database](#database)
+  - [Discord Integration](#discord-integration)
+  - [Logging](#logging)
+  - [Metrics](#metrics)
+  - [Job Queue](#job-queue)
+  - [WebSocket](#websocket)
+- [Application](#application)
+  - [Handlers](#handlers)
+  - [Middleware](#middleware)
 
-### Example
+## Core
 
-```javascript
-const result = await command.execute({ userId: '123' });
-```
+## Infrastructure
 
----
-
-## CommandBus
-
-```javascript
-class CommandBus {
-  async dispatch(command);
-  subscribe(commandType, handler);
-}
-```
-
-### Usage
-
-```javascript
-await bus.dispatch(new MyCommand(data));
-```
-
----
-
-## CommandResult
-
-```javascript
-class CommandResult {
-  constructor(success, data, message);
-  isSuccess();
-  getData();
-  getMessage();
-}
-```
-
----
-
-## PermissionService
-
-```javascript
-class PermissionService {
-  async checkPermission(userId, commandName);
-  async grantPermission(userId, commandName);
-  async revokePermission(userId, commandName);
-}
-```
-
----
-
-## RateLimitService
-
-```javascript
-class RateLimitService {
-  async isAllowed(userId, commandName);
-  async recordUsage(userId, commandName);
-  async reset(userId);
-}
-```
-
----
-
-## Error Classes
-
-- `DomainError` - Business logic errors
-- `PermissionError` - Unauthorized access
-- `RateLimitError` - Rate limit exceeded
-- `ValidationError` - Invalid input
-
----
-
-**Previous:** [Best Practices](./12-BEST-PRACTICES.md) | **Next:** [Adding Commands](./14-ADDING-COMMANDS.md)
+## Application
