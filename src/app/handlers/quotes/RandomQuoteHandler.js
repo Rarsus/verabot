@@ -23,20 +23,16 @@ class RandomQuoteHandler {
    * @returns {Promise<CommandResult>} Random quote object or error message
    */
   async handle() {
-    try {
-      const quote = await this.quoteService.getRandomQuote();
+    const quote = await this.quoteService.getRandomQuote();
 
-      if (!quote) {
-        return CommandResult.fail('No quotes available');
-      }
-
-      return CommandResult.ok({
-        quote,
-        formatted: `> ${quote.text}\n— ${quote.author}`,
-      });
-    } catch (error) {
-      return CommandResult.fail(error.message);
+    if (!quote) {
+      return CommandResult.fail(new Error('No quotes available'));
     }
+
+    return CommandResult.ok({
+      quote,
+      formatted: `> ${quote.text}\n— ${quote.author}`,
+    });
   }
 }
 

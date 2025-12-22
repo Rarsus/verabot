@@ -23,22 +23,18 @@ class ListQuotesHandler {
    * @returns {Promise<CommandResult>} Array of all quotes
    */
   async handle() {
-    try {
-      const quotes = await this.quoteService.getAllQuotes();
+    const quotes = await this.quoteService.getAllQuotes();
 
-      if (!quotes || quotes.length === 0) {
-        return CommandResult.fail('No quotes available');
-      }
-
-      const count = quotes.length;
-      return CommandResult.ok({
-        quotes,
-        count,
-        message: `Found ${count} quote${count !== 1 ? 's' : ''}`,
-      });
-    } catch (error) {
-      return CommandResult.fail(error.message);
+    if (!quotes || quotes.length === 0) {
+      return CommandResult.fail(new Error('No quotes available'));
     }
+
+    const count = quotes.length;
+    return CommandResult.ok({
+      quotes,
+      count,
+      message: `Found ${count} quote${count !== 1 ? 's' : ''}`,
+    });
   }
 }
 

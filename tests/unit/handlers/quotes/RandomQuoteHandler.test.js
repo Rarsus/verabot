@@ -28,15 +28,13 @@ describe('RandomQuoteHandler', () => {
     const result = await handler.handle();
 
     expect(result.success).toBe(false);
-    expect(result.error).toBe('No quotes available');
+    expect(result.error).toBeInstanceOf(Error);
+    expect(result.error.message).toBe('No quotes available');
   });
 
-  it('should return error when service throws', async () => {
+  it('should propagate service errors', async () => {
     mockQuoteService.getRandomQuote.mockRejectedValue(new Error('Database error'));
 
-    const result = await handler.handle();
-
-    expect(result.success).toBe(false);
-    expect(result.error).toBe('Database error');
+    await expect(handler.handle()).rejects.toThrow('Database error');
   });
 });

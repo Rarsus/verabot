@@ -55,10 +55,11 @@ describe('AddQuoteHandler', () => {
     const result = await handler.handle(command);
 
     expect(result.success).toBe(false);
-    expect(result.error).toBe('Quote text is required');
+    expect(result.error).toBeInstanceOf(Error);
+    expect(result.error.message).toBe('Quote text is required');
   });
 
-  it('should return error when service throws', async () => {
+  it('should propagate service errors', async () => {
     mockQuoteService.addQuote.mockRejectedValue(new Error('Database error'));
 
     const command = {
@@ -68,9 +69,6 @@ describe('AddQuoteHandler', () => {
       },
     };
 
-    const result = await handler.handle(command);
-
-    expect(result.success).toBe(false);
-    expect(result.error).toBe('Database error');
+    await expect(handler.handle(command)).rejects.toThrow('Database error');
   });
 });

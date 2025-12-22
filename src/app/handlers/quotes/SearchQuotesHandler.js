@@ -23,29 +23,25 @@ class SearchQuotesHandler {
    * @returns {Promise<CommandResult>} Array of matching quotes
    */
   async handle(command) {
-    try {
-      const query = command.metadata.query;
+    const query = command.metadata.query;
 
-      if (!query) {
-        return CommandResult.fail('Search query is required');
-      }
-
-      const quotes = await this.quoteService.searchQuotes(query);
-
-      if (!quotes || quotes.length === 0) {
-        return CommandResult.fail(`No quotes found matching "${query}"`);
-      }
-
-      const count = quotes.length;
-      return CommandResult.ok({
-        quotes,
-        count,
-        query,
-        message: `Found ${count} quote${count !== 1 ? 's' : ''} matching "${query}"`,
-      });
-    } catch (error) {
-      return CommandResult.fail(error.message);
+    if (!query) {
+      return CommandResult.fail(new Error('Search query is required'));
     }
+
+    const quotes = await this.quoteService.searchQuotes(query);
+
+    if (!quotes || quotes.length === 0) {
+      return CommandResult.fail(new Error(`No quotes found matching "${query}"`));
+    }
+
+    const count = quotes.length;
+    return CommandResult.ok({
+      quotes,
+      count,
+      query,
+      message: `Found ${count} quote${count !== 1 ? 's' : ''} matching "${query}"`,
+    });
   }
 }
 

@@ -23,26 +23,22 @@ class QuoteHandler {
    * @returns {Promise<CommandResult>} Quote object or error message
    */
   async handle(command) {
-    try {
-      const id = command.metadata.id;
+    const id = command.metadata.id;
 
-      if (!id) {
-        return CommandResult.fail('Quote ID is required');
-      }
-
-      const quote = await this.quoteService.getQuoteById(id);
-
-      if (!quote) {
-        return CommandResult.fail(`Quote #${id} not found`);
-      }
-
-      return CommandResult.ok({
-        quote,
-        formatted: `> ${quote.text}\n— ${quote.author}`,
-      });
-    } catch (error) {
-      return CommandResult.fail(error.message);
+    if (!id) {
+      return CommandResult.fail(new Error('Quote ID is required'));
     }
+
+    const quote = await this.quoteService.getQuoteById(id);
+
+    if (!quote) {
+      return CommandResult.fail(new Error(`Quote #${id} not found`));
+    }
+
+    return CommandResult.ok({
+      quote,
+      formatted: `> ${quote.text}\n— ${quote.author}`,
+    });
   }
 }
 

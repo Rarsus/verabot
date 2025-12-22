@@ -23,23 +23,19 @@ class AddQuoteHandler {
    * @returns {Promise<CommandResult>} Success message with quote ID
    */
   async handle(command) {
-    try {
-      const text = command.metadata.text;
-      const author = command.metadata.author || 'Anonymous';
-      const addedBy = command.userId;
+    const text = command.metadata.text;
+    const author = command.metadata.author || 'Anonymous';
+    const addedBy = command.userId;
 
-      if (!text) {
-        return CommandResult.fail('Quote text is required');
-      }
-
-      const quoteId = await this.quoteService.addQuote(text, author, addedBy);
-      return CommandResult.ok({
-        message: `Quote #${quoteId} added successfully!`,
-        quoteId,
-      });
-    } catch (error) {
-      return CommandResult.fail(error.message);
+    if (!text) {
+      return CommandResult.fail(new Error('Quote text is required'));
     }
+
+    const quoteId = await this.quoteService.addQuote(text, author, addedBy);
+    return CommandResult.ok({
+      message: `Quote #${quoteId} added successfully!`,
+      quoteId,
+    });
   }
 }
 
