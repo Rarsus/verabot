@@ -59,7 +59,7 @@ function getGitInfo() {
       ahead: parseInt(ahead) || 0,
       timestamp: new Date().toISOString(),
     };
-  } catch (error) {
+  } catch  {
     return {
       commit: 'unknown',
       branch: 'unknown',
@@ -183,7 +183,7 @@ function getQualityMetrics() {
   try {
     execSync('npm run lint 2>&1', { encoding: 'utf8', stdio: 'pipe' });
     quality.eslint = 'passing';
-  } catch (error) {
+  } catch {
     quality.eslint = 'passing'; // lint exit code is not reliable
   }
 
