@@ -278,7 +278,7 @@ graph LR
   "category": {
     "path": "src/app/handlers/{category}",
     "count": 8,
-    "files": ["file1", "file2", ...]
+    "files": ["file1", "file2"]
   }
 }
 ```
@@ -287,7 +287,7 @@ graph LR
 
 ```json
 {
-  "services": ["service1", "service2", ...]
+  "services": ["service1", "service2"]
 }
 ```
 
@@ -295,7 +295,7 @@ graph LR
 
 ```json
 {
-  "middleware": ["middleware1", "middleware2", ...]
+  "middleware": ["middleware1", "middleware2"]
 }
 ```
 
