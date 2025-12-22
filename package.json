@@ -14,6 +14,17 @@
     "lint:fix": "eslint --config .config/eslint.config.js . --fix",
     "format": "prettier --config .config/.prettierrc --ignore-path .config/.prettierignore --write .",
     "format:check": "prettier --config .config/.prettierrc --ignore-path .config/.prettierignore --check .",
+    "docs:sync-versions": "node scripts/docs/sync-versions.js",
+    "docs:collect-metrics": "node scripts/docs/collect-metrics.js",
+    "docs:validate": "node scripts/docs/validate-docs.js",
+    "docs:generate-changelog": "node scripts/docs/generate-changelog.js",
+    "docs:generate-api": "node scripts/docs/generate-api-reference.js",
+    "docs:check-drift": "node scripts/docs/check-doc-drift.js",
+    "docs:check": "npm run docs:validate && npm run docs:sync-versions && npm run docs:check-drift",
+    "docs:generate": "npm run docs:generate-changelog && npm run docs:generate-api",
+    "docs:generate-diagrams": "node scripts/docs/generate-architecture-diagrams.js",
+    "docs:track-performance": "node scripts/docs/track-performance-baseline.js",
+    "docs:tier3-all": "npm run docs:generate-diagrams && npm run docs:track-performance",
     "prepare": "husky install"
   },
   "lint-staged": {

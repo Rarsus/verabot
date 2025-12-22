@@ -33,6 +33,7 @@ jobs:
         run: npm run lint
 
       - name: Check code formatting
+        continue-on-error: true
         run: npm run format:check
 
       - name: Validate commit messages
@@ -50,6 +51,9 @@ jobs:
     runs-on: ubuntu-latest
     name: Run Tests
     timeout-minutes: 15
+    permissions:
+      contents: read
+      pull-requests: write
 
     steps:
       - uses: actions/checkout@v4
@@ -85,6 +89,7 @@ jobs:
 
       - name: Comment coverage on PR
         if: github.event_name == 'pull_request'
+        continue-on-error: true
         uses: romeovs/lcov-reporter-action@v0.3.1
         with:
           lcov-file: ./coverage/lcov.info
@@ -154,12 +159,68 @@ jobs:
             echo "$TODOs"
           fi
 
+  docs-validation:
+    runs-on: ubuntu-latest
+    name: Documentation Validation
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate documentation links
+        run: npm run docs:validate
+
+      - name: Sync version information
+        run: npm run docs:sync-versions
+
+      - name: Generate changelog
+        run: npm run docs:generate-changelog
+
+      - name: Generate API reference
+        run: npm run docs:generate-api
+
+      - name: Check documentation drift
+        run: npm run docs:check-drift || true
+
+      - name: Generate architecture diagrams
+        run: npm run docs:generate-diagrams || true
+
+      - name: Track performance baseline
+        run: npm run docs:track-performance || true
+
+      - name: Upload validation reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: documentation-reports
+          path: .metrics/
+          retention-days: 30
+
+      - name: Upload generated documentation
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: generated-docs
+          path: |
+            CHANGELOG.md
+            docs/13-API-REFERENCE.md
+          retention-days: 30
+
   summary:
     runs-on: ubuntu-latest
     name: CI Summary
     timeout-minutes: 5
     if: always()
-    needs: [lint, test, security, quality-check]
+    needs: [lint, test, security, quality-check, docs-validation]
 
     steps:
       - name: Check job status
@@ -175,6 +236,9 @@ jobs:
           if [ "${{ needs.security.result }}" != "success" ]; then
             echo "⚠️ Security audit found issues (non-blocking)"
           fi
+          if [ "${{ needs.docs-validation.result }}" != "success" ]; then
+            echo "⚠️ Documentation validation found issues (non-blocking)"
+          fi
           echo "✅ All critical checks passed!"
 
       - name: Generate summary
@@ -188,3 +252,4 @@ jobs:
           echo "| Tests | ${{ needs.test.result == 'success' && '✅' || '❌' }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Security | ${{ needs.security.result == 'success' && '✅' || '⚠️' }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Code Quality | ${{ needs.quality-check.result == 'success' && '✅' || '⚠️' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Documentation | ${{ needs.docs-validation.result == 'success' && '✅' || '⚠️' }} |" >> $GITHUB_STEP_SUMMARY

@@ -143,7 +143,7 @@ By Status:
 
 ### Test Scripts Added
 
-```json
+```bash
 "test"               → Run all tests once
 "test:watch"        → Run tests continuously
 "test:coverage"     → Show detailed coverage
