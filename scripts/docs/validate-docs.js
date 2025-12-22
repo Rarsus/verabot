@@ -365,6 +365,13 @@ function main() {
     // Generate report
     const report = generateReport();
     const reportPath = path.join(__dirname, '../../.metrics/DOCS-VALIDATION-REPORT.md');
+    const metricsDir = path.join(__dirname, '../../.metrics');
+
+    // Ensure .metrics directory exists
+    if (!fs.existsSync(metricsDir)) {
+      fs.mkdirSync(metricsDir, { recursive: true });
+    }
+
     fs.writeFileSync(reportPath, report, 'utf8');
 
     // Save JSON report
