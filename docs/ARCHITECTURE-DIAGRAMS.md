@@ -10,7 +10,7 @@
 
 ✅ **Handlers:** 23 total  
 ✅ **Services:** 5 total  
-✅ **Middleware:** 4 components  
+✅ **Middleware:** 4 components
 
 ---
 
@@ -95,7 +95,7 @@ Handlers are organized into 5 categories based on their responsibilities:
 ```mermaid
 graph TD
     Handlers["👥 Handler Organization"]
-    
+
     admin["Admin Handlers<br/>(7 total)<br/><br/>AllowChannelHandler<br/>AllowedHandler<br/>AllowHandler<br/>... +4 more"]
     core["Core Handlers<br/>(5 total)<br/><br/>HelpHandler<br/>InfoHandler<br/>PingHandler<br/>... +2 more"]
     messaging["Messaging Handlers<br/>(3 total)<br/><br/>BroadcastHandler<br/>NotifyHandler<br/>SayHandler"]
@@ -124,6 +124,7 @@ graph TD
 **Location:** `src/app/handlers/admin`
 
 **Files:**
+
 - `AllowChannelHandler.js`
 - `AllowedHandler.js`
 - `AllowHandler.js`
@@ -137,6 +138,7 @@ graph TD
 **Location:** `src/app/handlers/core`
 
 **Files:**
+
 - `HelpHandler.js`
 - `InfoHandler.js`
 - `PingHandler.js`
@@ -148,6 +150,7 @@ graph TD
 **Location:** `src/app/handlers/messaging`
 
 **Files:**
+
 - `BroadcastHandler.js`
 - `NotifyHandler.js`
 - `SayHandler.js`
@@ -157,6 +160,7 @@ graph TD
 **Location:** `src/app/handlers/operations`
 
 **Files:**
+
 - `DeployHandler.js`
 - `HeavyWorkHandler.js`
 - `JobStatusHandler.js`
@@ -166,6 +170,7 @@ graph TD
 **Location:** `src/app/handlers/quotes`
 
 **Files:**
+
 - `AddQuoteHandler.js`
 - `ListQuotesHandler.js`
 - `QuoteHandler.js`
@@ -194,11 +199,11 @@ graph LR
         Cache["Cache"]
     end
 
-    
-    
-    
-    
-    
+
+
+
+
+
 
     style S0 fill:#f1f8e9, stroke:#558b2f, stroke-width:2px
     style S1 fill:#f1f8e9, stroke:#558b2f, stroke-width:2px
@@ -255,18 +260,19 @@ graph LR
 
 ## Component Summary
 
-| Component Type | Count | Percentage |
-|---|---|---|
-| Handlers | 23 | 72% |
-| Services | 5 | 16% |
-| Middleware | 4 | 13% |
-| **TOTAL** | **32** | **100%** |
+| Component Type | Count  | Percentage |
+| -------------- | ------ | ---------- |
+| Handlers       | 23     | 72%        |
+| Services       | 5      | 16%        |
+| Middleware     | 4      | 13%        |
+| **TOTAL**      | **32** | **100%**   |
 
 ---
 
 ## Data Structures
 
 ### Handler Structure
+
 ```json
 {
   "category": {
@@ -278,6 +284,7 @@ graph LR
 ```
 
 ### Service Structure
+
 ```json
 {
   "services": ["service1", "service2", ...]
@@ -285,6 +292,7 @@ graph LR
 ```
 
 ### Middleware Structure
+
 ```json
 {
   "middleware": ["middleware1", "middleware2", ...]
@@ -296,16 +304,19 @@ graph LR
 ## Design Patterns Used
 
 ### Handler Pattern
+
 - Organized by responsibility (admin, core, messaging, operations, quotes)
 - Each handler encapsulates related functionality
 - Clear separation of concerns
 
 ### Service Pattern
+
 - Centralized business logic
 - Reusable across handlers
 - Dependency injection ready
 
 ### Middleware Pattern
+
 - Pipeline-based processing
 - Request/response modification
 - Cross-cutting concerns

@@ -49,7 +49,10 @@ function getGitInfo() {
   try {
     const commit = execSync('git rev-parse --short HEAD', { encoding: 'utf8' }).trim();
     const branch = execSync('git rev-parse --abbrev-ref HEAD', { encoding: 'utf8' }).trim();
-    const ahead = execSync('git rev-list --left-only --count origin/main...HEAD 2>/dev/null || echo "0"', { encoding: 'utf8' }).trim();
+    const ahead = execSync(
+      'git rev-list --left-only --count origin/main...HEAD 2>/dev/null || echo "0"',
+      { encoding: 'utf8' },
+    ).trim();
 
     return {
       commit,
@@ -139,7 +142,8 @@ function getCodeMetrics() {
     linesOfCode: srcMetrics.lines,
     testFiles: testMetrics.files,
     testCases,
-    averageFileSize: srcMetrics.files > 0 ? `${Math.round(srcMetrics.lines / srcMetrics.files)} lines` : 'N/A',
+    averageFileSize:
+      srcMetrics.files > 0 ? `${Math.round(srcMetrics.lines / srcMetrics.files)} lines` : 'N/A',
   };
 }
 
@@ -200,7 +204,10 @@ function getQualityMetrics() {
   }
 
   try {
-    const prettierResult = execSync('npm run format:check 2>&1', { encoding: 'utf8', stdio: 'pipe' });
+    const prettierResult = execSync('npm run format:check 2>&1', {
+      encoding: 'utf8',
+      stdio: 'pipe',
+    });
     quality.prettier = 'compliant';
   } catch {
     quality.prettier = 'compliant'; // format is optional
@@ -473,8 +480,9 @@ function main() {
     console.log(`   Lines of Code:    ${baseline.code.linesOfCode.toLocaleString()}`);
     console.log(`   Test Cases:       ${baseline.code.testCases}`);
     console.log(`   Code Coverage:    ${baseline.coverage.lines}%`);
-    console.log(`   Quality Status:   ESLint ${baseline.quality.eslint}, Tests ${baseline.quality.tests}\n`);
-
+    console.log(
+      `   Quality Status:   ESLint ${baseline.quality.eslint}, Tests ${baseline.quality.tests}\n`,
+    );
   } catch (error) {
     console.error('❌ Error tracking performance:', error.message);
     process.exit(1);

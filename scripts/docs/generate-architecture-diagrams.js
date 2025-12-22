@@ -49,15 +49,17 @@ function scanHandlers() {
     return handlers;
   }
 
-  const categories = fs.readdirSync(HANDLERS_PATH, { withFileTypes: true })
-    .filter(entry => entry.isDirectory())
-    .map(entry => entry.name);
+  const categories = fs
+    .readdirSync(HANDLERS_PATH, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => entry.name);
 
   for (const category of categories) {
     const categoryPath = path.join(HANDLERS_PATH, category);
-    const files = fs.readdirSync(categoryPath, { withFileTypes: true })
-      .filter(entry => entry.isFile() && entry.name.endsWith('.js'))
-      .map(entry => entry.name.replace('.js', ''));
+    const files = fs
+      .readdirSync(categoryPath, { withFileTypes: true })
+      .filter((entry) => entry.isFile() && entry.name.endsWith('.js'))
+      .map((entry) => entry.name.replace('.js', ''));
 
     handlers[category] = {
       path: `src/app/handlers/${category}`,
@@ -80,9 +82,10 @@ function scanServices() {
     return services;
   }
 
-  const files = fs.readdirSync(SERVICES_PATH, { withFileTypes: true })
-    .filter(entry => entry.isFile() && entry.name.endsWith('.js'))
-    .map(entry => entry.name.replace('.js', ''));
+  const files = fs
+    .readdirSync(SERVICES_PATH, { withFileTypes: true })
+    .filter((entry) => entry.isFile() && entry.name.endsWith('.js'))
+    .map((entry) => entry.name.replace('.js', ''));
 
   return files;
 }
@@ -97,9 +100,10 @@ function scanMiddleware() {
     return middleware;
   }
 
-  const files = fs.readdirSync(MIDDLEWARE_PATH, { withFileTypes: true })
-    .filter(entry => entry.isFile() && entry.name.endsWith('.js'))
-    .map(entry => entry.name.replace('.js', ''));
+  const files = fs
+    .readdirSync(MIDDLEWARE_PATH, { withFileTypes: true })
+    .filter((entry) => entry.isFile() && entry.name.endsWith('.js'))
+    .map((entry) => entry.name.replace('.js', ''));
 
   return files;
 }
@@ -108,8 +112,10 @@ function scanMiddleware() {
  * Generate system architecture overview diagram
  */
 function generateSystemArchitectureDiagram() {
-  const totalHandlers = Object.values(architecture.components.handlers)
-    .reduce((sum, cat) => sum + cat.count, 0);
+  const totalHandlers = Object.values(architecture.components.handlers).reduce(
+    (sum, cat) => sum + cat.count,
+    0,
+  );
 
   return `graph TB
     subgraph Discord["🤖 Discord Bot Framework"]
@@ -176,11 +182,13 @@ function generateHandlerOrganizationDiagram() {
   const diagram = `graph TD
     Handlers["👥 Handler Organization"]
     
-    ${Object.entries(architecture.components.handlers).map(([key, data]) => {
-      const files = data.files.slice(0, 3);
-      const suffix = data.count > 3 ? `<br/>... +${data.count - 3} more` : '';
-      return `${key}["${data.displayName} Handlers<br/>(${data.count} total)<br/><br/>${files.join('<br/>')}${suffix}"]`;
-    }).join('\n    ')}
+    ${Object.entries(architecture.components.handlers)
+      .map(([key, data]) => {
+        const files = data.files.slice(0, 3);
+        const suffix = data.count > 3 ? `<br/>... +${data.count - 3} more` : '';
+        return `${key}["${data.displayName} Handlers<br/>(${data.count} total)<br/><br/>${files.join('<br/>')}${suffix}"]`;
+      })
+      .join('\n    ')}
 
     Handlers --> admin
     Handlers --> core
@@ -188,16 +196,18 @@ function generateHandlerOrganizationDiagram() {
     Handlers --> operations
     Handlers --> quotes
 
-    ${Object.keys(architecture.components.handlers).map((key) => {
-      const colors = {
-        admin: 'fill:#ff6b6b',
-        core: 'fill:#4ecdc4',
-        messaging: 'fill:#45b7d1',
-        operations: 'fill:#f9ca24',
-        quotes: 'fill:#6c5ce7',
-      };
-      return `style ${key} ${colors[key] || 'fill:#95a5a6'}, color:#fff`;
-    }).join('\n    ')}
+    ${Object.keys(architecture.components.handlers)
+      .map((key) => {
+        const colors = {
+          admin: 'fill:#ff6b6b',
+          core: 'fill:#4ecdc4',
+          messaging: 'fill:#45b7d1',
+          operations: 'fill:#f9ca24',
+          quotes: 'fill:#6c5ce7',
+        };
+        return `style ${key} ${colors[key] || 'fill:#95a5a6'}, color:#fff`;
+      })
+      .join('\n    ')}
 
     style Handlers fill:#2c3e50, color:#fff`;
 
@@ -212,7 +222,7 @@ function generateServiceDependencyDiagram() {
 
   return `graph LR
     subgraph Internal["Internal Services"]
-        ${services.map(s => `S${services.indexOf(s)}["${s.charAt(0).toUpperCase() + s.slice(1)}"]`).join('\n        ')}
+        ${services.map((s) => `S${services.indexOf(s)}["${s.charAt(0).toUpperCase() + s.slice(1)}"]`).join('\n        ')}
     end
 
     subgraph External["External Dependencies"]
@@ -221,19 +231,21 @@ function generateServiceDependencyDiagram() {
         Cache["Cache"]
     end
 
-    ${services.map((s, i) => {
-      const connections = [];
-      if (s.includes('quote') || s.includes('database')) {
-        connections.push('S' + i + ' --> DB');
-      }
-      if (s.includes('discord') || s.includes('user')) {
-        connections.push('S' + i + ' --> Discord');
-      }
-      if (s.includes('cache')) {
-        connections.push('S' + i + ' --> Cache');
-      }
-      return connections.join('\n    ');
-    }).join('\n    ')}
+    ${services
+      .map((s, i) => {
+        const connections = [];
+        if (s.includes('quote') || s.includes('database')) {
+          connections.push('S' + i + ' --> DB');
+        }
+        if (s.includes('discord') || s.includes('user')) {
+          connections.push('S' + i + ' --> Discord');
+        }
+        if (s.includes('cache')) {
+          connections.push('S' + i + ' --> Cache');
+        }
+        return connections.join('\n    ');
+      })
+      .join('\n    ')}
 
     ${services.map((s, i) => `style S${i} fill:#f1f8e9, stroke:#558b2f, stroke-width:2px`).join('\n    ')}
     style DB fill:#ede7f6
@@ -269,7 +281,8 @@ function generateMiddlewarePipelineDiagram() {
     diagram += `\n    style M${i} ${colors[m] || 'fill:#95a5a6'}, color:#fff`;
   });
 
-  diagram += '\n    style Input fill:#2c3e50, color:#fff\n    style Response fill:#27ae60, color:#fff';
+  diagram +=
+    '\n    style Input fill:#2c3e50, color:#fff\n    style Response fill:#27ae60, color:#fff';
 
   return diagram;
 }
@@ -278,8 +291,10 @@ function generateMiddlewarePipelineDiagram() {
  * Generate complete markdown document
  */
 function generateMarkdownDocument() {
-  const totalHandlers = Object.values(architecture.components.handlers)
-    .reduce((sum, cat) => sum + cat.count, 0);
+  const totalHandlers = Object.values(architecture.components.handlers).reduce(
+    (sum, cat) => sum + cat.count,
+    0,
+  );
 
   let markdown = `# Architecture Diagrams
 
@@ -333,7 +348,7 @@ ${generateHandlerOrganizationDiagram()}
     markdown += `#### ${data.displayName} (${data.count} handlers)\n\n`;
     markdown += `**Location:** \`${data.path}\`\n\n`;
     markdown += '**Files:**\n';
-    data.files.forEach(file => {
+    data.files.forEach((file) => {
       markdown += `- \`${file}.js\`\n`;
     });
     markdown += '\n';
@@ -353,7 +368,7 @@ ${generateServiceDependencyDiagram()}
 
 `;
 
-  architecture.components.services.forEach(service => {
+  architecture.components.services.forEach((service) => {
     markdown += `- **${service.charAt(0).toUpperCase() + service.slice(1)}** - \`src/core/services/${service}.js\`\n`;
   });
 
@@ -372,7 +387,7 @@ ${generateMiddlewarePipelineDiagram()}
 
 `;
 
-  architecture.components.middleware.forEach(mw => {
+  architecture.components.middleware.forEach((mw) => {
     markdown += `- **${mw.charAt(0).toUpperCase() + mw.slice(1)}** - \`src/app/middleware/${mw}.js\`\n`;
   });
 
@@ -383,9 +398,9 @@ ${generateMiddlewarePipelineDiagram()}
 
 | Component Type | Count | Percentage |
 |---|---|---|
-| Handlers | ${totalHandlers} | ${Math.round(totalHandlers / (totalHandlers + architecture.components.services.length + architecture.components.middleware.length) * 100)}% |
-| Services | ${architecture.components.services.length} | ${Math.round(architecture.components.services.length / (totalHandlers + architecture.components.services.length + architecture.components.middleware.length) * 100)}% |
-| Middleware | ${architecture.components.middleware.length} | ${Math.round(architecture.components.middleware.length / (totalHandlers + architecture.components.services.length + architecture.components.middleware.length) * 100)}% |
+| Handlers | ${totalHandlers} | ${Math.round((totalHandlers / (totalHandlers + architecture.components.services.length + architecture.components.middleware.length)) * 100)}% |
+| Services | ${architecture.components.services.length} | ${Math.round((architecture.components.services.length / (totalHandlers + architecture.components.services.length + architecture.components.middleware.length)) * 100)}% |
+| Middleware | ${architecture.components.middleware.length} | ${Math.round((architecture.components.middleware.length / (totalHandlers + architecture.components.services.length + architecture.components.middleware.length)) * 100)}% |
 | **TOTAL** | **${totalHandlers + architecture.components.services.length + architecture.components.middleware.length}** | **100%** |
 
 ---
@@ -479,7 +494,9 @@ function main() {
     architecture.components.services = scanServices();
     architecture.components.middleware = scanMiddleware();
 
-    console.log(`   ✅ Found ${Object.values(architecture.components.handlers).reduce((sum, cat) => sum + cat.count, 0)} handlers`);
+    console.log(
+      `   ✅ Found ${Object.values(architecture.components.handlers).reduce((sum, cat) => sum + cat.count, 0)} handlers`,
+    );
     console.log(`   ✅ Found ${architecture.components.services.length} services`);
     console.log(`   ✅ Found ${architecture.components.middleware.length} middleware components\n`);
 
@@ -512,7 +529,6 @@ function main() {
     console.log('\n📄 Output Files:\n');
     console.log(`   📖 Documentation: ${path.relative(process.cwd(), DOCS_OUTPUT)}`);
     console.log(`   📊 Data: ${path.relative(process.cwd(), JSON_OUTPUT)}\n`);
-
   } catch (error) {
     console.error('❌ Error generating architecture diagrams:', error.message);
     process.exit(1);
