@@ -58,7 +58,7 @@ describe('CommandBus', () => {
       });
 
       await expect(bus.execute(command)).rejects.toThrow(
-        "No handler for command 'unknown-command'"
+        "No handler for command 'unknown-command'",
       );
     });
 
