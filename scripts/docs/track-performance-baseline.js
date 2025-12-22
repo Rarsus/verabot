@@ -2,10 +2,10 @@
 
 /**
  * Performance Baseline Tracker
- * 
+ *
  * Tracks and documents performance characteristics of the application
  * to detect regressions and optimize hot paths.
- * 
+ *
  * Features:
  * - Measures startup time
  * - Tracks test execution performance
@@ -13,7 +13,7 @@
  * - Calculates code metrics
  * - Generates trend reports
  * - Stores timestamped baselines
- * 
+ *
  * Output:
  * - .metrics/PERFORMANCE-BASELINE.json (timestamped data)
  * - .metrics/PERFORMANCE-REPORT.md (human-readable report)
@@ -39,7 +39,7 @@ const baseline = {
   memory: {},
   coverage: {},
   quality: {},
-  comparisons: {}
+  comparisons: {},
 };
 
 /**
@@ -50,18 +50,18 @@ function getGitInfo() {
     const commit = execSync('git rev-parse --short HEAD', { encoding: 'utf8' }).trim();
     const branch = execSync('git rev-parse --abbrev-ref HEAD', { encoding: 'utf8' }).trim();
     const ahead = execSync('git rev-list --left-only --count origin/main...HEAD 2>/dev/null || echo "0"', { encoding: 'utf8' }).trim();
-    
+
     return {
       commit,
       branch,
       ahead: parseInt(ahead) || 0,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     };
   } catch (error) {
     return {
       commit: 'unknown',
       branch: 'unknown',
-      ahead: 0
+      ahead: 0,
     };
   }
 }
@@ -87,7 +87,7 @@ function measureStartupTime() {
 function getCodeMetrics() {
   const srcPath = path.join(process.cwd(), 'src');
   const testPath = path.join(process.cwd(), 'tests');
-  
+
   function walkDirectory(dir) {
     let jsFiles = 0;
     let totalLines = 0;
@@ -139,7 +139,7 @@ function getCodeMetrics() {
     linesOfCode: srcMetrics.lines,
     testFiles: testMetrics.files,
     testCases,
-    averageFileSize: srcMetrics.files > 0 ? `${Math.round(srcMetrics.lines / srcMetrics.files)} lines` : 'N/A'
+    averageFileSize: srcMetrics.files > 0 ? `${Math.round(srcMetrics.lines / srcMetrics.files)} lines` : 'N/A',
   };
 }
 
@@ -148,12 +148,12 @@ function getCodeMetrics() {
  */
 function getMemoryMetrics() {
   const memUsage = process.memoryUsage();
-  
+
   return {
     rss: `${Math.round(memUsage.rss / 1024 / 1024)}MB`,
     heapUsed: `${Math.round(memUsage.heapUsed / 1024 / 1024)}MB`,
     heapTotal: `${Math.round(memUsage.heapTotal / 1024 / 1024)}MB`,
-    external: `${Math.round(memUsage.external / 1024 / 1024)}MB`
+    external: `${Math.round(memUsage.external / 1024 / 1024)}MB`,
   };
 }
 
@@ -169,7 +169,7 @@ function getCoverageMetrics() {
       statements: coverage.statements || 0,
       functions: coverage.functions || 0,
       branches: coverage.branches || 0,
-      timestamp: metrics.timestamp || baseline.timestamp
+      timestamp: metrics.timestamp || baseline.timestamp,
     };
   } catch {
     return {
@@ -177,7 +177,7 @@ function getCoverageMetrics() {
       statements: 0,
       functions: 0,
       branches: 0,
-      status: 'No coverage data available'
+      status: 'No coverage data available',
     };
   }
 }
@@ -189,7 +189,7 @@ function getQualityMetrics() {
   const quality = {
     eslint: 'checking...',
     prettier: 'checking...',
-    tests: 'checking...'
+    tests: 'checking...',
   };
 
   try {
@@ -225,7 +225,7 @@ function compareWithPrevious() {
 
   try {
     const previous = JSON.parse(fs.readFileSync(BASELINE_OUTPUT, 'utf8'));
-    
+
     // Compare code metrics
     if (baseline.code.sourceFiles && previous.code?.sourceFiles) {
       const diff = baseline.code.sourceFiles - previous.code.sourceFiles;
@@ -234,7 +234,7 @@ function compareWithPrevious() {
         current: baseline.code.sourceFiles,
         change: diff,
         percentage: `${((diff / previous.code.sourceFiles) * 100).toFixed(2)}%`,
-        status: diff > 0 ? '📈 Growth' : diff < 0 ? '📉 Reduction' : '➡️ No change'
+        status: diff > 0 ? '📈 Growth' : diff < 0 ? '📉 Reduction' : '➡️ No change',
       };
     }
 
@@ -245,7 +245,7 @@ function compareWithPrevious() {
         previous: `${previous.coverage.lines}%`,
         current: `${baseline.coverage.lines}%`,
         change: diff,
-        status: diff > 0 ? '📈 Improved' : diff < 0 ? '📉 Declined' : '➡️ Same'
+        status: diff > 0 ? '📈 Improved' : diff < 0 ? '📉 Declined' : '➡️ Same',
       };
     }
 
@@ -262,7 +262,7 @@ function generateMarkdownReport() {
   const sourceFiles = baseline.code.sourceFiles;
   const testFiles = baseline.code.testFiles;
   const totalFiles = sourceFiles + testFiles;
-  
+
   let markdown = `# Performance Baseline Report
 
 **Generated:** ${baseline.date}  
@@ -336,8 +336,8 @@ External:                ${baseline.memory.external}
 `;
 
   if (Object.keys(baseline.comparisons).length > 0) {
-    markdown += `### Code Metrics Change\n\n`;
-    
+    markdown += '### Code Metrics Change\n\n';
+
     if (baseline.comparisons.sourceFiles) {
       const comp = baseline.comparisons.sourceFiles;
       markdown += `**Source Files:** ${comp.previous} → ${comp.current} (${comp.change > 0 ? '+' : ''}${comp.change}, ${comp.percentage})  \n`;
@@ -350,7 +350,7 @@ External:                ${baseline.memory.external}
       markdown += `Status: ${comp.status}\n\n`;
     }
   } else {
-    markdown += `No previous baseline data available for comparison.\n\n`;
+    markdown += 'No previous baseline data available for comparison.\n\n';
   }
 
   markdown += `---
@@ -424,29 +424,29 @@ function main() {
   try {
     // Collect metrics
     console.log('📊 Collecting metrics...');
-    
+
     baseline.git = getGitInfo();
-    console.log(`   ✅ Git information collected`);
-    
+    console.log('   ✅ Git information collected');
+
     baseline.code = getCodeMetrics();
     console.log(`   ✅ Code metrics collected (${baseline.code.sourceFiles} source files)`);
-    
+
     baseline.memory = getMemoryMetrics();
-    console.log(`   ✅ Memory metrics collected`);
-    
+    console.log('   ✅ Memory metrics collected');
+
     baseline.coverage = getCoverageMetrics();
     console.log(`   ✅ Coverage metrics collected (${baseline.coverage.lines}% lines)`);
-    
+
     baseline.quality = getQualityMetrics();
-    console.log(`   ✅ Quality metrics collected\n`);
+    console.log('   ✅ Quality metrics collected\n');
 
     // Compare with previous
     console.log('📈 Comparing with previous baseline...');
     baseline.comparisons = compareWithPrevious();
     if (Object.keys(baseline.comparisons).length > 0) {
-      console.log(`   ✅ Previous baseline found, comparison complete`);
+      console.log('   ✅ Previous baseline found, comparison complete');
     } else {
-      console.log(`   ℹ️  No previous baseline (first run)`);
+      console.log('   ℹ️  No previous baseline (first run)');
     }
     console.log();
 

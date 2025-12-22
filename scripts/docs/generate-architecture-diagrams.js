@@ -2,16 +2,16 @@
 
 /**
  * Architecture Diagram Generator
- * 
+ *
  * Auto-generates visual architecture diagrams from codebase structure
  * using Mermaid syntax for embedded markdown diagrams.
- * 
+ *
  * Features:
  * - System architecture overview
  * - Handler organization hierarchy
  * - Service dependency graph
  * - Middleware pipeline visualization
- * 
+ *
  * Output:
  * - docs/ARCHITECTURE-DIAGRAMS.md (with Mermaid diagrams)
  * - .metrics/ARCHITECTURE.json (machine-readable structure)
@@ -34,9 +34,9 @@ const architecture = {
   components: {
     handlers: {},
     services: [],
-    middleware: []
+    middleware: [],
   },
-  relationships: []
+  relationships: [],
 };
 
 /**
@@ -44,7 +44,7 @@ const architecture = {
  */
 function scanHandlers() {
   const handlers = {};
-  
+
   if (!fs.existsSync(HANDLERS_PATH)) {
     return handlers;
   }
@@ -63,7 +63,7 @@ function scanHandlers() {
       path: `src/app/handlers/${category}`,
       count: files.length,
       files: files,
-      displayName: category.charAt(0).toUpperCase() + category.slice(1)
+      displayName: category.charAt(0).toUpperCase() + category.slice(1),
     };
   }
 
@@ -75,7 +75,7 @@ function scanHandlers() {
  */
 function scanServices() {
   const services = [];
-  
+
   if (!fs.existsSync(SERVICES_PATH)) {
     return services;
   }
@@ -92,7 +92,7 @@ function scanServices() {
  */
 function scanMiddleware() {
   const middleware = [];
-  
+
   if (!fs.existsSync(MIDDLEWARE_PATH)) {
     return middleware;
   }
@@ -173,7 +173,7 @@ function generateSystemArchitectureDiagram() {
  * Generate handler organization diagram
  */
 function generateHandlerOrganizationDiagram() {
-  let diagram = `graph TD
+  const diagram = `graph TD
     Handlers["👥 Handler Organization"]
     
     ${Object.entries(architecture.components.handlers).map(([key, data]) => {
@@ -194,7 +194,7 @@ function generateHandlerOrganizationDiagram() {
         core: 'fill:#4ecdc4',
         messaging: 'fill:#45b7d1',
         operations: 'fill:#f9ca24',
-        quotes: 'fill:#6c5ce7'
+        quotes: 'fill:#6c5ce7',
       };
       return `style ${key} ${colors[key] || 'fill:#95a5a6'}, color:#fff`;
     }).join('\n    ')}
@@ -209,7 +209,7 @@ function generateHandlerOrganizationDiagram() {
  */
 function generateServiceDependencyDiagram() {
   const services = architecture.components.services;
-  
+
   return `graph LR
     subgraph Internal["Internal Services"]
         ${services.map(s => `S${services.indexOf(s)}["${s.charAt(0).toUpperCase() + s.slice(1)}"]`).join('\n        ')}
@@ -222,7 +222,7 @@ function generateServiceDependencyDiagram() {
     end
 
     ${services.map((s, i) => {
-      let connections = [];
+      const connections = [];
       if (s.includes('quote') || s.includes('database')) {
         connections.push('S' + i + ' --> DB');
       }
@@ -246,16 +246,16 @@ function generateServiceDependencyDiagram() {
  */
 function generateMiddlewarePipelineDiagram() {
   const middleware = architecture.components.middleware;
-  
+
   let diagram = 'graph LR\n    Input["Incoming Request"]';
-  
+
   middleware.forEach((m, i) => {
     diagram += `\n    Input --> M${i}["${m.charAt(0).toUpperCase() + m.slice(1)}"]`;
     if (i < middleware.length - 1) {
       diagram += `\n    M${i} --> M${i + 1}`;
     } else {
       diagram += `\n    M${i} --> Handler["Handler Processing"]`;
-      diagram += `\n    Handler --> Response["Response"]`;
+      diagram += '\n    Handler --> Response["Response"]';
     }
   });
 
@@ -264,7 +264,7 @@ function generateMiddlewarePipelineDiagram() {
       authentication: 'fill:#ff6b6b',
       'rate-limiting': 'fill:#4ecdc4',
       logging: 'fill:#45b7d1',
-      'error-handling': 'fill:#f9ca24'
+      'error-handling': 'fill:#f9ca24',
     };
     diagram += `\n    style M${i} ${colors[m] || 'fill:#95a5a6'}, color:#fff`;
   });
@@ -332,7 +332,7 @@ ${generateHandlerOrganizationDiagram()}
   for (const [category, data] of Object.entries(architecture.components.handlers)) {
     markdown += `#### ${data.displayName} (${data.count} handlers)\n\n`;
     markdown += `**Location:** \`${data.path}\`\n\n`;
-    markdown += `**Files:**\n`;
+    markdown += '**Files:**\n';
     data.files.forEach(file => {
       markdown += `- \`${file}.js\`\n`;
     });
@@ -509,7 +509,7 @@ function main() {
 
     // Summary
     console.log('✅ Architecture diagrams generated successfully!');
-    console.log(`\n📄 Output Files:\n`);
+    console.log('\n📄 Output Files:\n');
     console.log(`   📖 Documentation: ${path.relative(process.cwd(), DOCS_OUTPUT)}`);
     console.log(`   📊 Data: ${path.relative(process.cwd(), JSON_OUTPUT)}\n`);
 
