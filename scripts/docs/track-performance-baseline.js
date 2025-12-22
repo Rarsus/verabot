@@ -69,21 +69,6 @@ function getGitInfo() {
 }
 
 /**
- * Measure startup time
- */
-function measureStartupTime() {
-  try {
-    const startTime = Date.now();
-    require(path.join(process.cwd(), 'src', 'index.js'));
-    const elapsed = Date.now() - startTime;
-    return `${elapsed}ms`;
-  } catch (error) {
-    // Module may require Discord token, estimate based on file loads
-    return 'N/A (requires runtime)';
-  }
-}
-
-/**
  * Get code metrics
  */
 function getCodeMetrics() {
