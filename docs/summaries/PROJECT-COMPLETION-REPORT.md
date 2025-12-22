@@ -205,8 +205,8 @@ npm test -- --watch
 
 ### Documentation Deliverables
 
-| Deliverable         | Format   | Location                                                      | Status |
-| ------------------- | -------- | ------------------------------------------------------------- | ------ |
+| Deliverable         | Format   | Location                                                  | Status |
+| ------------------- | -------- | --------------------------------------------------------- | ------ |
 | Installation Guide  | Markdown | [1-GETTING-STARTED.md](../1-GETTING-STARTED.md)           | ✅     |
 | Quick Start         | Markdown | [2-QUICK-START.md](../2-QUICK-START.md)                   | ✅     |
 | Configuration       | Markdown | [3-ENVIRONMENT-CONFIG.md](../3-ENVIRONMENT-CONFIG.md)     | ✅     |

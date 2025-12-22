@@ -29,6 +29,14 @@ const AllowChannelHandler = require('../app/handlers/admin/AllowChannelHandler')
 const AllowedHandler = require('../app/handlers/admin/AllowedHandler');
 const AuditHandler = require('../app/handlers/admin/AuditHandler');
 
+const AddQuoteHandler = require('../app/handlers/quotes/AddQuoteHandler');
+const QuoteHandler = require('../app/handlers/quotes/QuoteHandler');
+const RandomQuoteHandler = require('../app/handlers/quotes/RandomQuoteHandler');
+const ListQuotesHandler = require('../app/handlers/quotes/ListQuotesHandler');
+const SearchQuotesHandler = require('../app/handlers/quotes/SearchQuotesHandler');
+
+const QuoteService = require('../core/services/QuoteService');
+
 /**
  * Create message broadcast service for Discord channel messaging
  * @param {Discord.Client} discordClient - Discord.js client instance
@@ -88,6 +96,9 @@ function bootstrap(container) {
   const statusProvider = createStatusProvider(container);
   const helpService = container.services.helpService;
   helpService.registry = registry;
+
+  // Initialize quote service
+  const quoteService = new QuoteService(container.repositories.quoteRepo);
 
   // CORE
   registry.register('ping', new PingHandler(), {
@@ -322,6 +333,63 @@ function bootstrap(container) {
     ],
     permissions: { discordPermissions: ['Administrator'] },
     cooldown: { seconds: 0 },
+  });
+
+  // QUOTES
+  registry.register('addquote', new AddQuoteHandler(quoteService), {
+    category: 'quotes',
+    group: 'quote',
+    description: 'Add a new quote to the database.',
+    usage: '/quote addquote text:<quote> [author:<name>]',
+    examples: [
+      '/quote addquote text:"To be or not to be" author:"Shakespeare"',
+      '/quote addquote text:"Hello World"',
+    ],
+    options: [
+      { name: 'text', type: 'string', description: 'Quote text', required: true },
+      { name: 'author', type: 'string', description: 'Quote author', required: false },
+    ],
+    cooldown: { seconds: 5 },
+  });
+
+  registry.register('quote', new QuoteHandler(quoteService), {
+    category: 'quotes',
+    group: 'quote',
+    description: 'Get a quote by its ID.',
+    usage: '/quote quote id:<number>',
+    examples: ['/quote quote id:1', '/quote quote id:42'],
+    options: [{ name: 'id', type: 'integer', description: 'Quote ID', required: true }],
+    cooldown: { seconds: 2 },
+  });
+
+  registry.register('randomquote', new RandomQuoteHandler(quoteService), {
+    category: 'quotes',
+    group: 'quote',
+    description: 'Get a random quote from the database.',
+    usage: '/quote randomquote',
+    examples: ['/quote randomquote'],
+    options: [],
+    cooldown: { seconds: 3 },
+  });
+
+  registry.register('listquotes', new ListQuotesHandler(quoteService), {
+    category: 'quotes',
+    group: 'quote',
+    description: 'List all quotes in the database.',
+    usage: '/quote listquotes',
+    examples: ['/quote listquotes'],
+    options: [],
+    cooldown: { seconds: 5 },
+  });
+
+  registry.register('searchquotes', new SearchQuotesHandler(quoteService), {
+    category: 'quotes',
+    group: 'quote',
+    description: 'Search quotes by text or author.',
+    usage: '/quote searchquotes query:<search>',
+    examples: ['/quote searchquotes query:"wisdom"', '/quote searchquotes query:"Einstein"'],
+    options: [{ name: 'query', type: 'string', description: 'Search query', required: true }],
+    cooldown: { seconds: 3 },
   });
 
   const pipeline = new MiddlewarePipeline([

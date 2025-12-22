@@ -52,6 +52,16 @@ function createDb(config, logger) {
       command TEXT PRIMARY KEY,
       last_used INTEGER
     );
+    CREATE TABLE IF NOT EXISTS quotes (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      text TEXT NOT NULL,
+      author TEXT NOT NULL DEFAULT 'Anonymous',
+      added_by TEXT,
+      added_at TEXT NOT NULL,
+      created_at TEXT DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_quotes_author ON quotes(author);
+    CREATE INDEX IF NOT EXISTS idx_quotes_added_at ON quotes(added_at);
   `);
 
   logger.info('SQLite schema ready');

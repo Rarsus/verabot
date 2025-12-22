@@ -213,8 +213,76 @@ function createRateLimitRepository(db) {
 }
 
 /**
+ * Create quote repository for managing quotes
+ * @param {Object} db - Database instance with raw connection
+ * @returns {Object} Quote repository with methods for CRUD operations
+ * @private
+ */
+function createQuoteRepository(db) {
+  const conn = db.raw;
+  return {
+    /**
+     * Add a new quote
+     * @param {string} text - Quote text
+     * @param {string} author - Quote author
+     * @param {string} addedBy - User ID who added the quote
+     * @returns {Promise<number>} The ID of the newly created quote
+     */
+    async add(text, author, addedBy) {
+      const result = conn
+        .prepare(
+          'INSERT INTO quotes (text, author, added_by, added_at) VALUES (?, ?, ?, datetime("now"))',
+        )
+        .run(text, author, addedBy);
+      return result.lastInsertRowid;
+    },
+    /**
+     * Get all quotes
+     * @returns {Promise<Array>} Array of all quotes
+     */
+    async getAll() {
+      return conn.prepare('SELECT * FROM quotes ORDER BY id ASC').all();
+    },
+    /**
+     * Get a quote by ID
+     * @param {number} id - Quote ID
+     * @returns {Promise<Object|null>} Quote object or null if not found
+     */
+    async getById(id) {
+      return conn.prepare('SELECT * FROM quotes WHERE id = ?').get(id) || null;
+    },
+    /**
+     * Get a random quote
+     * @returns {Promise<Object|null>} Random quote object or null if no quotes exist
+     */
+    async getRandom() {
+      return conn.prepare('SELECT * FROM quotes ORDER BY RANDOM() LIMIT 1').get() || null;
+    },
+    /**
+     * Search quotes by text or author
+     * @param {string} query - Search query
+     * @returns {Promise<Array>} Array of matching quotes
+     */
+    async search(query) {
+      const searchPattern = `%${query}%`;
+      return conn
+        .prepare('SELECT * FROM quotes WHERE text LIKE ? OR author LIKE ? ORDER BY id DESC')
+        .all(searchPattern, searchPattern);
+    },
+    /**
+     * Get the count of all quotes
+     * @returns {Promise<number>} Total number of quotes
+     */
+    async count() {
+      const row = conn.prepare('SELECT COUNT(*) as count FROM quotes').get();
+      return row ? row.count : 0;
+    },
+  };
+}
+
+/**
  * Create all repository instances
- * Factory function initializing command, permission, audit, and rate limit repositories
+ * Factory function initializing command, permission, audit, rate limit, and quote repositories
  * @param {Object} db - Database instance
  * @param {Object} logger - Logger instance
  * @returns {Object} Object containing all repositories
@@ -222,10 +290,12 @@ function createRateLimitRepository(db) {
  * @returns {Object} returns.permissionRepo - Permission management repository
  * @returns {Object} returns.auditRepo - Audit logging repository
  * @returns {Object} returns.rateLimitRepo - Rate limiting repository
+ * @returns {Object} returns.quoteRepo - Quote management repository
  * @example
  * const repositories = createRepositories(db, logger);
  * const isAllowed = await repositories.commandRepo.isAllowed('ping');
  * await repositories.permissionRepo.addRole('ping', 'admin_role_id');
+ * const quotes = await repositories.quoteRepo.getAll();
  */
 function createRepositories(db, logger) {
   logger.info('Creating repositories');
@@ -234,6 +304,7 @@ function createRepositories(db, logger) {
     permissionRepo: createPermissionRepository(db),
     auditRepo: createAuditRepository(db),
     rateLimitRepo: createRateLimitRepository(db),
+    quoteRepo: createQuoteRepository(db),
   };
 }
 
