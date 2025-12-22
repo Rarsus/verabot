@@ -127,9 +127,7 @@ describe('QuoteService', () => {
     });
 
     it('should throw error for empty search query', async () => {
-      await expect(quoteService.searchQuotes('')).rejects.toThrow(
-        'Search query cannot be empty',
-      );
+      await expect(quoteService.searchQuotes('')).rejects.toThrow('Search query cannot be empty');
     });
   });
 

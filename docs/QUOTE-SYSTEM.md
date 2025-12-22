@@ -23,6 +23,7 @@ The quote system allows users to store, retrieve, and search quotes through Disc
 **QuoteRepository** (`src/infra/db/Repositories.js`)
 
 Provides data access methods:
+
 - `add(text, author, addedBy)` - Add a new quote
 - `getAll()` - Get all quotes
 - `getById(id)` - Get quote by ID
@@ -35,6 +36,7 @@ Provides data access methods:
 **QuoteService** (`src/core/services/QuoteService.js`)
 
 Handles business logic:
+
 - Input validation (text length, author length)
 - Data sanitization (trimming whitespace)
 - Error handling
@@ -51,6 +53,7 @@ Located in `src/app/handlers/quotes/`:
 - **SearchQuotesHandler** - Search quotes
 
 Each handler:
+
 - Validates command parameters
 - Calls the appropriate service method
 - Returns CommandResult (success/failure)
@@ -95,6 +98,7 @@ While inspired by verabot2.0, the implementation has been adapted to fit verabot
 ## Future Enhancements
 
 Potential improvements:
+
 - Quote editing and deletion
 - Quote categories/tags
 - Quote ratings

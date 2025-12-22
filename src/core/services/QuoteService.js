@@ -34,9 +34,7 @@ class QuoteService {
       throw new Error('Quote text cannot be empty');
     }
     if (text.length > MAX_QUOTE_TEXT_LENGTH) {
-      throw new Error(
-        `Quote text is too long (maximum ${MAX_QUOTE_TEXT_LENGTH} characters)`,
-      );
+      throw new Error(`Quote text is too long (maximum ${MAX_QUOTE_TEXT_LENGTH} characters)`);
     }
     if (author && author.length > MAX_AUTHOR_LENGTH) {
       throw new Error(`Author name is too long (maximum ${MAX_AUTHOR_LENGTH} characters)`);
