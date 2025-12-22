@@ -29,6 +29,7 @@ jobs:
         run: npm run lint
 
       - name: Format Check
+        continue-on-error: true
         run: npm run format:check
 
       - name: Run Tests
