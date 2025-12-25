@@ -114,4 +114,20 @@ describe('GiveDareHandler', () => {
     expect(result.success).toBe(true);
     expect(mockDareService.getRandomDare).toHaveBeenCalled();
   });
+
+  it('should handle service error when assigning dare', async () => {
+    const mockDare = { id: 1, content: 'Test dare', status: 'active' };
+    mockDareService.getRandomDare.mockResolvedValue(mockDare);
+    mockDareService.assignDare.mockRejectedValue(new Error('Assignment failed'));
+
+    const command = {
+      metadata: { user: 'targetUser', random: true },
+    };
+
+    const result = await handler.handle(command);
+
+    expect(result.success).toBe(false);
+    expect(result.error).toBeInstanceOf(Error);
+    expect(result.error.message).toBe('Assignment failed');
+  });
 });

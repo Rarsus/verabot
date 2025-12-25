@@ -372,6 +372,12 @@ describe('DareService', () => {
 
       expect(result).toBe(true);
     });
+
+    it('should throw error for invalid dare id', async () => {
+      await expect(dareService.completeDare(0, 'user123')).rejects.toThrow('Invalid dare ID');
+      await expect(dareService.completeDare(-1, 'user123')).rejects.toThrow('Invalid dare ID');
+      await expect(dareService.completeDare(null, 'user123')).rejects.toThrow('Invalid dare ID');
+    });
   });
 
   describe('getDareCount', () => {

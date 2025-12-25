@@ -299,7 +299,7 @@ function createDareRepository(db) {
     async add(content, source, createdBy) {
       const result = conn
         .prepare(
-          'INSERT INTO dares (content, source, created_by, created_at) VALUES (?, ?, ?, datetime("now"))',
+          "INSERT INTO dares (content, source, created_by, created_at) VALUES (?, ?, ?, datetime('now'))",
         )
         .run(content, source, createdBy);
       return result.lastInsertRowid;
