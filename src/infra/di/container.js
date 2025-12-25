@@ -53,7 +53,7 @@ function createContainer() {
     dares: 5000,
   });
   const helpService = new HelpService(null); // registry attached in bootstrap
-  
+
   const perchanceService = new PerchanceService(logger);
   const dareService = new DareService(repositories.dareRepo, perchanceService);
 

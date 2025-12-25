@@ -107,7 +107,7 @@ function bootstrap(container) {
 
   // Initialize quote service
   const quoteService = new QuoteService(container.repositories.quoteRepo);
-  
+
   // Initialize dare service
   const dareService = container.services.dareService;
 

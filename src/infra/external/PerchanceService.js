@@ -56,13 +56,13 @@ class PerchanceService {
    */
   async generateDare(theme = 'general') {
     const validTheme = this.themes[theme] || 'general';
-    
+
     try {
       this.logger.debug({ theme: validTheme }, 'Attempting to generate dare from Perchance API');
-      
+
       // Try to fetch from Perchance generator
       const dareText = await this._fetchFromPerchance(validTheme);
-      
+
       if (dareText) {
         this.logger.info({ theme: validTheme }, 'Successfully generated dare from Perchance');
         return {
@@ -78,7 +78,7 @@ class PerchanceService {
     // Fallback to local templates
     const fallbackDare = this._getFallbackDare();
     this.logger.info({ theme: validTheme }, 'Using fallback dare template');
-    
+
     return {
       content: fallbackDare,
       source: 'fallback',
@@ -98,7 +98,7 @@ class PerchanceService {
       // Using a generic text generator as the specific dare generator may not exist
       const hostname = 'perchance.org';
       const path = `/api/generate?generatorName=dare-generator&theme=${encodeURIComponent(theme)}`;
-      
+
       const options = {
         hostname,
         path,
