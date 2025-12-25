@@ -281,8 +281,163 @@ function createQuoteRepository(db) {
 }
 
 /**
+ * Create dare repository for managing dares
+ * @param {Object} db - Database instance with raw connection
+ * @returns {Object} Dare repository with methods for CRUD operations
+ * @private
+ */
+function createDareRepository(db) {
+  const conn = db.raw;
+  return {
+    /**
+     * Add a new dare
+     * @param {string} content - Dare content text
+     * @param {string} source - Source of dare ('perchance' or 'user')
+     * @param {string} createdBy - User ID who created the dare
+     * @returns {Promise<number>} The ID of the newly created dare
+     */
+    async add(content, source, createdBy) {
+      const result = conn
+        .prepare(
+          "INSERT INTO dares (content, source, created_by, created_at) VALUES (?, ?, ?, datetime('now'))",
+        )
+        .run(content, source, createdBy);
+      return result.lastInsertRowid;
+    },
+    /**
+     * Get all dares
+     * @param {Object} filters - Optional filters
+     * @param {string} [filters.status] - Filter by status
+     * @param {string} [filters.assignedTo] - Filter by assigned user
+     * @returns {Promise<Array>} Array of all dares
+     */
+    async getAll(filters = {}) {
+      let query = 'SELECT * FROM dares';
+      const params = [];
+      const conditions = [];
+
+      if (filters.status) {
+        conditions.push('status = ?');
+        params.push(filters.status);
+      }
+      if (filters.assignedTo) {
+        conditions.push('assigned_to = ?');
+        params.push(filters.assignedTo);
+      }
+
+      if (conditions.length > 0) {
+        query += ' WHERE ' + conditions.join(' AND ');
+      }
+
+      query += ' ORDER BY created_at DESC';
+
+      return conn.prepare(query).all(...params);
+    },
+    /**
+     * Get a dare by ID
+     * @param {number} id - Dare ID
+     * @returns {Promise<Object|null>} Dare object or null if not found
+     */
+    async getById(id) {
+      return conn.prepare('SELECT * FROM dares WHERE id = ?').get(id) || null;
+    },
+    /**
+     * Get a random dare
+     * @param {Object} filters - Optional filters
+     * @param {string} [filters.status] - Filter by status
+     * @returns {Promise<Object|null>} Random dare object or null if no dares exist
+     */
+    async getRandom(filters = {}) {
+      let query = 'SELECT * FROM dares';
+      const params = [];
+
+      if (filters.status) {
+        query += ' WHERE status = ?';
+        params.push(filters.status);
+      }
+
+      query += ' ORDER BY RANDOM() LIMIT 1';
+
+      return conn.prepare(query).get(...params) || null;
+    },
+    /**
+     * Update a dare
+     * @param {number} id - Dare ID
+     * @param {Object} updates - Fields to update
+     * @param {string} [updates.content] - New content
+     * @param {string} [updates.status] - New status
+     * @param {string} [updates.assignedTo] - User ID to assign to
+     * @param {string} [updates.completedAt] - Completion timestamp
+     * @param {string} [updates.completionNotes] - Completion notes
+     * @returns {Promise<boolean>} True if updated, false if not found
+     */
+    async update(id, updates) {
+      const fields = [];
+      const params = [];
+
+      if (updates.content !== undefined) {
+        fields.push('content = ?');
+        params.push(updates.content);
+      }
+      if (updates.status !== undefined) {
+        fields.push('status = ?');
+        params.push(updates.status);
+      }
+      if (updates.assignedTo !== undefined) {
+        fields.push('assigned_to = ?');
+        params.push(updates.assignedTo);
+      }
+      if (updates.completedAt !== undefined) {
+        fields.push('completed_at = ?');
+        params.push(updates.completedAt);
+      }
+      if (updates.completionNotes !== undefined) {
+        fields.push('completion_notes = ?');
+        params.push(updates.completionNotes);
+      }
+
+      if (fields.length === 0) {
+        return false;
+      }
+
+      params.push(id);
+      const query = `UPDATE dares SET ${fields.join(', ')} WHERE id = ?`;
+      const result = conn.prepare(query).run(...params);
+      return result.changes > 0;
+    },
+    /**
+     * Delete a dare
+     * @param {number} id - Dare ID
+     * @returns {Promise<boolean>} True if deleted, false if not found
+     */
+    async delete(id) {
+      const result = conn.prepare('DELETE FROM dares WHERE id = ?').run(id);
+      return result.changes > 0;
+    },
+    /**
+     * Get the count of all dares
+     * @param {Object} filters - Optional filters
+     * @param {string} [filters.status] - Filter by status
+     * @returns {Promise<number>} Total number of dares
+     */
+    async count(filters = {}) {
+      let query = 'SELECT COUNT(*) as count FROM dares';
+      const params = [];
+
+      if (filters.status) {
+        query += ' WHERE status = ?';
+        params.push(filters.status);
+      }
+
+      const row = conn.prepare(query).get(...params);
+      return row ? row.count : 0;
+    },
+  };
+}
+
+/**
  * Create all repository instances
- * Factory function initializing command, permission, audit, rate limit, and quote repositories
+ * Factory function initializing command, permission, audit, rate limit, quote, and dare repositories
  * @param {Object} db - Database instance
  * @param {Object} logger - Logger instance
  * @returns {Object} Object containing all repositories
@@ -291,11 +446,13 @@ function createQuoteRepository(db) {
  * @returns {Object} returns.auditRepo - Audit logging repository
  * @returns {Object} returns.rateLimitRepo - Rate limiting repository
  * @returns {Object} returns.quoteRepo - Quote management repository
+ * @returns {Object} returns.dareRepo - Dare management repository
  * @example
  * const repositories = createRepositories(db, logger);
  * const isAllowed = await repositories.commandRepo.isAllowed('ping');
  * await repositories.permissionRepo.addRole('ping', 'admin_role_id');
  * const quotes = await repositories.quoteRepo.getAll();
+ * const dares = await repositories.dareRepo.getAll();
  */
 function createRepositories(db, logger) {
   logger.info('Creating repositories');
@@ -305,6 +462,7 @@ function createRepositories(db, logger) {
     auditRepo: createAuditRepository(db),
     rateLimitRepo: createRateLimitRepository(db),
     quoteRepo: createQuoteRepository(db),
+    dareRepo: createDareRepository(db),
   };
 }
 

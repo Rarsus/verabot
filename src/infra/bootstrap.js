@@ -35,7 +35,16 @@ const RandomQuoteHandler = require('../app/handlers/quotes/RandomQuoteHandler');
 const ListQuotesHandler = require('../app/handlers/quotes/ListQuotesHandler');
 const SearchQuotesHandler = require('../app/handlers/quotes/SearchQuotesHandler');
 
+const CreateDareHandler = require('../app/handlers/dares/CreateDareHandler');
+const ListDaresHandler = require('../app/handlers/dares/ListDaresHandler');
+const GetDareHandler = require('../app/handlers/dares/GetDareHandler');
+const GiveDareHandler = require('../app/handlers/dares/GiveDareHandler');
+const UpdateDareHandler = require('../app/handlers/dares/UpdateDareHandler');
+const DeleteDareHandler = require('../app/handlers/dares/DeleteDareHandler');
+const CompleteDareHandler = require('../app/handlers/dares/CompleteDareHandler');
+
 const QuoteService = require('../core/services/QuoteService');
+const DareService = require('../core/services/DareService');
 
 /**
  * Create message broadcast service for Discord channel messaging
@@ -99,6 +108,9 @@ function bootstrap(container) {
 
   // Initialize quote service
   const quoteService = new QuoteService(container.repositories.quoteRepo);
+
+  // Initialize dare service
+  const dareService = new DareService(container.repositories.dareRepo, container.logger);
 
   // CORE
   registry.register('ping', new PingHandler(), {
@@ -389,6 +401,135 @@ function bootstrap(container) {
     usage: '/quote searchquotes query:<search>',
     examples: ['/quote searchquotes query:"wisdom"', '/quote searchquotes query:"Einstein"'],
     options: [{ name: 'query', type: 'string', description: 'Search query', required: true }],
+    cooldown: { seconds: 3 },
+  });
+
+  // DARES
+  registry.register('createdare', new CreateDareHandler(dareService), {
+    category: 'dares',
+    group: 'dare',
+    description: 'Generate a new AI dare from Perchance.org and store it.',
+    usage: '/dare createdare',
+    examples: ['/dare createdare'],
+    options: [],
+    cooldown: { seconds: 5 },
+  });
+
+  registry.register('listdares', new ListDaresHandler(dareService), {
+    category: 'dares',
+    group: 'dare',
+    description: 'List all dares in the database.',
+    usage: '/dare listdares [status:<active|completed|archived>]',
+    examples: ['/dare listdares', '/dare listdares status:active'],
+    options: [
+      {
+        name: 'status',
+        type: 'string',
+        description: 'Filter by status',
+        required: false,
+        choices: [
+          { name: 'active', value: 'active' },
+          { name: 'completed', value: 'completed' },
+          { name: 'archived', value: 'archived' },
+        ],
+      },
+    ],
+    cooldown: { seconds: 5 },
+  });
+
+  registry.register('getdare', new GetDareHandler(dareService), {
+    category: 'dares',
+    group: 'dare',
+    description: 'Get a specific dare by ID.',
+    usage: '/dare getdare id:<number>',
+    examples: ['/dare getdare id:1', '/dare getdare id:42'],
+    options: [{ name: 'id', type: 'integer', description: 'Dare ID', required: true }],
+    cooldown: { seconds: 2 },
+  });
+
+  registry.register('givedare', new GiveDareHandler(dareService), {
+    category: 'dares',
+    group: 'dare',
+    description: 'Give a dare to a specific Discord user.',
+    usage: '/dare givedare user:<user> [random:<true|false>] [dare_id:<id>]',
+    examples: [
+      '/dare givedare user:@User random:true',
+      '/dare givedare user:@User dare_id:5',
+      '/dare givedare user:@User',
+    ],
+    options: [
+      { name: 'user', type: 'user', description: 'User to give dare to', required: true },
+      {
+        name: 'random',
+        type: 'boolean',
+        description: 'Give a random dare',
+        required: false,
+      },
+      {
+        name: 'dare_id',
+        type: 'integer',
+        description: 'Specific dare ID to give',
+        required: false,
+      },
+    ],
+    cooldown: { seconds: 3 },
+  });
+
+  registry.register('updatedare', new UpdateDareHandler(dareService), {
+    category: 'dares',
+    group: 'dare',
+    description: 'Update an existing dare.',
+    usage: '/dare updatedare id:<number> [content:<text>] [status:<active|completed|archived>]',
+    examples: [
+      '/dare updatedare id:1 content:"New dare text"',
+      '/dare updatedare id:1 status:archived',
+    ],
+    options: [
+      { name: 'id', type: 'integer', description: 'Dare ID', required: true },
+      { name: 'content', type: 'string', description: 'New dare content', required: false },
+      {
+        name: 'status',
+        type: 'string',
+        description: 'New status',
+        required: false,
+        choices: [
+          { name: 'active', value: 'active' },
+          { name: 'completed', value: 'completed' },
+          { name: 'archived', value: 'archived' },
+        ],
+      },
+    ],
+    cooldown: { seconds: 3 },
+  });
+
+  registry.register('deletedare', new DeleteDareHandler(dareService), {
+    category: 'dares',
+    group: 'dare',
+    description: 'Delete a dare from the database.',
+    usage: '/dare deletedare id:<number>',
+    examples: ['/dare deletedare id:1'],
+    options: [{ name: 'id', type: 'integer', description: 'Dare ID', required: true }],
+    cooldown: { seconds: 3 },
+  });
+
+  registry.register('completedare', new CompleteDareHandler(dareService), {
+    category: 'dares',
+    group: 'dare',
+    description: 'Mark a dare as completed.',
+    usage: '/dare completedare id:<number> [notes:<text>]',
+    examples: [
+      '/dare completedare id:1',
+      '/dare completedare id:1 notes:"It was challenging!"',
+    ],
+    options: [
+      { name: 'id', type: 'integer', description: 'Dare ID', required: true },
+      {
+        name: 'notes',
+        type: 'string',
+        description: 'Completion notes (optional)',
+        required: false,
+      },
+    ],
     cooldown: { seconds: 3 },
   });
 
