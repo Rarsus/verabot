@@ -885,7 +885,7 @@ Not through commands, but administrators can use `/dare updatedare` to add custo
 
 ### Is there a dare limit?
 
-No hard limit, but database performance may degrade with very large collections (&gt;10,000 dares).
+No hard limit, but database performance may degrade with very large collections (>10,000 dares).
 
 ### Can I export dares?
 
