@@ -46,6 +46,8 @@ function createContainer() {
     messaging: 3000,
     operations: 10000,
     admin: 0,
+    quotes: 3000,
+    dares: 3000,
   });
   const helpService = new HelpService(null); // registry attached in bootstrap
 

@@ -32,6 +32,7 @@ module.exports = [
         setTimeout: 'readonly',
         clearTimeout: 'readonly',
         console: 'readonly',
+        fetch: 'readonly', // Node.js 18+ global fetch
       },
     },
     rules: {
