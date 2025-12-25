@@ -141,3 +141,9 @@ vite.config.ts.timestamp-*
 # Metrics and documentation artifacts
 .metrics/
 !.metrics/.gitkeep
+
+# SQLite database files
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
