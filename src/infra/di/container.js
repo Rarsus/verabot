@@ -8,6 +8,9 @@ const CommandService = require('../../core/services/CommandService');
 const PermissionService = require('../../core/services/PermissionService');
 const RateLimitService = require('../../core/services/RateLimitService');
 const HelpService = require('../../core/services/HelpService');
+const DareService = require('../../core/services/DareService');
+
+const PerchanceService = require('../external/PerchanceService');
 
 const { loadRedisConfig } = require('../config/RedisConfig');
 const { createRedisConnection } = require('../db/RedisFactory');
@@ -23,11 +26,12 @@ const Scheduler = require('../queue/Scheduler');
  * @returns {Object} returns.logger - Logger instance for application logging
  * @returns {Object} returns.metrics - Prometheus metrics collector
  * @returns {Object} returns.db - SQLite database connection
- * @returns {Object} returns.repositories - Data access layer repositories (command, permission, rateLimit)
- * @returns {Object} returns.services - Core application services (CommandService, PermissionService, RateLimitService, HelpService)
+ * @returns {Object} returns.repositories - Data access layer repositories (command, permission, rateLimit, dare)
+ * @returns {Object} returns.services - Core application services (CommandService, PermissionService, RateLimitService, HelpService, DareService)
  * @returns {Object} returns.redis - Redis connection for caching and pub/sub
  * @returns {JobQueueService} returns.jobQueue - Background job queue service
  * @returns {Scheduler} returns.scheduler - Cron job scheduler
+ * @returns {PerchanceService} returns.perchanceService - Perchance AI text generation service
  * @example
  * const container = createContainer();
  * const { config, logger, services, db, repositories } = container;
@@ -46,8 +50,12 @@ function createContainer() {
     messaging: 3000,
     operations: 10000,
     admin: 0,
+    dares: 5000,
   });
   const helpService = new HelpService(null); // registry attached in bootstrap
+  
+  const perchanceService = new PerchanceService(logger);
+  const dareService = new DareService(repositories.dareRepo, perchanceService);
 
   const redisConfig = loadRedisConfig(process.env);
   const redis = createRedisConnection(redisConfig, logger);
@@ -59,6 +67,7 @@ function createContainer() {
     permissionService,
     rateLimitService,
     helpService,
+    dareService,
   };
 
   return {
@@ -71,6 +80,7 @@ function createContainer() {
     redis,
     jobQueue,
     scheduler,
+    perchanceService,
   };
 }
 
