@@ -103,6 +103,19 @@ If any one allows, user allowed (unless globally denied).
 /allow-user dangerous-command @trusted-user
 ```
 
+### Dare Update/Delete Restrictions
+
+```
+# By default, dare update and delete require ManageMessages permission
+# To allow everyone:
+/allow-command dare update
+/allow-command dare delete
+
+# Or specific users:
+/allow-user dare update @moderator
+/allow-user dare delete @moderator
+```
+
 ---
 
 ## Auditing Permissions

@@ -11,6 +11,7 @@ Complete catalog of all VeraBot commands with descriptions and usage examples.
 - [Messaging Commands](#messaging-commands) - Communication tools
 - [Operations Commands](#operations-commands) - Deployment & jobs
 - [Quote Commands](#quote-commands) - Quote management
+- [Dare Commands](#dare-commands) - AI-powered dare system
 
 ---
 
@@ -430,7 +431,10 @@ All slash commands also available with `!` prefix:
 | Command                                        | Required        |
 | ---------------------------------------------- | --------------- |
 | `/ping`, `/info`, `/help`, `/stats`, `/uptime` | Public          |
+| `/quote addquote`, `/quote quote`, `/quote randomquote`, `/quote listquotes`, `/quote searchquotes` | Public |
+| `/dare create`, `/dare list`, `/dare get`, `/dare give`, `/dare complete` | Public |
 | `/say`, `/notify`                              | Role-restricted |
+| `/dare update`, `/dare delete`                 | ManageMessages  |
 | `/allow-*`, `/deny-*`, `/audit`, `/deploy`     | Admin only      |
 
 ---
@@ -485,16 +489,18 @@ http://localhost:3002/admin/queues
 
 ### By Permission Level
 
-1. **Public** - ping, info, help, stats, uptime
+1. **Public** - ping, info, help, stats, uptime, quotes, dare create, dare list, dare get, dare give, dare complete
 2. **Role-restricted** - say, notify
-3. **Admin only** - deploy, audit, allow-_, deny-_
+3. **ManageMessages** - dare update, dare delete
+4. **Admin only** - deploy, audit, allow-*, deny-*
 
 ### By Function
 
 1. **Utility** - ping, info, help, stats, uptime
-2. **Admin** - allow-_, deny-_, audit, allowed-commands
+2. **Admin** - allow-*, deny-*, audit, allowed-commands
 3. **Communication** - say, broadcast, notify
 4. **Operations** - deploy, job-status, heavy-work
+5. **Content** - quotes (add, list, search, random), dares (AI-powered dare system)
 
 ---
 
@@ -635,6 +641,258 @@ Returns a list of all quotes with their IDs, text, and authors.
 **Response:**
 
 Returns all quotes matching the search query.
+
+**Permissions:** Public (default cooldown: 3 seconds)
+
+---
+
+## Dare Commands
+
+AI-powered dare generation and management system with full CRUD operations.
+
+### `/dare create`
+
+**Description:** Generate a new AI-powered dare using Perchance.org API
+
+**Usage:**
+
+```
+/dare create [theme:<theme>]
+```
+
+**Parameters:**
+
+- `theme` (optional) - Dare theme/category
+  - Options: general, funny, creative, social, physical, mental
+  - Default: general
+
+**Examples:**
+
+```
+/dare create
+/dare create theme:funny
+/dare create theme:creative
+```
+
+**Response:**
+
+```
+Dare #1 created successfully!
+> Do 10 jumping jacks right now
+Theme: general | Source: perchance
+```
+
+**Permissions:** Public (default cooldown: 5 seconds)
+
+---
+
+### `/dare list`
+
+**Description:** List all dares with optional pagination and filtering
+
+**Usage:**
+
+```
+/dare list [page:<number>] [status:<status>] [theme:<theme>]
+```
+
+**Parameters:**
+
+- `page` (optional) - Page number for pagination (20 items per page)
+- `status` (optional) - Filter by dare status
+  - Options: active, completed, archived
+- `theme` (optional) - Filter by theme
+
+**Examples:**
+
+```
+/dare list
+/dare list page:2
+/dare list status:active theme:funny
+```
+
+**Response:**
+
+```
+Found 15 dares (Page 1 of 1)
+
+#1: Do 10 jumping jacks right now [active]
+#2: Post your favorite meme in the chat [active]
+#3: Share an embarrassing but funny story [completed]
+...
+```
+
+**Permissions:** Public (default cooldown: 3 seconds)
+
+---
+
+### `/dare get`
+
+**Description:** Get a specific dare by its ID
+
+**Usage:**
+
+```
+/dare get dare_id:<id>
+```
+
+**Parameters:**
+
+- `dare_id` (required) - The ID of the dare to retrieve
+
+**Examples:**
+
+```
+/dare get dare_id:1
+/dare get dare_id:42
+```
+
+**Response:**
+
+```
+Dare #1
+> Do 10 jumping jacks right now
+Status: active | Theme: general | Source: perchance
+Created by: @User123 on 2025-12-25
+```
+
+**Permissions:** Public (default cooldown: 2 seconds)
+
+---
+
+### `/dare give`
+
+**Description:** Give a dare to a specific Discord user
+
+**Usage:**
+
+```
+/dare give user:<user> [random:<true/false>] [theme:<theme>]
+```
+
+**Parameters:**
+
+- `user` (required) - Discord user to give the dare to
+- `random` (optional) - Use random existing dare (true) or generate fresh (false)
+  - Default: false (generate new)
+- `theme` (optional) - Dare theme for generation/filtering
+
+**Examples:**
+
+```
+/dare give user:@User
+/dare give user:@User random:true
+/dare give user:@User theme:funny
+```
+
+**Response:**
+
+```
+Dare #1 assigned to <@User>!
+> Post your favorite meme in the chat
+Theme: funny
+```
+
+**Permissions:** Public (default cooldown: 5 seconds)
+
+---
+
+### `/dare update`
+
+**Description:** Update an existing dare's content, status, or theme
+
+**Usage:**
+
+```
+/dare update dare_id:<id> [content:<text>] [status:<status>] [theme:<theme>]
+```
+
+**Parameters:**
+
+- `dare_id` (required) - The ID of the dare to update
+- `content` (optional) - New dare content text (max 500 characters)
+- `status` (optional) - New status
+  - Options: active, completed, archived
+- `theme` (optional) - New theme
+
+**Examples:**
+
+```
+/dare update dare_id:1 content:"New dare text"
+/dare update dare_id:1 status:archived
+/dare update dare_id:2 status:active theme:social
+```
+
+**Response:**
+
+```
+Dare #1 updated successfully!
+Updated fields: content, status
+```
+
+**Permissions:** ManageMessages permission required (default cooldown: 3 seconds)
+
+---
+
+### `/dare delete`
+
+**Description:** Permanently delete a dare from the database
+
+**Usage:**
+
+```
+/dare delete dare_id:<id>
+```
+
+**Parameters:**
+
+- `dare_id` (required) - The ID of the dare to delete
+
+**Examples:**
+
+```
+/dare delete dare_id:1
+```
+
+**Response:**
+
+```
+Dare #1 deleted successfully!
+```
+
+**Permissions:** ManageMessages permission required (default cooldown: 3 seconds)
+
+---
+
+### `/dare complete`
+
+**Description:** Mark a dare as completed with optional notes
+
+**Usage:**
+
+```
+/dare complete dare_id:<id> [notes:<text>]
+```
+
+**Parameters:**
+
+- `dare_id` (required) - The ID of the dare to mark as completed
+- `notes` (optional) - Completion notes (max 1000 characters)
+
+**Examples:**
+
+```
+/dare complete dare_id:1
+/dare complete dare_id:1 notes:"Did it live on stream!"
+```
+
+**Response:**
+
+```
+Dare #1 marked as completed!
+Completion notes: Did it live on stream!
+Completed at: 2025-12-25 22:30:15
+```
 
 **Permissions:** Public (default cooldown: 3 seconds)
 
