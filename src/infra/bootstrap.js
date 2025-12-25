@@ -45,6 +45,7 @@ const CompleteDareHandler = require('../app/handlers/dares/CompleteDareHandler')
 
 const QuoteService = require('../core/services/QuoteService');
 const DareService = require('../core/services/DareService');
+const PerchanceService = require('../core/services/PerchanceService');
 
 /**
  * Create message broadcast service for Discord channel messaging
@@ -109,8 +110,16 @@ function bootstrap(container) {
   // Initialize quote service
   const quoteService = new QuoteService(container.repositories.quoteRepo);
 
-  // Initialize dare service
-  const dareService = new DareService(container.repositories.dareRepo, container.logger);
+  // Initialize Perchance service for dare generation
+  const perchanceService = new PerchanceService(container.config, container.logger);
+
+  // Initialize dare service with Perchance integration
+  const dareService = new DareService(
+    container.repositories.dareRepo,
+    perchanceService,
+    container.config,
+    container.logger,
+  );
 
   // CORE
   registry.register('ping', new PingHandler(), {

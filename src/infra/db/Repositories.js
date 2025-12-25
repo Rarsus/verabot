@@ -292,16 +292,17 @@ function createDareRepository(db) {
     /**
      * Add a new dare
      * @param {string} content - Dare content text
+     * @param {string} theme - Theme/category of the dare
      * @param {string} source - Source of dare ('perchance' or 'user')
      * @param {string} createdBy - User ID who created the dare
      * @returns {Promise<number>} The ID of the newly created dare
      */
-    async add(content, source, createdBy) {
+    async add(content, theme, source, createdBy) {
       const result = conn
         .prepare(
-          "INSERT INTO dares (content, source, created_by, created_at) VALUES (?, ?, ?, datetime('now'))",
+          "INSERT INTO dares (content, theme, source, created_by, created_at) VALUES (?, ?, ?, ?, datetime('now'))",
         )
-        .run(content, source, createdBy);
+        .run(content, theme, source, createdBy);
       return result.lastInsertRowid;
     },
     /**
@@ -309,6 +310,9 @@ function createDareRepository(db) {
      * @param {Object} filters - Optional filters
      * @param {string} [filters.status] - Filter by status
      * @param {string} [filters.assignedTo] - Filter by assigned user
+     * @param {string} [filters.theme] - Filter by theme
+     * @param {number} [filters.page] - Page number (1-indexed)
+     * @param {number} [filters.perPage] - Items per page (default: 10)
      * @returns {Promise<Array>} Array of all dares
      */
     async getAll(filters = {}) {
@@ -324,12 +328,23 @@ function createDareRepository(db) {
         conditions.push('assigned_to = ?');
         params.push(filters.assignedTo);
       }
+      if (filters.theme) {
+        conditions.push('theme = ?');
+        params.push(filters.theme);
+      }
 
       if (conditions.length > 0) {
         query += ' WHERE ' + conditions.join(' AND ');
       }
 
       query += ' ORDER BY created_at DESC';
+
+      // Add pagination
+      const page = filters.page || 1;
+      const perPage = filters.perPage || 10;
+      const offset = (page - 1) * perPage;
+      query += ' LIMIT ? OFFSET ?';
+      params.push(perPage, offset);
 
       return conn.prepare(query).all(...params);
     },
@@ -345,15 +360,25 @@ function createDareRepository(db) {
      * Get a random dare
      * @param {Object} filters - Optional filters
      * @param {string} [filters.status] - Filter by status
+     * @param {string} [filters.theme] - Filter by theme
      * @returns {Promise<Object|null>} Random dare object or null if no dares exist
      */
     async getRandom(filters = {}) {
       let query = 'SELECT * FROM dares';
       const params = [];
+      const conditions = [];
 
       if (filters.status) {
-        query += ' WHERE status = ?';
+        conditions.push('status = ?');
         params.push(filters.status);
+      }
+      if (filters.theme) {
+        conditions.push('theme = ?');
+        params.push(filters.theme);
+      }
+
+      if (conditions.length > 0) {
+        query += ' WHERE ' + conditions.join(' AND ');
       }
 
       query += ' ORDER BY RANDOM() LIMIT 1';
@@ -367,6 +392,7 @@ function createDareRepository(db) {
      * @param {string} [updates.content] - New content
      * @param {string} [updates.status] - New status
      * @param {string} [updates.assignedTo] - User ID to assign to
+     * @param {string} [updates.assignedAt] - Assignment timestamp
      * @param {string} [updates.completedAt] - Completion timestamp
      * @param {string} [updates.completionNotes] - Completion notes
      * @returns {Promise<boolean>} True if updated, false if not found
@@ -386,6 +412,10 @@ function createDareRepository(db) {
       if (updates.assignedTo !== undefined) {
         fields.push('assigned_to = ?');
         params.push(updates.assignedTo);
+      }
+      if (updates.assignedAt !== undefined) {
+        fields.push('assigned_at = ?');
+        params.push(updates.assignedAt);
       }
       if (updates.completedAt !== undefined) {
         fields.push('completed_at = ?');
@@ -418,15 +448,25 @@ function createDareRepository(db) {
      * Get the count of all dares
      * @param {Object} filters - Optional filters
      * @param {string} [filters.status] - Filter by status
+     * @param {string} [filters.theme] - Filter by theme
      * @returns {Promise<number>} Total number of dares
      */
     async count(filters = {}) {
       let query = 'SELECT COUNT(*) as count FROM dares';
       const params = [];
+      const conditions = [];
 
       if (filters.status) {
-        query += ' WHERE status = ?';
+        conditions.push('status = ?');
         params.push(filters.status);
+      }
+      if (filters.theme) {
+        conditions.push('theme = ?');
+        params.push(filters.theme);
+      }
+
+      if (conditions.length > 0) {
+        query += ' WHERE ' + conditions.join(' AND ');
       }
 
       const row = conn.prepare(query).get(...params);
