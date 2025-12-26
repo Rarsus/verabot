@@ -3,6 +3,8 @@ const DareService = require('../../../src/core/services/DareService');
 describe('DareService', () => {
   let dareService;
   let mockDareRepo;
+  let mockPerchanceService;
+  let mockConfig;
   let mockLogger;
 
   beforeEach(() => {
@@ -15,123 +17,113 @@ describe('DareService', () => {
       delete: jest.fn(),
       count: jest.fn(),
     };
+    mockPerchanceService = {
+      generateDare: jest.fn(),
+    };
+    mockConfig = {
+      DARE_THEMES: ['general', 'humiliating', 'sexy', 'chastity', 'anal', 'funny'],
+      PERCHANCE_DARE_GENERATOR: 'dare-generator',
+    };
     mockLogger = {
       info: jest.fn(),
       warn: jest.fn(),
       error: jest.fn(),
       debug: jest.fn(),
     };
-    dareService = new DareService(mockDareRepo, mockLogger);
+    dareService = new DareService(mockDareRepo, mockPerchanceService, mockConfig, mockLogger);
   });
 
   describe('createDare', () => {
-    beforeEach(() => {
-      // Mock fetch globally
-      global.fetch = jest.fn();
-    });
-
-    afterEach(() => {
-      // Clean up
-      delete global.fetch;
-    });
-
     it('should generate dare from Perchance and store in database', async () => {
-      const mockResponse = {
-        ok: true,
-        json: jest.fn().mockResolvedValue({ result: 'Test dare from API' }),
-      };
-      global.fetch.mockResolvedValue(mockResponse);
+      mockPerchanceService.generateDare.mockResolvedValue('Test dare from API');
       mockDareRepo.add.mockResolvedValue(1);
 
-      const result = await dareService.createDare('user123');
+      const result = await dareService.createDare('user123', 'general');
 
       expect(result).toEqual({
         id: 1,
         content: 'Test dare from API',
+        theme: 'general',
         source: 'perchance',
         created_by: 'user123',
         status: 'active',
       });
-      expect(mockDareRepo.add).toHaveBeenCalledWith('Test dare from API', 'perchance', 'user123');
-      expect(global.fetch).toHaveBeenCalled();
+      expect(mockPerchanceService.generateDare).toHaveBeenCalledWith('dare-generator', 'general');
+      expect(mockDareRepo.add).toHaveBeenCalledWith(
+        'Test dare from API',
+        'general',
+        'perchance',
+        'user123',
+      );
     });
 
-    it('should handle Perchance API with output field', async () => {
-      const mockResponse = {
-        ok: true,
-        json: jest.fn().mockResolvedValue({ output: 'Test dare from output' }),
-      };
-      global.fetch.mockResolvedValue(mockResponse);
+    it('should use custom generator when provided', async () => {
+      mockPerchanceService.generateDare.mockResolvedValue('Test dare from custom');
       mockDareRepo.add.mockResolvedValue(2);
 
-      const result = await dareService.createDare('user123');
+      await dareService.createDare('user123', 'humiliating', 'custom-generator');
 
-      expect(result.content).toBe('Test dare from output');
-    });
-
-    it('should handle Perchance API with text field', async () => {
-      const mockResponse = {
-        ok: true,
-        json: jest.fn().mockResolvedValue({ text: 'Test dare from text' }),
-      };
-      global.fetch.mockResolvedValue(mockResponse);
-      mockDareRepo.add.mockResolvedValue(3);
-
-      const result = await dareService.createDare('user123');
-
-      expect(result.content).toBe('Test dare from text');
-    });
-
-    it('should throw error when Perchance API returns non-OK status', async () => {
-      const mockResponse = {
-        ok: false,
-        status: 500,
-      };
-      global.fetch.mockResolvedValue(mockResponse);
-
-      await expect(dareService.createDare('user123')).rejects.toThrow(
-        'Failed to generate dare from external API',
+      expect(mockPerchanceService.generateDare).toHaveBeenCalledWith(
+        'custom-generator',
+        'humiliating',
       );
-      expect(mockLogger.warn).toHaveBeenCalled();
-      expect(mockLogger.error).toHaveBeenCalled();
     });
 
-    it('should throw error when Perchance API returns unexpected format', async () => {
-      const mockResponse = {
-        ok: true,
-        json: jest.fn().mockResolvedValue({ unexpected: 'format' }),
-      };
-      global.fetch.mockResolvedValue(mockResponse);
-
-      await expect(dareService.createDare('user123')).rejects.toThrow(
-        'Failed to generate dare from external API',
+    it('should throw error for invalid theme', async () => {
+      await expect(dareService.createDare('user123', 'invalid-theme')).rejects.toThrow(
+        'Invalid theme',
       );
-      expect(mockLogger.error).toHaveBeenCalled();
+      expect(mockPerchanceService.generateDare).not.toHaveBeenCalled();
     });
 
-    it('should handle network errors', async () => {
-      global.fetch.mockRejectedValue(new Error('Network error'));
+    it('should fallback to database dare when API fails', async () => {
+      mockPerchanceService.generateDare.mockRejectedValue(new Error('API error'));
+      mockDareRepo.getRandom.mockResolvedValue({
+        id: 5,
+        content: 'Fallback dare',
+        theme: 'general',
+        source: 'perchance',
+        created_by: 'user456',
+        status: 'active',
+      });
 
-      await expect(dareService.createDare('user123')).rejects.toThrow(
-        'Failed to generate dare from external API',
+      const result = await dareService.createDare('user123', 'general');
+
+      expect(result).toEqual({
+        id: 5,
+        content: 'Fallback dare',
+        theme: 'general',
+        source: 'database_fallback',
+        created_by: 'user456',
+        status: 'active',
+        fallback: true,
+      });
+      expect(mockDareRepo.getRandom).toHaveBeenCalledWith({ status: 'active', theme: 'general' });
+      expect(mockLogger.error).toHaveBeenCalled();
+      expect(mockLogger.info).toHaveBeenCalled();
+    });
+
+    it('should throw error when API fails and no fallback available', async () => {
+      mockPerchanceService.generateDare.mockRejectedValue(new Error('API error'));
+      mockDareRepo.getRandom.mockResolvedValue(null);
+
+      await expect(dareService.createDare('user123', 'general')).rejects.toThrow(
+        'Failed to generate dare from Perchance API and no fallback dares available',
       );
       expect(mockLogger.error).toHaveBeenCalled();
     });
 
     it('should truncate content that is too long', async () => {
       const longContent = 'a'.repeat(2100);
-      const mockResponse = {
-        ok: true,
-        json: jest.fn().mockResolvedValue({ result: longContent }),
-      };
-      global.fetch.mockResolvedValue(mockResponse);
+      mockPerchanceService.generateDare.mockResolvedValue(longContent);
       mockDareRepo.add.mockResolvedValue(4);
 
-      await dareService.createDare('user123');
+      await dareService.createDare('user123', 'general');
 
       expect(mockLogger.warn).toHaveBeenCalled();
       expect(mockDareRepo.add).toHaveBeenCalledWith(
         longContent.substring(0, 2000),
+        'general',
         'perchance',
         'user123',
       );
@@ -142,30 +134,36 @@ describe('DareService', () => {
     it('should add a user-created dare', async () => {
       mockDareRepo.add.mockResolvedValue(1);
 
-      const result = await dareService.addDare('Custom dare', 'user123');
+      const result = await dareService.addDare('Custom dare', 'general', 'user123');
 
       expect(result).toBe(1);
-      expect(mockDareRepo.add).toHaveBeenCalledWith('Custom dare', 'user', 'user123');
+      expect(mockDareRepo.add).toHaveBeenCalledWith('Custom dare', 'general', 'user', 'user123');
     });
 
     it('should trim whitespace from content', async () => {
       mockDareRepo.add.mockResolvedValue(1);
 
-      await dareService.addDare('  Custom dare  ', 'user123');
+      await dareService.addDare('  Custom dare  ', 'general', 'user123');
 
-      expect(mockDareRepo.add).toHaveBeenCalledWith('Custom dare', 'user', 'user123');
+      expect(mockDareRepo.add).toHaveBeenCalledWith('Custom dare', 'general', 'user', 'user123');
     });
 
     it('should throw error for empty content', async () => {
-      await expect(dareService.addDare('', 'user123')).rejects.toThrow(
+      await expect(dareService.addDare('', 'general', 'user123')).rejects.toThrow(
         'Dare content cannot be empty',
       );
     });
 
     it('should throw error for content that is too long', async () => {
       const longContent = 'a'.repeat(2001);
-      await expect(dareService.addDare(longContent, 'user123')).rejects.toThrow(
+      await expect(dareService.addDare(longContent, 'general', 'user123')).rejects.toThrow(
         'Dare content is too long',
+      );
+    });
+
+    it('should throw error for invalid theme', async () => {
+      await expect(dareService.addDare('Custom dare', 'invalid-theme', 'user123')).rejects.toThrow(
+        'Invalid theme',
       );
     });
   });
@@ -309,7 +307,13 @@ describe('DareService', () => {
       const result = await dareService.assignDare(1, 'user123');
 
       expect(result).toBe(true);
-      expect(mockDareRepo.update).toHaveBeenCalledWith(1, { assignedTo: 'user123' });
+      expect(mockDareRepo.update).toHaveBeenCalledWith(
+        1,
+        expect.objectContaining({
+          assignedTo: 'user123',
+          assignedAt: expect.any(String),
+        }),
+      );
     });
 
     it('should throw error for invalid id', async () => {

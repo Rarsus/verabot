@@ -65,14 +65,17 @@ function createDb(config, logger) {
     CREATE TABLE IF NOT EXISTS dares (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       content TEXT NOT NULL,
-      source TEXT DEFAULT 'perchance',
+      theme TEXT NOT NULL DEFAULT 'general',
+      source TEXT NOT NULL DEFAULT 'perchance',
       created_by TEXT,
       created_at TEXT NOT NULL DEFAULT (datetime('now')),
       status TEXT NOT NULL DEFAULT 'active',
       assigned_to TEXT,
+      assigned_at TEXT,
       completed_at TEXT,
       completion_notes TEXT
     );
+    CREATE INDEX IF NOT EXISTS idx_dares_theme ON dares(theme);
     CREATE INDEX IF NOT EXISTS idx_dares_status ON dares(status);
     CREATE INDEX IF NOT EXISTS idx_dares_assigned_to ON dares(assigned_to);
     CREATE INDEX IF NOT EXISTS idx_dares_created_at ON dares(created_at);

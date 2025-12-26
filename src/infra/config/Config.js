@@ -13,6 +13,23 @@ const ConfigSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   LOG_LEVEL: z.enum(['debug', 'info', 'warn', 'error']).default('info'),
   HTTP_PORT: z.string().default('3000'),
+  // Perchance Dare Configuration
+  PERCHANCE_DARE_GENERATOR: z.string().default('dare-generator'),
+  DARE_THEMES: z
+    .string()
+    .transform((val) => val.split(',').map((s) => s.trim()))
+    .pipe(z.array(z.string()))
+    .default('general,humiliating,sexy,chastity,anal,funny'),
+  DARE_CACHE_ENABLED: z
+    .string()
+    .transform((val) => val === 'true')
+    .pipe(z.boolean())
+    .default('true'),
+  DARE_CACHE_TTL: z
+    .string()
+    .transform((val) => parseInt(val, 10))
+    .pipe(z.number().positive())
+    .default('3600'),
 });
 
 /**
@@ -26,10 +43,15 @@ const ConfigSchema = z.object({
  * @returns {string} returns.NODE_ENV - Environment name (development/production/test, default: development)
  * @returns {string} returns.LOG_LEVEL - Logging level (debug/info/warn/error, default: info)
  * @returns {string} returns.HTTP_PORT - HTTP server port (default: 3000)
+ * @returns {string} returns.PERCHANCE_DARE_GENERATOR - Perchance generator name for dares (default: dare-generator)
+ * @returns {Array<string>} returns.DARE_THEMES - Array of dare themes (default: general,humiliating,sexy,chastity,anal,funny)
+ * @returns {boolean} returns.DARE_CACHE_ENABLED - Enable dare caching (default: true)
+ * @returns {number} returns.DARE_CACHE_TTL - Cache TTL in seconds (default: 3600)
  * @example
  * const config = createConfig();
  * console.log(config.DISCORD_TOKEN); // '...'
  * console.log(config.NODE_ENV); // 'production'
+ * console.log(config.DARE_THEMES); // ['general', 'humiliating', ...]
  */
 function createConfig() {
   const parsed = ConfigSchema.safeParse(process.env);

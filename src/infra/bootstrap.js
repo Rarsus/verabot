@@ -45,6 +45,7 @@ const CompleteDareHandler = require('../app/handlers/dares/CompleteDareHandler')
 
 const QuoteService = require('../core/services/QuoteService');
 const DareService = require('../core/services/DareService');
+const PerchanceService = require('../core/services/PerchanceService');
 
 /**
  * Create message broadcast service for Discord channel messaging
@@ -109,8 +110,16 @@ function bootstrap(container) {
   // Initialize quote service
   const quoteService = new QuoteService(container.repositories.quoteRepo);
 
-  // Initialize dare service
-  const dareService = new DareService(container.repositories.dareRepo, container.logger);
+  // Initialize Perchance service for dare generation
+  const perchanceService = new PerchanceService(container.config, container.logger);
+
+  // Initialize dare service with Perchance integration
+  const dareService = new DareService(
+    container.repositories.dareRepo,
+    perchanceService,
+    container.config,
+    container.logger,
+  );
 
   // CORE
   registry.register('ping', new PingHandler(), {
@@ -409,18 +418,47 @@ function bootstrap(container) {
     category: 'dares',
     group: 'dare',
     description: 'Generate a new AI dare from Perchance.org and store it.',
-    usage: '/dare createdare',
-    examples: ['/dare createdare'],
-    options: [],
+    usage: '/dare createdare [theme:<theme>] [generator:<name>]',
+    examples: [
+      '/dare createdare',
+      '/dare createdare theme:humiliating',
+      '/dare createdare theme:sexy generator:custom-dare-gen',
+    ],
+    options: [
+      {
+        name: 'theme',
+        type: 'string',
+        description: 'Dare theme/category',
+        required: false,
+        choices: [
+          { name: 'general', value: 'general' },
+          { name: 'humiliating', value: 'humiliating' },
+          { name: 'sexy', value: 'sexy' },
+          { name: 'chastity', value: 'chastity' },
+          { name: 'anal', value: 'anal' },
+          { name: 'funny', value: 'funny' },
+        ],
+      },
+      {
+        name: 'generator',
+        type: 'string',
+        description: 'Custom Perchance generator name (optional)',
+        required: false,
+      },
+    ],
     cooldown: { seconds: 5 },
   });
 
   registry.register('listdares', new ListDaresHandler(dareService), {
     category: 'dares',
     group: 'dare',
-    description: 'List all dares in the database.',
-    usage: '/dare listdares [status:<active|completed|archived>]',
-    examples: ['/dare listdares', '/dare listdares status:active'],
+    description: 'List all dares in the database with pagination.',
+    usage: '/dare listdares [status:<status>] [theme:<theme>] [page:<number>]',
+    examples: [
+      '/dare listdares',
+      '/dare listdares status:active',
+      '/dare listdares theme:humiliating page:2',
+    ],
     options: [
       {
         name: 'status',
@@ -432,6 +470,26 @@ function bootstrap(container) {
           { name: 'completed', value: 'completed' },
           { name: 'archived', value: 'archived' },
         ],
+      },
+      {
+        name: 'theme',
+        type: 'string',
+        description: 'Filter by theme',
+        required: false,
+        choices: [
+          { name: 'general', value: 'general' },
+          { name: 'humiliating', value: 'humiliating' },
+          { name: 'sexy', value: 'sexy' },
+          { name: 'chastity', value: 'chastity' },
+          { name: 'anal', value: 'anal' },
+          { name: 'funny', value: 'funny' },
+        ],
+      },
+      {
+        name: 'page',
+        type: 'integer',
+        description: 'Page number for pagination',
+        required: false,
       },
     ],
     cooldown: { seconds: 5 },
@@ -451,11 +509,11 @@ function bootstrap(container) {
     category: 'dares',
     group: 'dare',
     description: 'Give a dare to a specific Discord user.',
-    usage: '/dare givedare user:<user> [random:<true|false>] [dare_id:<id>]',
+    usage: '/dare givedare user:<user> [random:<true|false>] [dare_id:<id>] [theme:<theme>]',
     examples: [
       '/dare givedare user:@User random:true',
       '/dare givedare user:@User dare_id:5',
-      '/dare givedare user:@User',
+      '/dare givedare user:@User theme:humiliating',
     ],
     options: [
       { name: 'user', type: 'user', description: 'User to give dare to', required: true },
@@ -470,6 +528,20 @@ function bootstrap(container) {
         type: 'integer',
         description: 'Specific dare ID to give',
         required: false,
+      },
+      {
+        name: 'theme',
+        type: 'string',
+        description: 'Filter random dares by theme',
+        required: false,
+        choices: [
+          { name: 'general', value: 'general' },
+          { name: 'humiliating', value: 'humiliating' },
+          { name: 'sexy', value: 'sexy' },
+          { name: 'chastity', value: 'chastity' },
+          { name: 'anal', value: 'anal' },
+          { name: 'funny', value: 'funny' },
+        ],
       },
     ],
     cooldown: { seconds: 3 },

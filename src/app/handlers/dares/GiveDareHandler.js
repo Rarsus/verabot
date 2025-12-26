@@ -19,7 +19,7 @@ class GiveDareHandler {
 
   /**
    * Handle give dare command execution
-   * @param {Command} command - Command with user ID and optional random flag in metadata
+   * @param {Command} command - Command with user ID and optional random, theme, dare_id in metadata
    * @returns {Promise<CommandResult>} Success message with dare assigned
    */
   async handle(command) {
@@ -27,6 +27,7 @@ class GiveDareHandler {
       const targetUserId = command.metadata.user;
       const useRandom = command.metadata.random === true || command.metadata.random === 'true';
       const dareId = command.metadata.dare_id;
+      const theme = command.metadata.theme;
 
       if (!targetUserId) {
         return CommandResult.fail(new Error('Target user is required'));
@@ -35,11 +36,17 @@ class GiveDareHandler {
       let dare;
 
       if (useRandom || !dareId) {
-        // Get a random active dare
-        dare = await this.dareService.getRandomDare({ status: 'active' });
+        // Get a random active dare with optional theme filter
+        const filters = { status: 'active' };
+        if (theme) {
+          filters.theme = theme;
+        }
+
+        dare = await this.dareService.getRandomDare(filters);
 
         if (!dare) {
-          return CommandResult.fail(new Error('No active dares available'));
+          const themeMsg = theme ? ` with theme '${theme}'` : '';
+          return CommandResult.fail(new Error(`No active dares available${themeMsg}`));
         }
 
         // Assign it to the user
@@ -59,6 +66,7 @@ class GiveDareHandler {
         message: `Dare #${dare.id} assigned to user successfully!`,
         dareId: dare.id,
         content: dare.content,
+        theme: dare.theme,
         assignedTo: targetUserId,
       });
     } catch (err) {

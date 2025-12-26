@@ -1,90 +1,96 @@
 /**
  * Dare Service
  * Handles business logic for dare operations including Perchance API integration
+ * Supports themes, caching, and fallback mechanisms
  * @class DareService
  * @example
- * const dareService = new DareService(dareRepo, logger);
- * const dare = await dareService.createDare('user123');
+ * const dareService = new DareService(dareRepo, perchanceService, config, logger);
+ * const dare = await dareService.createDare('user123', 'humiliating');
  */
 
 // Validation constants
 const MAX_DARE_CONTENT_LENGTH = 2000;
-const PERCHANCE_API_URL = 'https://perchance.org/api/generate';
-const PERCHANCE_GENERATOR = 'dares';
 
 class DareService {
   /**
    * Create a new DareService instance
    * @param {Object} dareRepo - Dare repository with database methods
+   * @param {Object} perchanceService - Perchance API service
+   * @param {Object} config - Application configuration
    * @param {Object} logger - Logger instance
    */
-  constructor(dareRepo, logger) {
+  constructor(dareRepo, perchanceService, config, logger) {
     /** @type {Object} */
     this.dareRepo = dareRepo;
+    /** @type {Object} */
+    this.perchanceService = perchanceService;
+    /** @type {Object} */
+    this.config = config;
     /** @type {Object} */
     this.logger = logger;
   }
 
   /**
-   * Generate a dare from Perchance API
-   * @returns {Promise<string>} Generated dare content
-   * @private
-   */
-  async generateDareFromPerchance() {
-    try {
-      // Perchance API call - using the dare generator
-      const response = await fetch(`${PERCHANCE_API_URL}?generator=${PERCHANCE_GENERATOR}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (!response.ok) {
-        this.logger.warn({ status: response.status }, 'Perchance API returned non-OK status');
-        throw new Error(`Perchance API error: ${response.status}`);
-      }
-
-      const data = await response.json();
-
-      // Perchance API returns different formats depending on the generator
-      // Typically returns { result: "dare text" } or { output: "dare text" }
-      const dareContent = data.result || data.output || data.text;
-
-      if (!dareContent) {
-        this.logger.error({ data }, 'Perchance API returned unexpected format');
-        throw new Error('Failed to extract dare from Perchance API response');
-      }
-
-      return dareContent;
-    } catch (err) {
-      this.logger.error({ err }, 'Failed to generate dare from Perchance');
-      throw new Error('Failed to generate dare from external API. Please try again later.');
-    }
-  }
-
-  /**
    * Create a new dare (generate from Perchance and store in database)
    * @param {string} createdBy - User ID who created the dare
+   * @param {string} [theme] - Theme/category for the dare (defaults to 'general')
+   * @param {string} [generatorOverride] - Override generator name (optional)
    * @returns {Promise<Object>} The created dare object with id and content
    */
-  async createDare(createdBy) {
-    // Generate dare from Perchance
-    let content = await this.generateDareFromPerchance();
+  async createDare(createdBy, theme = 'general', generatorOverride = null) {
+    // Validate theme
+    if (!this.config.DARE_THEMES.includes(theme)) {
+      throw new Error(
+        `Invalid theme '${theme}'. Must be one of: ${this.config.DARE_THEMES.join(', ')}`,
+      );
+    }
 
-    // Validate content length (shouldn't be an issue with Perchance, but defensive)
+    // Determine generator to use (command override > env var > config default)
+    const generator = generatorOverride || this.config.PERCHANCE_DARE_GENERATOR;
+
+    let content;
+    try {
+      // Try to generate from Perchance API
+      content = await this.perchanceService.generateDare(generator, theme);
+    } catch (err) {
+      this.logger.error({ err, generator, theme }, 'Failed to generate dare from Perchance API');
+
+      // Fallback: try to get a random existing dare from the same theme
+      const fallbackDare = await this.dareRepo.getRandom({ status: 'active', theme });
+      if (fallbackDare) {
+        this.logger.info({ theme }, 'Using fallback dare from database');
+        // Return existing dare without creating duplicate
+        return {
+          id: fallbackDare.id,
+          content: fallbackDare.content,
+          theme: fallbackDare.theme,
+          source: 'database_fallback',
+          created_by: fallbackDare.created_by,
+          status: fallbackDare.status,
+          fallback: true,
+        };
+      }
+
+      // No fallback available
+      throw new Error(
+        'Failed to generate dare from Perchance API and no fallback dares available. Please try again later.',
+      );
+    }
+
+    // Validate content length
     if (content.length > MAX_DARE_CONTENT_LENGTH) {
       this.logger.warn({ length: content.length }, 'Generated dare too long, truncating');
       content = content.substring(0, MAX_DARE_CONTENT_LENGTH);
     }
 
     // Store in database
-    const dareId = await this.dareRepo.add(content, 'perchance', createdBy);
+    const dareId = await this.dareRepo.add(content, theme, 'perchance', createdBy);
 
     // Return the created dare
     return {
       id: dareId,
       content,
+      theme,
       source: 'perchance',
       created_by: createdBy,
       status: 'active',
@@ -94,10 +100,11 @@ class DareService {
   /**
    * Add a user-created dare (not from Perchance)
    * @param {string} content - Dare content text
+   * @param {string} theme - Theme/category for the dare
    * @param {string} createdBy - User ID who created the dare
    * @returns {Promise<number>} The ID of the newly created dare
    */
-  async addDare(content, createdBy) {
+  async addDare(content, theme, createdBy) {
     // Validate input
     if (!content || content.trim().length === 0) {
       throw new Error('Dare content cannot be empty');
@@ -105,8 +112,13 @@ class DareService {
     if (content.length > MAX_DARE_CONTENT_LENGTH) {
       throw new Error(`Dare content is too long (maximum ${MAX_DARE_CONTENT_LENGTH} characters)`);
     }
+    if (!this.config.DARE_THEMES.includes(theme)) {
+      throw new Error(
+        `Invalid theme '${theme}'. Must be one of: ${this.config.DARE_THEMES.join(', ')}`,
+      );
+    }
 
-    return await this.dareRepo.add(content.trim(), 'user', createdBy);
+    return await this.dareRepo.add(content.trim(), theme, 'user', createdBy);
   }
 
   /**
@@ -114,7 +126,10 @@ class DareService {
    * @param {Object} filters - Optional filters
    * @param {string} [filters.status] - Filter by status
    * @param {string} [filters.assignedTo] - Filter by assigned user
-   * @returns {Promise<Array>} Array of all dares
+   * @param {string} [filters.theme] - Filter by theme
+   * @param {number} [filters.page] - Page number (default: 1)
+   * @param {number} [filters.perPage] - Items per page (default: 10)
+   * @returns {Promise<Array>} Array of dares
    */
   async getAllDares(filters = {}) {
     return await this.dareRepo.getAll(filters);
@@ -136,6 +151,7 @@ class DareService {
    * Get a random dare
    * @param {Object} filters - Optional filters
    * @param {string} [filters.status] - Filter by status (default: 'active')
+   * @param {string} [filters.theme] - Filter by theme
    * @returns {Promise<Object|null>} Random dare object or null if no dares exist
    */
   async getRandomDare(filters = {}) {
@@ -210,7 +226,10 @@ class DareService {
       throw new Error('User ID is required');
     }
 
-    return await this.updateDare(id, { assignedTo: userId });
+    return await this.updateDare(id, {
+      assignedTo: userId,
+      assignedAt: new Date().toISOString(),
+    });
   }
 
   /**
@@ -252,10 +271,19 @@ class DareService {
    * Get the total count of dares
    * @param {Object} filters - Optional filters
    * @param {string} [filters.status] - Filter by status
+   * @param {string} [filters.theme] - Filter by theme
    * @returns {Promise<number>} Total number of dares
    */
   async getDareCount(filters = {}) {
     return await this.dareRepo.count(filters);
+  }
+
+  /**
+   * Get available themes
+   * @returns {Array<string>} List of available themes
+   */
+  getAvailableThemes() {
+    return [...this.config.DARE_THEMES];
   }
 }
 

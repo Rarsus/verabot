@@ -32,21 +32,22 @@ describe('DareRepository Integration Tests', () => {
 
   describe('add', () => {
     it('should add a new dare', async () => {
-      const id = await dareRepo.add('Test dare content', 'perchance', 'user123');
+      const id = await dareRepo.add('Test dare content', 'general', 'perchance', 'user123');
 
       expect(id).toBeGreaterThan(0);
 
       const dare = await dareRepo.getById(id);
       expect(dare).toBeDefined();
       expect(dare.content).toBe('Test dare content');
+      expect(dare.theme).toBe('general');
       expect(dare.source).toBe('perchance');
       expect(dare.created_by).toBe('user123');
       expect(dare.status).toBe('active');
     });
 
     it('should add multiple dares', async () => {
-      const id1 = await dareRepo.add('Dare 1', 'perchance', 'user1');
-      const id2 = await dareRepo.add('Dare 2', 'user', 'user2');
+      const id1 = await dareRepo.add('Dare 1', 'general', 'perchance', 'user1');
+      const id2 = await dareRepo.add('Dare 2', 'funny', 'user', 'user2');
 
       expect(id2).toBeGreaterThan(id1);
 
@@ -57,9 +58,9 @@ describe('DareRepository Integration Tests', () => {
 
   describe('getAll', () => {
     beforeEach(async () => {
-      await dareRepo.add('Active dare 1', 'perchance', 'user1');
-      await dareRepo.add('Active dare 2', 'perchance', 'user2');
-      const completedId = await dareRepo.add('Completed dare', 'user', 'user3');
+      await dareRepo.add('Active dare 1', 'general', 'perchance', 'user1');
+      await dareRepo.add('Active dare 2', 'humiliating', 'perchance', 'user2');
+      const completedId = await dareRepo.add('Completed dare', 'funny', 'user', 'user3');
       await dareRepo.update(completedId, { status: 'completed' });
     });
 
@@ -100,7 +101,7 @@ describe('DareRepository Integration Tests', () => {
 
   describe('getById', () => {
     it('should get dare by id', async () => {
-      const id = await dareRepo.add('Test dare', 'perchance', 'user123');
+      const id = await dareRepo.add('Test dare', 'general', 'perchance', 'user123');
       const dare = await dareRepo.getById(id);
 
       expect(dare).toBeDefined();
@@ -116,9 +117,9 @@ describe('DareRepository Integration Tests', () => {
 
   describe('getRandom', () => {
     beforeEach(async () => {
-      await dareRepo.add('Active dare 1', 'perchance', 'user1');
-      await dareRepo.add('Active dare 2', 'perchance', 'user2');
-      const completedId = await dareRepo.add('Completed dare', 'user', 'user3');
+      await dareRepo.add('Active dare 1', 'general', 'perchance', 'user1');
+      await dareRepo.add('Active dare 2', 'sexy', 'perchance', 'user2');
+      const completedId = await dareRepo.add('Completed dare', 'chastity', 'user', 'user3');
       await dareRepo.update(completedId, { status: 'completed' });
     });
 
@@ -146,7 +147,7 @@ describe('DareRepository Integration Tests', () => {
 
   describe('update', () => {
     it('should update dare content', async () => {
-      const id = await dareRepo.add('Original content', 'perchance', 'user123');
+      const id = await dareRepo.add('Original content', 'general', 'perchance', 'user123');
 
       const updated = await dareRepo.update(id, { content: 'Updated content' });
       expect(updated).toBe(true);
@@ -156,7 +157,7 @@ describe('DareRepository Integration Tests', () => {
     });
 
     it('should update dare status', async () => {
-      const id = await dareRepo.add('Test dare', 'perchance', 'user123');
+      const id = await dareRepo.add('Test dare', 'general', 'perchance', 'user123');
 
       await dareRepo.update(id, { status: 'completed' });
 
@@ -165,7 +166,7 @@ describe('DareRepository Integration Tests', () => {
     });
 
     it('should update assigned user', async () => {
-      const id = await dareRepo.add('Test dare', 'perchance', 'user123');
+      const id = await dareRepo.add('Test dare', 'general', 'perchance', 'user123');
 
       await dareRepo.update(id, { assignedTo: 'targetUser' });
 
@@ -174,7 +175,7 @@ describe('DareRepository Integration Tests', () => {
     });
 
     it('should update multiple fields', async () => {
-      const id = await dareRepo.add('Test dare', 'perchance', 'user123');
+      const id = await dareRepo.add('Test dare', 'general', 'perchance', 'user123');
 
       await dareRepo.update(id, {
         content: 'New content',
@@ -198,7 +199,7 @@ describe('DareRepository Integration Tests', () => {
     });
 
     it('should return false when no fields to update', async () => {
-      const id = await dareRepo.add('Test dare', 'perchance', 'user123');
+      const id = await dareRepo.add('Test dare', 'general', 'perchance', 'user123');
       const updated = await dareRepo.update(id, {});
       expect(updated).toBe(false);
     });
@@ -206,7 +207,7 @@ describe('DareRepository Integration Tests', () => {
 
   describe('delete', () => {
     it('should delete a dare', async () => {
-      const id = await dareRepo.add('Test dare', 'perchance', 'user123');
+      const id = await dareRepo.add('Test dare', 'general', 'perchance', 'user123');
 
       const deleted = await dareRepo.delete(id);
       expect(deleted).toBe(true);
@@ -223,9 +224,9 @@ describe('DareRepository Integration Tests', () => {
 
   describe('count', () => {
     beforeEach(async () => {
-      await dareRepo.add('Active dare 1', 'perchance', 'user1');
-      await dareRepo.add('Active dare 2', 'perchance', 'user2');
-      const completedId = await dareRepo.add('Completed dare', 'user', 'user3');
+      await dareRepo.add('Active dare 1', 'general', 'perchance', 'user1');
+      await dareRepo.add('Active dare 2', 'anal', 'perchance', 'user2');
+      const completedId = await dareRepo.add('Completed dare', 'funny', 'user', 'user3');
       await dareRepo.update(completedId, { status: 'completed' });
     });
 
